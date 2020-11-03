@@ -5,6 +5,8 @@
 		<script src="/node_modules/@webcomponents/webcomponentsjs/webcomponents-loader.js"></script>
 		<script type="module">
 			import '@brightspace-ui/core/components/demo/demo-page.js';
+			import '@brightspace-ui/core/components/button/button-icon.js';
+			import '@brightspace-ui/core/components/link/link.js';
 			import '../user-profile-card.js';
 		</script>
 		<title>d2l-labs-user-profile-card</title>
@@ -16,7 +18,17 @@
 		<d2l-demo-page page-title="d2l-labs-user-profile-card">
 			<h2>d2l-labs-user-profile-card</h2>
 			<d2l-demo-snippet>
-				<d2l-labs-user-profile-card></d2l-labs-user-profile-card>
+				<d2l-labs-user-profile-card online user-attributes=["Adminstrator","she/her"]>
+					<img slot="illustration" src="maya.jpg" width="116px" height="116px" />
+					Maya Jones
+					<div slot="tagline">This is my tagline, yo! It could potentially be long enough to cause wrapping. I don't think we impose any limits on the length of this field.</div>
+					<d2l-link href="#" slot="website">www.mayaSuperWebsite.com</d2l-link>
+					<div slot="social-media-icons">
+						<d2l-icon icon="tier2:save"></d2l-icon>
+						<d2l-icon icon="tier2:browser"></d2l-icon>
+						<d2l-icon icon="tier2:send"></d2l-icon>
+					</div>
+				</d2l-labs-user-profile-card>
 			</d2l-demo-snippet>
 		</d2l-demo-page>
 	</body>

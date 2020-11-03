@@ -2,8 +2,12 @@
   "name": "@brightspace-ui-labs/user-profile-card",
   "description": "day light user profile card",
   "repository": "https://github.com/BrightspaceUILabs/user-profile-card.git",
-  "publishConfig": { "access": "public" },
-  "files": [ "user-profile-card.js" ],
+  "publishConfig": {
+    "access": "public"
+  },
+  "files": [
+    "user-profile-card.js"
+  ],
   "scripts": {
     "lint": "npm run lint:eslint && npm run lint:lit",
     "lint:eslint": "eslint . --ext .js,.html",
