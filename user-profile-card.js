@@ -19,7 +19,7 @@ class UserProfileCard extends LocalizeMixin(LitElement) {
 				display: grid;
 				width: 600px;
 				grid-template-columns: [start illustration-start] 116px [illustration-end basic-info-start] auto [basic-info-end end];
-				grid-template-rows: 116px auto;
+				grid-template-rows: [start header-start] 116px [header-end tagline-start] auto [tagline-end awards-start] auto [awards-end media-start] auto [media-end end];
 				border: 1px solid var(--d2l-color-mica);
 				border-radius: 6px;
 				box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
@@ -30,7 +30,9 @@ class UserProfileCard extends LocalizeMixin(LitElement) {
 			}
 			.d2l-labs-profile-card-basic-info {
 				grid-column: basic-info-start / basic-info-end;
+				grid-row: header-start / header-end;
 			}
+
 			::slotted([slot=illustration]),
 			.d2l-labs-profile-card-basic-info {
 				grid-row: 1 / 2;
@@ -38,6 +40,21 @@ class UserProfileCard extends LocalizeMixin(LitElement) {
 				overflow: hidden;
 				width: 100%;
 				height: 100%;
+			}
+			.d2l-labs-profile-card-tagline {
+				grid-column: start / end;
+				grid-row: tagline-start / tagline-end;
+			}
+			.d2l-labs-profile-card-awards {
+				grid-column: start / end;
+				grid-row: awards-start / awards-end;
+				border-top: 1px solid var(--d2l-color-mica);
+			}
+			.d2l-labs-profile-card-media {
+				grid-column: start / end;
+				grid-row: media-start / media-end;
+				border-top: 1px solid var(--d2l-color-mica);
+				background-color: var(#f9fbff)
 			}
 		`;
 
@@ -91,25 +108,62 @@ class UserProfileCard extends LocalizeMixin(LitElement) {
 		`;
 
 		const content = css`
-			.d2l-labs-profile-card-content {
-				grid-column: start / end;
-				grid-row: 2 / 3;
-				margin: 22px 26px;
-				color: black;
-				display: flex;
-				flex-direction: column;
-			}
-			::slotted([slot=website]) {
-				margin-top: 11px;
-			}
-			::slotted([slot=social-media-icons]) {
-				display: grid;
-				grid-gap: 14px;
-				grid-auto-flow: column;
-				grid-auto-columns: 24px;
-				margin: 13px 0;
-			}
+		.d2l-labs-profile-card-content {
+			grid-column: start / end;
+			grid-row: 2 / 3;
+			margin: 22px 26px;
+			color: black;
+			display: flex;
+			flex-direction: column;
+		}
+		::slotted([slot=website]) {
+			margin-top: 11px;
+		}
+		::slotted([slot=social-media-icons]) {
+			display: grid;
+			grid-gap: 14px;
+			grid-auto-flow: column;
+			grid-auto-columns: 24px;
+			margin: 13px 0;
+			margin-top: 11px;
+		}
 		`;
+
+		const tagline = css`
+		.d2l-labs-profile-card-tagline {
+			grid-column: start / end;
+			grid-row: tagline-start / tagline-end;
+			margin: 22px 26px;
+			color: black;
+			display: flex;
+			flex-direction: column;
+		}
+		`
+
+		const awards = css`
+		.d2l-labs-profile-card-awards {
+			grid-column: start / end;
+			grid-row: awards-start / awards-end;
+			margin: 22px 26px;
+			color: black;
+			display: flex;
+			flex-direction: column;
+		}
+		`
+
+		const media = css`
+		.d2l-labs-profile-card-media {
+			grid-column: start / end;
+			grid-row: media-start / media-end;
+			margin: 22px 26px;
+			color: black;
+			display: flex;
+			flex-direction: column;
+			background-color: var(--d2l-color-celestine);
+		}
+		`
+
+
 		return [ bodyStandardStyles, bodySmallStyles, heading2Styles, labelStyles, profileLayout, basicInfo, content, css`
 			:host {
 				display: inline-block;
@@ -166,10 +220,17 @@ class UserProfileCard extends LocalizeMixin(LitElement) {
 						})}
 					</ul>
 				</div>
-				<div class="d2l-labs-profile-card-content d2l-body-standard">
-					<slot name="tagline"></slot>
-					<slot name="website"></slot>
-					<slot name="social-media-icons"></slot>
+				</slot>
+				<div class="d2l-labs-profile-card-content">
+				<slot name="tagline"></slot>
+				<slot name="social-media-icons"></slot>
+				<slot name="website"></slot>
+				</div>
+				<div class="d2l-labs-profile-card-awards">
+				Grrr
+				</div>
+				<div class="d2l-labs-profile-card-media">
+				words
 				</div>
 			</div>
 		`;
