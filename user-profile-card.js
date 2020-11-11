@@ -1,6 +1,6 @@
 import '@brightspace-ui/core/components/colors/colors.js';
 import '@brightspace-ui/core/components/icons/icon.js';
-import { bodyStandardStyles, bodySmallStyles, heading2Styles, labelStyles } from '@brightspace-ui/core/components/typography/styles.js';
+import { bodySmallStyles, bodyStandardStyles, heading2Styles, labelStyles } from '@brightspace-ui/core/components/typography/styles.js';
 import { css, html, LitElement } from 'lit-element/lit-element.js';
 import { LocalizeMixin } from '@brightspace-ui/core/mixins/localize-mixin.js';
 
@@ -152,18 +152,16 @@ class UserProfileCard extends LocalizeMixin(LitElement) {
 			<div class="d2l-labs-profile-card">
 				<slot name="illustration"></slot>
 				<div class="d2l-labs-profile-card-basic-info">
-					<h2 class="d2l-heading-2 d2l-labs-profile-card-name"><slot></slot></h2>
+					<h2 class="d2l-heading-2 d2l-labs-profile-card-name"><slot>None</slot></h2>
 					<div class="d2l-labs-profile-card-status d2l-label-text">
-						${ this.online
-							? html`<d2l-icon icon="tier2:online"></d2l-icon>${this.localize('online')}`
-							: html`<d2l-icon icon="tier2:online"></d2l-icon>${this.localize('offline')}`
-						}
+					${ this.online ? html`
+						<d2l-icon icon="tier2:online"></d2l-icon>${this.localize('online')}
+					` : html`
+						<d2l-icon icon="tier2:online"></d2l-icon>${this.localize('offline')}
+					`}
 					</div>
 					<ul class="d2l-labs-profile-card-attributes d2l-body-small">
-						${this.userAttributes.map((item) => {
-							console.log(item);
-							return html`<li>${item}</li>`;
-						})}
+						${this.userAttributes.map((item) => html`<li>${item}</li>`)}
 					</ul>
 				</div>
 				<div class="d2l-labs-profile-card-content d2l-body-standard">
