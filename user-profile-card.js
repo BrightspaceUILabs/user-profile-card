@@ -116,6 +116,10 @@ class UserProfileCard extends LocalizeMixin(LitElement) {
 			display: flex;
 			flex-direction: column;
 		}
+		.d2l-profile-card-media {
+			display: flex;
+			justify-content: space-between;
+		}
 		::slotted([slot=website]) {
 			margin-top: 11px;
 		}
@@ -228,8 +232,10 @@ class UserProfileCard extends LocalizeMixin(LitElement) {
 				</slot>
 				<div class="d2l-labs-profile-card-content">
 					<slot name="tagline"></slot>
-					<slot name="social-media-icons"></slot>
-					<slot name="website"></slot>
+					<div class="d2l-profile-card-media">
+						<slot name="social-media-icons"></slot>
+						<slot name="website"></slot>
+					</div>
 				</div>
 				<div class="d2l-labs-profile-card-awards">
 					<slot name="awards-icons"></slot>
