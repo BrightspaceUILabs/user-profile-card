@@ -150,7 +150,7 @@ class UserProfileCard extends LocalizeMixin(LitElement) {
 			margin: 13px 0;
 			margin-top: 11px;
 		}
-		`
+		`;
 
 		const contact = css`
 		.d2l-labs-profile-card-contact {
@@ -170,8 +170,7 @@ class UserProfileCard extends LocalizeMixin(LitElement) {
 			margin: 13px 0;
 			margin-top: 11px;
 		}
-		`
-
+		`;
 
 		return [ bodyStandardStyles, bodySmallStyles, heading2Styles, labelStyles, profileLayout, basicInfo, content, awards, contact, css`
 			:host {
