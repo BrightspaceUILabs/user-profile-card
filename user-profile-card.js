@@ -1,5 +1,6 @@
 import '@brightspace-ui/core/components/colors/colors.js';
 import '@brightspace-ui/core/components/icons/icon.js';
+import '@brightspace-ui/core/components/button/button-subtle.js';
 import { bodySmallStyles, bodyStandardStyles, heading2Styles, labelStyles } from '@brightspace-ui/core/components/typography/styles.js';
 import { css, html, LitElement } from 'lit-element/lit-element.js';
 import { classMap } from 'lit-html/directives/class-map.js';
@@ -15,6 +16,7 @@ class UserProfileCard extends LocalizeMixin(LitElement) {
 			online: { type: Boolean },
 			userAttributes: { type: Array, attribute: 'user-attributes', reflect: true },
 			tagline: { type: String, reflect: true }
+			progressViewable: { type: Boolean, attribute: 'progress-viewable' }
 		};
 	}
 
@@ -59,7 +61,7 @@ class UserProfileCard extends LocalizeMixin(LitElement) {
 				grid-column: start / end;
 				grid-row: contact-start / contact-end;
 				border-top: 1px solid var(--d2l-color-mica);
-				background-color: var(#f9fbff)
+				background-color: #f9fbff
 			}
 		`;
 
@@ -123,10 +125,11 @@ class UserProfileCard extends LocalizeMixin(LitElement) {
 		}
 		.d2l-profile-card-media {
 			display: flex;
-			justify-content: space-between;
+
+			align-items: center;
 		}
 		::slotted([slot=website]) {
-			margin-top: 11px;
+			margin-left: 40px;
 		}
 		::slotted([slot=social-media-icons]) {
 			display: grid;
@@ -168,13 +171,16 @@ class UserProfileCard extends LocalizeMixin(LitElement) {
 		.d2l-labs-profile-card-contact {
 			grid-column: start / end;
 			grid-row: media-start / media-end;
-			padding: 22px 26px;
+			padding: 22px 22px;
 			color: black;
-			display: flex;
-			flex-direction: column;
 		}
 
-		::slotted([slot=contact]) {
+		.d2l-profile-card-contact-info {
+			display: flex;
+			justify-content: space-between;
+		}
+
+		::slotted([slot=contact-items]) {
 			display: grid;
 			grid-gap: 14px;
 			grid-auto-flow: column;
@@ -218,6 +224,7 @@ class UserProfileCard extends LocalizeMixin(LitElement) {
 		this.tagline = '';
 		this.userAttributes = [];
 		this._isEditing = false;
+		this.progressViewable = false;
 	}
 
 	render() {
@@ -261,7 +268,13 @@ class UserProfileCard extends LocalizeMixin(LitElement) {
 					<slot name="awards-icons"></slot>
 				</div>
 				<div class="d2l-labs-profile-card-contact">
-					<slot name="contact"></slot>
+					<div class="d2l-profile-card-contact-info">
+						<div>
+							<d2l-button-subtle id="email" text="Email" icon="tier1:email" @click="${this._openEmail}"></d2l-button-subtle>
+							<d2l-button-subtle id="message" text="Instant Message" icon="tier1:add-message" @click="${this._openMessage}"></d2l-button-subtle>
+						</div>
+						${ this.progressViewable ? html`<d2l-button-subtle id="progress" text="User Progress" icon="tier1:user-progress" @click="${this._userProgress}"></d2l-button-subtle>` : html`` }
+					</div>
 				</div>
 			</div>
 		`;
@@ -282,6 +295,16 @@ class UserProfileCard extends LocalizeMixin(LitElement) {
 	_onTextareaFocusout(evt) {
 		this._isEditing = false;
 		this.tagline = evt.target.value;
+	_openEmail() {
+		console.log('email');
+	}
+
+	_openMessage() {
+		console.log('message');
+	}
+
+	_userProgress() {
+		console.log('progress');
 	}
 }
 customElements.define('d2l-labs-user-profile-card', UserProfileCard);
