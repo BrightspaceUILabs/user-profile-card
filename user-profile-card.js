@@ -18,8 +18,8 @@ class UserProfileCard extends LocalizeMixin(LitElement) {
 			.d2l-labs-profile-card {
 				display: grid;
 				width: 600px;
-				grid-template-columns: [start illustration-start] 116px [illustration-end basic-info-start] auto [basic-info-end end];
-				grid-template-rows: 116px auto;
+				grid-template-columns: [start illustration-start] 22px [info-start] 94px [illustration-end basic-info-start] auto [basic-info-end info-end] 22px [end];
+				grid-template-rows: [start header-start] 116px [header-end tagline-start] auto [tagline-end awards-start] auto [awards-end contact-start] auto [contact-end end];
 				border: 1px solid var(--d2l-color-mica);
 				border-radius: 6px;
 				box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
@@ -27,17 +27,34 @@ class UserProfileCard extends LocalizeMixin(LitElement) {
 			}
 			::slotted([slot=illustration]) {
 				grid-column: illustration-start / illustration-end;
+				grid-row: header-start / header-end;
 			}
 			.d2l-labs-profile-card-basic-info {
-				grid-column: basic-info-start / basic-info-end;
+				grid-column: basic-info-start / end;
+				grid-row: header-start / header-end;
 			}
+
 			::slotted([slot=illustration]),
 			.d2l-labs-profile-card-basic-info {
-				grid-row: 1 / 2;
+				grid-row: header-start / header-end;
 				border-bottom: 1px solid var(--d2l-color-mica);
 				overflow: hidden;
 				width: 100%;
 				height: 100%;
+			}
+			.d2l-labs-profile-card-awards {
+				grid-column: start / end;
+				grid-row: awards-start / awards-end;
+				border-top: 1px solid var(--d2l-color-mica);
+				overflow: hidden;
+				width: 100%;
+				height: 100%;
+			}
+			.d2l-labs-profile-card-contact {
+				grid-column: start / end;
+				grid-row: contact-start / contact-end;
+				border-top: 1px solid var(--d2l-color-mica);
+				background-color: var(#f9fbff)
 			}
 		`;
 
@@ -91,26 +108,71 @@ class UserProfileCard extends LocalizeMixin(LitElement) {
 		`;
 
 		const content = css`
-			.d2l-labs-profile-card-content {
-				grid-column: start / end;
-				grid-row: 2 / 3;
-				margin: 22px 26px;
-				color: black;
-				display: flex;
-				flex-direction: column;
-			}
-			::slotted([slot=website]) {
-				margin-top: 11px;
-			}
-			::slotted([slot=social-media-icons]) {
-				display: grid;
-				grid-gap: 14px;
-				grid-auto-flow: column;
-				grid-auto-columns: 24px;
-				margin: 13px 0;
-			}
+		.d2l-labs-profile-card-content {
+			grid-column: start / end;
+			grid-row: 2 / 3;
+			margin: 22px 26px;
+			color: black;
+			display: flex;
+			flex-direction: column;
+		}
+		.d2l-profile-card-media {
+			display: flex;
+			justify-content: space-between;
+		}
+		::slotted([slot=website]) {
+			margin-top: 11px;
+		}
+		::slotted([slot=social-media-icons]) {
+			display: grid;
+			grid-gap: 14px;
+			grid-auto-flow: column;
+			grid-auto-columns: 24px;
+			margin: 13px 0;
+			margin-top: 11px;
+		}
 		`;
-		return [ bodyStandardStyles, bodySmallStyles, heading2Styles, labelStyles, profileLayout, basicInfo, content, css`
+
+		const awards = css`
+		.d2l-labs-profile-card-awards {
+			grid-column: start / end;
+			grid-row: 3 / 4;
+			padding: 22px 26px;
+			color: black;
+			display: flex;
+			flex-direction: column;
+		}
+		::slotted([slot=awards-icons]) {
+			display: grid;
+			grid-gap: 14px;
+			grid-auto-flow: column;
+			grid-auto-columns: 24px;
+			margin: 13px 0;
+			margin-top: 11px;
+		}
+		`;
+
+		const contact = css`
+		.d2l-labs-profile-card-contact {
+			grid-column: start / end;
+			grid-row: media-start / media-end;
+			padding: 22px 26px;
+			color: black;
+			display: flex;
+			flex-direction: column;
+		}
+
+		::slotted([slot=contact]) {
+			display: grid;
+			grid-gap: 14px;
+			grid-auto-flow: column;
+			grid-auto-columns: 24px;
+			margin: 13px 0;
+			margin-top: 11px;
+		}
+		`;
+
+		return [ bodyStandardStyles, bodySmallStyles, heading2Styles, labelStyles, profileLayout, basicInfo, content, awards, contact, css`
 			:host {
 				display: inline-block;
 			}
@@ -164,10 +226,19 @@ class UserProfileCard extends LocalizeMixin(LitElement) {
 						${this.userAttributes.map((item) => html`<li>${item}</li>`)}
 					</ul>
 				</div>
-				<div class="d2l-labs-profile-card-content d2l-body-standard">
+				</slot>
+				<div class="d2l-labs-profile-card-content">
 					<slot name="tagline"></slot>
-					<slot name="website"></slot>
-					<slot name="social-media-icons"></slot>
+					<div class="d2l-profile-card-media">
+						<slot name="social-media-icons"></slot>
+						<slot name="website"></slot>
+					</div>
+				</div>
+				<div class="d2l-labs-profile-card-awards">
+					<slot name="awards-icons"></slot>
+				</div>
+				<div class="d2l-labs-profile-card-contact">
+					<slot name="contact"></slot>
 				</div>
 			</div>
 		`;
