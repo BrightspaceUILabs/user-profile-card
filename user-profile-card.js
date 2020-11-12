@@ -155,9 +155,9 @@ class UserProfileCard extends LocalizeMixin(LitElement) {
 					<h2 class="d2l-heading-2 d2l-labs-profile-card-name"><slot>None</slot></h2>
 					<div class="d2l-labs-profile-card-status d2l-label-text">
 					${ this.online ? html`
-						<d2l-icon icon="tier2:online"></d2l-icon>${this.localize('online')}
+						<d2l-icon icon="tier2:dot"></d2l-icon>${this.localize('online')}
 					` : html`
-						<d2l-icon icon="tier2:online"></d2l-icon>${this.localize('offline')}
+						<d2l-icon icon="tier2:dot"></d2l-icon>${this.localize('offline')}
 					`}
 					</div>
 					<ul class="d2l-labs-profile-card-attributes d2l-body-small">
