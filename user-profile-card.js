@@ -18,8 +18,8 @@ class UserProfileCard extends LocalizeMixin(LitElement) {
 			.d2l-labs-profile-card {
 				display: grid;
 				width: 600px;
-				grid-template-columns: [start illustration-start] 116px [illustration-end basic-info-start] auto [basic-info-end end];
-				grid-template-rows: [start header-start] 116px [header-end tagline-start] auto [tagline-end awards-start] auto [awards-end media-start] auto [media-end end];
+				grid-template-columns: [start illustration-start] 22px [info-start] 94px [illustration-end basic-info-start] auto [basic-info-end info-end] 22px [end];
+				grid-template-rows: [start header-start] 116px [header-end tagline-start] auto [tagline-end awards-start] auto [awards-end contact-start] auto [contact-end end];
 				border: 1px solid var(--d2l-color-mica);
 				border-radius: 6px;
 				box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
@@ -27,32 +27,32 @@ class UserProfileCard extends LocalizeMixin(LitElement) {
 			}
 			::slotted([slot=illustration]) {
 				grid-column: illustration-start / illustration-end;
+				grid-row: header-start / header-end;
 			}
 			.d2l-labs-profile-card-basic-info {
-				grid-column: basic-info-start / basic-info-end;
+				grid-column: basic-info-start / end;
 				grid-row: header-start / header-end;
 			}
 
 			::slotted([slot=illustration]),
 			.d2l-labs-profile-card-basic-info {
-				grid-row: 1 / 2;
+				grid-row: header-start / header-end;
 				border-bottom: 1px solid var(--d2l-color-mica);
 				overflow: hidden;
 				width: 100%;
 				height: 100%;
 			}
-			.d2l-labs-profile-card-tagline {
-				grid-column: start / end;
-				grid-row: tagline-start / tagline-end;
-			}
 			.d2l-labs-profile-card-awards {
 				grid-column: start / end;
 				grid-row: awards-start / awards-end;
 				border-top: 1px solid var(--d2l-color-mica);
+				overflow: hidden;
+				width: 100%;
+				height: 100%;
 			}
-			.d2l-labs-profile-card-media {
+			.d2l-labs-profile-card-contact {
 				grid-column: start / end;
-				grid-row: media-start / media-end;
+				grid-row: contact-start / contact-end;
 				border-top: 1px solid var(--d2l-color-mica);
 				background-color: var(#f9fbff)
 			}
@@ -129,42 +129,47 @@ class UserProfileCard extends LocalizeMixin(LitElement) {
 		}
 		`;
 
-		const tagline = css`
-		.d2l-labs-profile-card-tagline {
-			grid-column: start / end;
-			grid-row: tagline-start / tagline-end;
-			margin: 22px 26px;
-			color: black;
-			display: flex;
-			flex-direction: column;
-		}
-		`
-
 		const awards = css`
 		.d2l-labs-profile-card-awards {
 			grid-column: start / end;
-			grid-row: awards-start / awards-end;
-			margin: 22px 26px;
+			grid-row: 3 / 4;
+			padding: 22px 26px;
 			color: black;
 			display: flex;
 			flex-direction: column;
 		}
+		::slotted([slot=awards-icons]) {
+			display: grid;
+			grid-gap: 14px;
+			grid-auto-flow: column;
+			grid-auto-columns: 24px;
+			margin: 13px 0;
+			margin-top: 11px;
+		}
 		`
 
-		const media = css`
-		.d2l-labs-profile-card-media {
+		const contact = css`
+		.d2l-labs-profile-card-contact {
 			grid-column: start / end;
 			grid-row: media-start / media-end;
-			margin: 22px 26px;
+			padding: 22px 26px;
 			color: black;
 			display: flex;
 			flex-direction: column;
-			background-color: var(--d2l-color-celestine);
+		}
+
+		::slotted([slot=contact]) {
+			display: grid;
+			grid-gap: 14px;
+			grid-auto-flow: column;
+			grid-auto-columns: 24px;
+			margin: 13px 0;
+			margin-top: 11px;
 		}
 		`
 
 
-		return [ bodyStandardStyles, bodySmallStyles, heading2Styles, labelStyles, profileLayout, basicInfo, content, css`
+		return [ bodyStandardStyles, bodySmallStyles, heading2Styles, labelStyles, profileLayout, basicInfo, content, awards, contact, css`
 			:host {
 				display: inline-block;
 			}
@@ -222,15 +227,15 @@ class UserProfileCard extends LocalizeMixin(LitElement) {
 				</div>
 				</slot>
 				<div class="d2l-labs-profile-card-content">
-				<slot name="tagline"></slot>
-				<slot name="social-media-icons"></slot>
-				<slot name="website"></slot>
+					<slot name="tagline"></slot>
+					<slot name="social-media-icons"></slot>
+					<slot name="website"></slot>
 				</div>
 				<div class="d2l-labs-profile-card-awards">
-				Grrr
+					<slot name="awards-icons"></slot>
 				</div>
-				<div class="d2l-labs-profile-card-media">
-				words
+				<div class="d2l-labs-profile-card-contact">
+					<slot name="contact"></slot>
 				</div>
 			</div>
 		`;
