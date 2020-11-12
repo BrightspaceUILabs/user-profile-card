@@ -20,6 +20,8 @@
 
 Daylight user profile card.
 
+<img src="/screenshots/screenshot.png" alt="Screenshot of profile card"/>
+
 ## Installation
 
 To install from NPM:
