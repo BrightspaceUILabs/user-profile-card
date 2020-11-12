@@ -122,7 +122,7 @@ class UserProfileCard extends LocalizeMixin(LitElement) {
 
 	static async getLocalizeResources(langs) {
 		const langResources = {
-			'en': { 'online': 'Online', 'offline': 'Offline' }
+			'en': { 'online': 'Online', 'offline': 'Offline', 'none': 'None' }
 		};
 
 		for (let i = 0; i < langs.length; i++) {
@@ -144,15 +144,11 @@ class UserProfileCard extends LocalizeMixin(LitElement) {
 	}
 
 	render() {
-		this.userAttributes.map((item) => {
-			console.log(item);
-			return html`<li>${item}</li>`;
-		});
 		return html`
 			<div class="d2l-labs-profile-card">
 				<slot name="illustration"></slot>
 				<div class="d2l-labs-profile-card-basic-info">
-					<h2 class="d2l-heading-2 d2l-labs-profile-card-name"><slot>None</slot></h2>
+					<h2 class="d2l-heading-2 d2l-labs-profile-card-name"><slot>${this.localize('none')}</slot></h2>
 					<div class="d2l-labs-profile-card-status d2l-label-text">
 					${ this.online ? html`
 						<d2l-icon icon="tier2:dot"></d2l-icon>${this.localize('online')}
