@@ -138,16 +138,16 @@ class UserProfileCard extends LocalizeMixin(LitElement) {
 			margin: 13px 0;
 			margin-top: 11px;
 		}
-		.d2l-is-editing .d2l-profile-card-tagline span,
-		.d2l-profile-card-tagline textarea {
-			display: none;
-		}
-		.d2l-is-editing .d2l-profile-card-tagline textarea{
-			display: block;
-		}
 		.d2l-profile-card-tagline:hover {
 			background-color: #f1f5fb;
 			transition: background-color .2s ease-in;
+		}
+		@media (prefers-reduced-motion)
+		{
+			.d2l-profile-card-tagline:hover {
+				background-color: inherit;
+				transition: none;
+			}
 		}
 		`;
 
@@ -252,12 +252,7 @@ class UserProfileCard extends LocalizeMixin(LitElement) {
 				</div>
 				</slot>
 				<div class="d2l-labs-profile-card-content">
-				${ this.editable ? html`
-					<span name="tagline" title="Click to edit tagline" @click="${this._onTaglineClick}">${this.tagline ? this.tagline : editMessage}</span>
-					<textarea name="tagline-edit" class="d2l-input" @focusout="${this._onTextareaFocusout}">${this.tagline}</textarea>
-				` : html`
-					<span name="tagline">${this.tagline}</span>
-				`}
+					${this._generateTaglineHtml()}
 					<div class="d2l-profile-card-media">
 						<slot name="social-media-icons"></slot>
 						<slot name="website"></slot>
@@ -281,6 +276,19 @@ class UserProfileCard extends LocalizeMixin(LitElement) {
 		}
 	}
 
+	_generateTaglineHtml()
+	{
+		if (this.editable && this._isEditing) {
+			return html `<textarea name="tagline-edit" class="d2l-input" @focusout="${this._onTextareaFocusout}">${this.tagline}</textarea>`;
+		} else if (this.editable) {
+			return html `<span name="tagline" title="${editMessage}" class="d2l-profile-card-tagline"
+				@click="${this._onTaglineClick}">${this.tagline ? this.tagline : editMessage}</span>
+			`;
+		} else {
+			return html `<span name="tagline">${this.tagline}</span>`;
+		}
+	}
+
 	_onTaglineClick() {
 		this._isEditing = true;
 	}
@@ -288,6 +296,12 @@ class UserProfileCard extends LocalizeMixin(LitElement) {
 	_onTextareaFocusout(evt) {
 		this._isEditing = false;
 		this.tagline = evt.target.value;
+
+		this.dispatchEvent(new CustomEvent('d2l-labs-user-profile-card-tagline-updated', {
+			details: {
+				tagline: this.tagline
+			}
+		}));
 	}
 }
 customElements.define('d2l-labs-user-profile-card', UserProfileCard);
