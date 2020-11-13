@@ -226,7 +226,7 @@ class UserProfileCard extends LocalizeMixin(LitElement) {
 			return html`<li>${item}</li>`;
 		});
 
-		const classes = { 'd2l-labs-profile-card' : true, 'd2l-is-editing' : this._isEditing};
+		const classes = { 'd2l-labs-profile-card': true, 'd2l-is-editing': this._isEditing};
 
 		return html`
 			<div class="${classMap(classes)}">
