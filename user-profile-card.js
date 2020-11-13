@@ -138,12 +138,16 @@ class UserProfileCard extends LocalizeMixin(LitElement) {
 			margin: 13px 0;
 			margin-top: 11px;
 		}
-		.d2l-is-editing span[name=tagline],
-		textarea[name=tagline-edit] {
+		.d2l-is-editing .d2l-profile-card-tagline span,
+		.d2l-profile-card-tagline textarea {
 			display: none;
 		}
-		.d2l-is-editing textarea[name=tagline-edit] {
+		.d2l-is-editing .d2l-profile-card-tagline textarea{
 			display: block;
+		}
+		.d2l-profile-card-tagline:hover {
+			background-color: #f1f5fb;
+			transition: background-color .2s ease-in;
 		}
 		`;
 
@@ -248,8 +252,8 @@ class UserProfileCard extends LocalizeMixin(LitElement) {
 				</div>
 				</slot>
 				<div class="d2l-labs-profile-card-content">
-				${ this.editable ? html `
-					<span name="tagline" @click="${this._onTaglineClick}">${this.tagline ? this.tagline : editMessage}</span>
+				${ this.editable ? html`
+					<span name="tagline" title="Click to edit tagline" @click="${this._onTaglineClick}">${this.tagline ? this.tagline : editMessage}</span>
 					<textarea name="tagline-edit" class="d2l-input" @focusout="${this._onTextareaFocusout}">${this.tagline}</textarea>
 				` : html`
 					<span name="tagline">${this.tagline}</span>
