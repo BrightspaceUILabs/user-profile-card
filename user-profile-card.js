@@ -6,6 +6,8 @@ import { classMap } from 'lit-html/directives/class-map.js';
 import { inputStyles } from '@brightspace-ui/core/components/inputs/input-styles.js';
 import { LocalizeMixin } from '@brightspace-ui/core/mixins/localize-mixin.js';
 
+const editMessage = 'Click here to edit';
+
 class UserProfileCard extends LocalizeMixin(LitElement) {
 
 	static get properties() {
@@ -247,7 +249,7 @@ class UserProfileCard extends LocalizeMixin(LitElement) {
 				</slot>
 				<div class="d2l-labs-profile-card-content">
 				${ this.editable ? html `
-					<span name="tagline" @click="${this._onTaglineClick}">${this.tagline}</span>
+					<span name="tagline" @click="${this._onTaglineClick}">${this.tagline ? this.tagline : editMessage}</span>
 					<textarea name="tagline-edit" class="d2l-input" @focusout="${this._onTextareaFocusout}">${this.tagline}</textarea>
 				` : html`
 					<span name="tagline">${this.tagline}</span>
