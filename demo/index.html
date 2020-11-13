@@ -37,5 +37,9 @@
 				</d2l-labs-user-profile-card>
 			</d2l-demo-snippet>
 		</d2l-demo-page>
+		<script type="text/javascript">
+			const myElement = document.querySelector('d2l-labs-user-profile-card');
+			myElement.addEventListener('d2l-labs-user-profile-card-tagline-updated', (e) => {console.log(e);});
+		</script>
 	</body>
 </html>
