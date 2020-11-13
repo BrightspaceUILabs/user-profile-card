@@ -15,7 +15,7 @@ class UserProfileCard extends LocalizeMixin(LitElement) {
 			editable: {type: Boolean},
 			online: { type: Boolean },
 			userAttributes: { type: Array, attribute: 'user-attributes', reflect: true },
-			tagline: { type: String, reflect: true }
+			tagline: { type: String, reflect: true },
 			progressViewable: { type: Boolean, attribute: 'progress-viewable' }
 		};
 	}
@@ -270,10 +270,10 @@ class UserProfileCard extends LocalizeMixin(LitElement) {
 				<div class="d2l-labs-profile-card-contact">
 					<div class="d2l-profile-card-contact-info">
 						<div>
-							<d2l-button-subtle id="email" text="Email" icon="tier1:email" @click="${this._openEmail}"></d2l-button-subtle>
-							<d2l-button-subtle id="message" text="Instant Message" icon="tier1:add-message" @click="${this._openMessage}"></d2l-button-subtle>
+							<d2l-button-subtle id="email" text="Email" icon="tier1:email" @_onclick="${this._onOpenEmail}"></d2l-button-subtle>
+							<d2l-button-subtle id="message" text="Instant Message" icon="tier1:add-message" @_onclick="${this._onOpenMessage}"></d2l-button-subtle>
 						</div>
-						${ this.progressViewable ? html`<d2l-button-subtle id="progress" text="User Progress" icon="tier1:user-progress" @click="${this._userProgress}"></d2l-button-subtle>` : html`` }
+						${ this.progressViewable ? html`<d2l-button-subtle id="progress" text="User Progress" icon="tier1:user-progress" @_onclick="${this._onUserProgress}"></d2l-button-subtle>` : html`` }
 					</div>
 				</div>
 			</div>
@@ -295,15 +295,17 @@ class UserProfileCard extends LocalizeMixin(LitElement) {
 	_onTextareaFocusout(evt) {
 		this._isEditing = false;
 		this.tagline = evt.target.value;
-	_openEmail() {
+	}
+
+	_onOpenEmail() {
 		console.log('email');
 	}
 
-	_openMessage() {
+	_onOpenMessage() {
 		console.log('message');
 	}
 
-	_userProgress() {
+	_onUserProgress() {
 		console.log('progress');
 	}
 }
