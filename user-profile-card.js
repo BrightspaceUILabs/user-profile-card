@@ -2,14 +2,19 @@ import '@brightspace-ui/core/components/colors/colors.js';
 import '@brightspace-ui/core/components/icons/icon.js';
 import { bodySmallStyles, bodyStandardStyles, heading2Styles, labelStyles } from '@brightspace-ui/core/components/typography/styles.js';
 import { css, html, LitElement } from 'lit-element/lit-element.js';
+import {classMap} from 'lit-html/directives/class-map.js';
+import { inputStyles } from '@brightspace-ui/core/components/inputs/input-styles.js';
 import { LocalizeMixin } from '@brightspace-ui/core/mixins/localize-mixin.js';
 
 class UserProfileCard extends LocalizeMixin(LitElement) {
 
 	static get properties() {
 		return {
+			_isEditing : { type : Boolean },
+			editable: {type: Boolean},
 			online: { type: Boolean },
-			userAttributes: { type: Array, attribute: 'user-attributes', reflect: true }
+			userAttributes: { type: Array, attribute: 'user-attributes', reflect: true },
+			tagline : { type : String, reflect: true }
 		};
 	}
 
@@ -131,6 +136,13 @@ class UserProfileCard extends LocalizeMixin(LitElement) {
 			margin: 13px 0;
 			margin-top: 11px;
 		}
+		.d2l-is-editing span[name=tagline],
+		textarea[name=tagline-edit] {
+			display: none;
+		}
+		.d2l-is-editing textarea[name=tagline-edit] {
+			display: block;
+		}
 		`;
 
 		const awards = css`
@@ -201,8 +213,11 @@ class UserProfileCard extends LocalizeMixin(LitElement) {
 
 	constructor() {
 		super();
+		this.editable = false;
 		this.online = false;
+		this.tagline = '';
 		this.userAttributes = [];
+		this._isEditing = false;
 	}
 
 	render() {
@@ -210,8 +225,11 @@ class UserProfileCard extends LocalizeMixin(LitElement) {
 			console.log(item);
 			return html`<li>${item}</li>`;
 		});
+
+		const classes = { 'd2l-labs-profile-card' : true, 'd2l-is-editing' : this._isEditing};
+
 		return html`
-			<div class="d2l-labs-profile-card">
+			<div class="${classMap(classes)}">
 				<slot name="illustration"></slot>
 				<div class="d2l-labs-profile-card-basic-info">
 					<h2 class="d2l-heading-2 d2l-labs-profile-card-name"><slot>None</slot></h2>
@@ -228,7 +246,12 @@ class UserProfileCard extends LocalizeMixin(LitElement) {
 				</div>
 				</slot>
 				<div class="d2l-labs-profile-card-content">
-					<slot name="tagline"></slot>
+				${ this.editable ? html `
+					<span name="tagline" @click="${this._editTagline}">${this.tagline}</span>
+					<textarea name="tagline-edit" class="d2l-input" @focusout="${this._finalizeEdit}">${this.tagline}</textarea>
+				` : html`
+					<span name="tagline">${this.tagline}</span>
+				`}
 					<div class="d2l-profile-card-media">
 						<slot name="social-media-icons"></slot>
 						<slot name="website"></slot>
@@ -242,6 +265,16 @@ class UserProfileCard extends LocalizeMixin(LitElement) {
 				</div>
 			</div>
 		`;
+	}
+
+	_editTagline() {
+		this._isEditing = true;
+	}
+
+	_finalizeEdit(evt) {
+		this._isEditing = false;
+
+		this.tagline = evt.target.value;
 	}
 }
 customElements.define('d2l-labs-user-profile-card', UserProfileCard);
