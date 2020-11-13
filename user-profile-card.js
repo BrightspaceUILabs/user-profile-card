@@ -184,7 +184,7 @@ class UserProfileCard extends LocalizeMixin(LitElement) {
 		}
 		`;
 
-		return [ bodyStandardStyles, bodySmallStyles, heading2Styles, labelStyles, profileLayout, basicInfo, content, awards, contact, css`
+		return [ bodyStandardStyles, bodySmallStyles, heading2Styles, inputStyles, labelStyles, profileLayout, basicInfo, content, awards, contact, css`
 			:host {
 				display: inline-block;
 			}
