@@ -247,7 +247,7 @@ class UserProfileCard extends LocalizeMixin(LitElement) {
 				</slot>
 				<div class="d2l-labs-profile-card-content">
 				${ this.editable ? html `
-					<span name="tagline" @click="${this._onTaglineClick}">${this.tagline}</span>
+					<span name="tagline" @click="${this._onTaglineClick}">${this.tagline ? this.tagline : 'Click here to edit'}</span>
 					<textarea name="tagline-edit" class="d2l-input" @focusout="${this._onTextareaFocusout}">${this.tagline}</textarea>
 				` : html`
 					<span name="tagline">${this.tagline}</span>
