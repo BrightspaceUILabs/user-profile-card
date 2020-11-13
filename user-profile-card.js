@@ -158,9 +158,9 @@ class UserProfileCard extends LocalizeMixin(LitElement) {
 			display: grid;
 			grid-gap: 14px;
 			grid-auto-flow: column;
-			grid-auto-columns: 24px;
-			margin: 13px 0;
-			margin-top: 11px;
+			grid-auto-columns: 40px;
+			margin: 5px 0;
+			margin-top: 5px;
 		}
 		`;
 
