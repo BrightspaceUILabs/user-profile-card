@@ -14,7 +14,7 @@ class UserProfileCard extends LocalizeMixin(LitElement) {
 			editable: {type: Boolean},
 			online: { type: Boolean },
 			userAttributes: { type: Array, attribute: 'user-attributes', reflect: true },
-			tagline : { type : String, reflect: true }
+			tagline: { type: String, reflect: true }
 		};
 	}
 
