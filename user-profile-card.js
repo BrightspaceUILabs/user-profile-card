@@ -6,7 +6,7 @@ import { classMap } from 'lit-html/directives/class-map.js';
 import { inputStyles } from '@brightspace-ui/core/components/inputs/input-styles.js';
 import { LocalizeMixin } from '@brightspace-ui/core/mixins/localize-mixin.js';
 
-const defaultText = 'Click here to edit';
+const defaultText = 'Click to edit tagline';
 
 class UserProfileCard extends LocalizeMixin(LitElement) {
 
