@@ -58,7 +58,6 @@ npm install @brightspace-ui-labs/user-profile-card
 |progress-viewable|Boolean|Whether the current viewer can access the users progress|
 |editable|Boolean|Whether the tagline is editable by the current viewer|
 |tagline|String|The tagling for the user|
-|awards|Boolean|Whether the awards are viewable|
 
 
 **Accessibility:**
