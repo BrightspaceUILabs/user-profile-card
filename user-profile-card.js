@@ -160,7 +160,6 @@ class UserProfileCard extends LocalizeMixin(LitElement) {
 			grid-auto-flow: column;
 			grid-auto-columns: 40px;
 			margin: 5px 0;
-			margin-top: 5px;
 		}
 		`;
 
