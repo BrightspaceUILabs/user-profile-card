@@ -273,7 +273,7 @@ class UserProfileCard extends LocalizeMixin(LitElement) {
 							<d2l-button-subtle id="email" text="Email" icon="tier1:email" @click="${this._onEmailClick}"></d2l-button-subtle>
 							<d2l-button-subtle id="message" text="Instant Message" icon="tier1:add-message" @click="${this._onMessageClick}"></d2l-button-subtle>
 						</div>
-						${ this.progressViewable ? html`<d2l-button-subtle id="progress" text="User Progress" icon="tier1:user-progress" @_onclick="${this._onProgressClick}"></d2l-button-subtle>` : html`` }
+						${ this.progressViewable ? html`<d2l-button-subtle id="progress" text="User Progress" icon="tier1:user-progress" @click="${this._onProgressClick}"></d2l-button-subtle>` : html`` }
 					</div>
 				</div>
 			</div>
