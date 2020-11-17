@@ -34,10 +34,30 @@
 					</div>
 				</d2l-labs-user-profile-card>
 			</d2l-demo-snippet>
+			<d2l-demo-snippet>
+				<d2l-labs-user-profile-card offline progress-viewable user-attributes=["Adminstrator","she/her"]
+					tagline="This is my tagline, yo! It could potentially be long enough to cause wrapping. I don't think we impose any limits on the length of this field.">
+					<img slot="illustration" src="maya.jpg" width="116px" height="116px" />
+					Maya Jones
+					<div slot="social-media-icons">
+						<d2l-icon icon="tier2:save"></d2l-icon>
+						<d2l-icon icon="tier2:browser"></d2l-icon>
+						<d2l-icon icon="tier2:send"></d2l-icon>
+					</div>
+					<d2l-link href="#" slot="website">www.mayaSuperWebsite.com</d2l-link>
+					<div slot="awards-icons">
+						<img src="Badge_Grad_Hat.png" width="40px"/>
+						<img src="book-award.png" width="40px"/>
+					</div>
+				</d2l-labs-user-profile-card>
+			</d2l-demo-snippet>
 		</d2l-demo-page>
 		<script type="text/javascript">
 			const myElement = document.querySelector('d2l-labs-user-profile-card');
 			myElement.addEventListener('d2l-labs-user-profile-card-tagline-updated', (e) => {console.log(e);});
+			myElement.addEventListener('d2l-labs-user-profile-card-message', (e) => {console.log(e);});
+			myElement.addEventListener('d2l-labs-user-profile-card-email', (e) => {console.log(e);});
+			myElement.addEventListener('d2l-labs-user-profile-card-progress', (e) => {console.log(e);});
 		</script>
 	</body>
 </html>
