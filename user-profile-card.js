@@ -171,7 +171,7 @@ class UserProfileCard extends LocalizeMixin(LitElement) {
 		.d2l-labs-profile-card-contact {
 			grid-column: start / end;
 			grid-row: media-start / media-end;
-			padding: 22px 22px;
+			padding: 22px;
 			color: black;
 		}
 
