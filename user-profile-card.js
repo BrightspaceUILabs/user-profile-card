@@ -6,7 +6,7 @@ import { classMap } from 'lit-html/directives/class-map.js';
 import { inputStyles } from '@brightspace-ui/core/components/inputs/input-styles.js';
 import { LocalizeMixin } from '@brightspace-ui/core/mixins/localize-mixin.js';
 
-const editMessage = 'Click to edit text';
+const editMessage = 'Click to edit tagline';
 
 class UserProfileCard extends LocalizeMixin(LitElement) {
 
@@ -138,12 +138,16 @@ class UserProfileCard extends LocalizeMixin(LitElement) {
 			margin: 13px 0;
 			margin-top: 11px;
 		}
-		.d2l-is-editing span[name=tagline],
-		textarea[name=tagline-edit] {
-			display: none;
+		.d2l-profile-card-tagline:hover {
+			background-color: var(--d2l-color-sylvite);
+			transition: background-color .2s ease-in;
 		}
-		.d2l-is-editing textarea[name=tagline-edit] {
-			display: block;
+		@media (prefers-reduced-motion)
+		{
+			.d2l-profile-card-tagline:hover {
+				background-color: inherit;
+				transition: none;
+			}
 		}
 		`;
 
@@ -247,12 +251,7 @@ class UserProfileCard extends LocalizeMixin(LitElement) {
 				</div>
 				</slot>
 				<div class="d2l-labs-profile-card-content">
-				${ this.editable ? html `
-					<span name="tagline" @click="${this._onTaglineClick}">${this.tagline ? this.tagline : editMessage}</span>
-					<textarea name="tagline-edit" class="d2l-input" @focusout="${this._onTextareaFocusout}">${this.tagline}</textarea>
-				` : html`
-					<span name="tagline">${this.tagline}</span>
-				`}
+					${this._generateTaglineHtml()}
 					<div class="d2l-profile-card-media">
 						<slot name="social-media-icons"></slot>
 						<slot name="website"></slot>
@@ -276,6 +275,19 @@ class UserProfileCard extends LocalizeMixin(LitElement) {
 		}
 	}
 
+	_generateTaglineHtml()
+	{
+		if (this.editable && this._isEditing) {
+			return html `<textarea name="tagline-edit" class="d2l-input" @focusout="${this._onTextareaFocusout}">${this.tagline}</textarea>`;
+		} else if (this.editable) {
+			return html `<span name="tagline" title="${editMessage}" class="d2l-profile-card-tagline"
+				@click="${this._onTaglineClick}">${this.tagline ? this.tagline : editMessage}</span>
+			`;
+		} else {
+			return html `<span name="tagline">${this.tagline}</span>`;
+		}
+	}
+
 	_onTaglineClick() {
 		this._isEditing = true;
 	}
@@ -283,6 +295,12 @@ class UserProfileCard extends LocalizeMixin(LitElement) {
 	_onTextareaFocusout(evt) {
 		this._isEditing = false;
 		this.tagline = evt.target.value;
+
+		this.dispatchEvent(new CustomEvent('d2l-labs-user-profile-card-tagline-updated', {
+			details: {
+				tagline: this.tagline
+			}
+		}));
 	}
 }
 customElements.define('d2l-labs-user-profile-card', UserProfileCard);
