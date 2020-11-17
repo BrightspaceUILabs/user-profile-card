@@ -139,7 +139,7 @@ class UserProfileCard extends LocalizeMixin(LitElement) {
 			margin-top: 11px;
 		}
 		.d2l-profile-card-tagline:hover {
-			background-color: #f1f5fb;
+			background-color: var(--d2l-color-sylvite);
 			transition: background-color .2s ease-in;
 		}
 		@media (prefers-reduced-motion)
