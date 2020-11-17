@@ -297,16 +297,16 @@ class UserProfileCard extends LocalizeMixin(LitElement) {
 		this.tagline = evt.target.value;
 	}
 
-	_onOpenEmail() {
-		console.log('email');
+	_onEmailClick() {
+		this.dispatchEvent(new CustomEvent('d2l-labs-user-profile-card-email'));
 	}
 
 	_onMessageClick() {
-		console.log('message');
+		this.dispatchEvent(new CustomEvent('d2l-labs-user-profile-card-message'));
 	}
 
 	_onProgressClick() {
-		console.log('progress');
+		this.dispatchEvent(new CustomEvent('d2l-labs-user-profile-card-progress'));
 	}
 }
 customElements.define('d2l-labs-user-profile-card', UserProfileCard);
