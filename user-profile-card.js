@@ -61,7 +61,7 @@ class UserProfileCard extends LocalizeMixin(LitElement) {
 				grid-column: start / end;
 				grid-row: contact-start / contact-end;
 				border-top: 1px solid var(--d2l-color-mica);
-				background-color: #f9fbff
+				background-color: var(--d2l-color-regolith);
 			}
 		`;
 
