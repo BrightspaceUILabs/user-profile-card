@@ -5,6 +5,7 @@ import { bodySmallStyles, bodyStandardStyles, heading2Styles, labelStyles } from
 import { css, html, LitElement } from 'lit-element/lit-element.js';
 import { classMap } from 'lit-html/directives/class-map.js';
 import { inputStyles } from '@brightspace-ui/core/components/inputs/input-styles.js';
+import { linkStyles } from '@brightspace-ui/core/components/link/link.js';
 import { LocalizeMixin } from '@brightspace-ui/core/mixins/localize-mixin.js';
 
 const editMessage = 'Click to edit tagline';
@@ -17,6 +18,7 @@ class UserProfileCard extends LocalizeMixin(LitElement) {
 			editable: {type: Boolean},
 			online: { type: Boolean },
 			userAttributes: { type: Array, attribute: 'user-attributes', reflect: true },
+			displayName: { type: String, attribute: 'display-name' },
 			tagline: { type: String, reflect: true },
 			progressViewable: { type: Boolean, attribute: 'progress-viewable' }
 		};
@@ -195,7 +197,17 @@ class UserProfileCard extends LocalizeMixin(LitElement) {
 		}
 		`;
 
-		return [ bodyStandardStyles, bodySmallStyles, heading2Styles, inputStyles, labelStyles, profileLayout, basicInfo, content, awards, contact, css`
+		return [ bodyStandardStyles,
+			bodySmallStyles,
+			heading2Styles,
+			inputStyles,
+			labelStyles,
+			profileLayout,
+			basicInfo,
+			content,
+			awards,
+			contact,
+			linkStyles, css`
 			:host {
 				display: inline-block;
 			}
@@ -228,13 +240,13 @@ class UserProfileCard extends LocalizeMixin(LitElement) {
 		this.online = false;
 		this.tagline = '';
 		this.userAttributes = [];
+		this.displayName = '';
 		this._isEditing = false;
 		this.progressViewable = false;
 	}
 
 	render() {
 		this.userAttributes.map((item) => {
-			console.log(item);
 			return html`<li>${item}</li>`;
 		});
 
@@ -242,9 +254,9 @@ class UserProfileCard extends LocalizeMixin(LitElement) {
 
 		return html`
 			<div class="${classMap(classes)}">
-				<slot name="illustration"></slot>
+				<slot name="illustration" class="d2l-link" @click="${this._onProfileImageClick}"></slot>
 				<div class="d2l-labs-profile-card-basic-info">
-					<h2 class="d2l-heading-2 d2l-labs-profile-card-name"><slot>${this.localize('none')}</slot></h2>
+					<a class="d2l-heading-2 d2l-labs-profile-card-name d2l-link" @click="${this._onDisplayNameClick}">${this.displayName}</a>
 					<div class="d2l-labs-profile-card-status d2l-label-text">
 					${ this.online ? html`
 						<d2l-icon icon="tier2:dot"></d2l-icon>${this.localize('online')}
@@ -326,6 +338,14 @@ class UserProfileCard extends LocalizeMixin(LitElement) {
 
 	_onProgressClick() {
 		this.dispatchEvent(new CustomEvent('d2l-labs-user-profile-card-progress'));
+	}
+
+	_onProfileImageClick() {
+		this.dispatchEvent(new CustomEvent('d2l-labs-user-profile-card-profile'));
+	}
+
+	_onDisplayNameClick() {
+		this.dispatchEvent(new CustomEvent('d2l-labs-user-profile-card-profile'));
 	}
 }
 customElements.define('d2l-labs-user-profile-card', UserProfileCard);
