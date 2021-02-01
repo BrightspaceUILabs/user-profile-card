@@ -18,7 +18,9 @@ class UserProfileCard extends LocalizeMixin(LitElement) {
 			online: { type: Boolean },
 			userAttributes: { type: Array, attribute: 'user-attributes', reflect: true },
 			tagline: { type: String, reflect: true },
-			progressViewable: { type: Boolean, attribute: 'progress-viewable' }
+			progressViewable: { type: Boolean, attribute: 'progress-viewable' },
+			showEmail: { type: Boolean, attribute: 'show-email' },
+			showIM: { type: Boolean, attribute: 'show-im' }
 		};
 	}
 
@@ -267,15 +269,16 @@ class UserProfileCard extends LocalizeMixin(LitElement) {
 				<div class="d2l-labs-profile-card-awards">
 					<slot name="awards-icons"></slot>
 				</div>
-				<div class="d2l-labs-profile-card-contact">
-					<div class="d2l-profile-card-contact-info">
-						<div>
-							<d2l-button-subtle id="email" text="Email" icon="tier1:email" @click="${this._onEmailClick}"></d2l-button-subtle>
-							<d2l-button-subtle id="message" text="Instant Message" icon="tier1:add-message" @click="${this._onMessageClick}"></d2l-button-subtle>
+				${ this.showEmail || this.showIM || this.progressViewable ? html`
+					<div class="d2l-labs-profile-card-contact">
+						<div class="d2l-profile-card-contact-info">
+							<div>
+								${ this.showEmail ? html`<d2l-button-subtle id="email" text="Email" icon="tier1:email" @click="${this._onEmailClick}"></d2l-button-subtle>` : html`` }
+								${ this.showIM ? html`<d2l-button-subtle id="message" text="Instant Message" icon="tier1:add-message" @click="${this._onMessageClick}"></d2l-button-subtle>` : html`` }
+							</div>
+							${ this.progressViewable ? html`<d2l-button-subtle id="progress" text="User Progress" icon="tier1:user-progress" @click="${this._onProgressClick}"></d2l-button-subtle>` : html`` }
 						</div>
-						${ this.progressViewable ? html`<d2l-button-subtle id="progress" text="User Progress" icon="tier1:user-progress" @click="${this._onProgressClick}"></d2l-button-subtle>` : html`` }
-					</div>
-				</div>
+					</div>` : html``}
 			</div>
 		`;
 	}

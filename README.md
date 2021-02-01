@@ -54,6 +54,8 @@ npm install @brightspace-ui-labs/user-profile-card
 |online|Boolean|Whether the user is currently online|
 |user-attributes|Array|A list of attributes for the user such as role and pronouns|
 |progress-viewable|Boolean|Whether the current viewer can access the users progress|
+|show-email|Boolean|Whether the current viewer can send emails to this user|
+|show-im|Boolean|Whether the current viewer can send instant messages to this user|
 |editable|Boolean|Whether the tagline is editable by the current viewer|
 |tagline|String|The tagling for the user|
 
