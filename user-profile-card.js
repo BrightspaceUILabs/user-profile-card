@@ -257,7 +257,6 @@ class UserProfileCard extends LocalizeMixin(LitElement) {
 						${this.userAttributes.map((item) => html`<li>${item}</li>`)}
 					</ul>
 				</div>
-				</slot>
 				<div class="d2l-labs-profile-card-content">
 					${this._generateTaglineHtml()}
 					<div class="d2l-profile-card-media">
