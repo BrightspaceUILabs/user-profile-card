@@ -6,12 +6,10 @@ import { bodySmallStyles, bodyStandardStyles, heading2Styles, labelStyles } from
 import { css, html, LitElement } from 'lit-element/lit-element.js';
 import { classMap } from 'lit-html/directives/class-map.js';
 import { inputStyles } from '@brightspace-ui/core/components/inputs/input-styles.js';
-import { LocalizeMixin } from '@brightspace-ui/core/mixins/localize-mixin.js';
+import { LocalizeUserProfileCard } from './lang/localize-user-profile-card';
 import { offscreenStyles } from '@brightspace-ui/core/components/offscreen/offscreen.js';
 
-const editMessage = 'Click to edit tagline';
-
-class UserProfileCard extends LocalizeMixin(LitElement) {
+class UserProfileCard extends LocalizeUserProfileCard(LitElement) {
 
 	static get properties() {
 		return {
@@ -219,23 +217,6 @@ class UserProfileCard extends LocalizeMixin(LitElement) {
 		`];
 	}
 
-	static async getLocalizeResources(langs) {
-		const langResources = {
-			'en': { 'online': 'Online', 'offline': 'Offline', 'none': 'None' }
-		};
-
-		for (let i = 0; i < langs.length; i++) {
-			if (langResources[langs[i]]) {
-				return {
-					language: langs[i],
-					resources: langResources[langs[i]]
-				};
-			}
-		}
-
-		return null;
-	}
-
 	constructor() {
 		super();
 		this.editable = false;
@@ -258,7 +239,7 @@ class UserProfileCard extends LocalizeMixin(LitElement) {
 			<div class="${classMap(classes)}">
 				<slot name="illustration"></slot>
 				<div class="d2l-labs-profile-card-basic-info">
-					<h2 class="d2l-heading-2 d2l-labs-profile-card-name"><slot>${this.localize('none')}</slot></h2>
+					<h2 class="d2l-heading-2 d2l-labs-profile-card-name"><slot>None</slot></h2>
 					<div class="d2l-labs-profile-card-status d2l-label-text">
 					${ this.online ? html`
 						<d2l-icon icon="tier2:dot"></d2l-icon>${this.localize('online')}
@@ -283,10 +264,10 @@ class UserProfileCard extends LocalizeMixin(LitElement) {
 				<div class="d2l-labs-profile-card-contact">
 					<div class="d2l-profile-card-contact-info">
 						<div>
-							<d2l-button-subtle id="email" text="Email" icon="tier1:email" @click="${this._onEmailClick}"></d2l-button-subtle>
-							<d2l-button-subtle id="message" text="Instant Message" icon="tier1:add-message" @click="${this._onMessageClick}"></d2l-button-subtle>
+							<d2l-button-subtle id="email" text="${this.localize('email')}" icon="tier1:email" @click="${this._onEmailClick}"></d2l-button-subtle>
+							<d2l-button-subtle id="message" text="${this.localize('instantMessage')}" icon="tier1:add-message" @click="${this._onMessageClick}"></d2l-button-subtle>
 						</div>
-						${ this.progressViewable ? html`<d2l-button-subtle id="progress" text="User Progress" icon="tier1:user-progress" @click="${this._onProgressClick}"></d2l-button-subtle>` : html`` }
+						${ this.progressViewable ? html`<d2l-button-subtle id="progress" text="${this.localize('userProgress')}" icon="tier1:user-progress" @click="${this._onProgressClick}"></d2l-button-subtle>` : html`` }
 					</div>
 				</div>
 			</div>
@@ -310,7 +291,7 @@ class UserProfileCard extends LocalizeMixin(LitElement) {
 					class="d2l-offscreen"
 					@click="${this._onTaglineClick}"
 					@focus="${this._onTaglineButtonFocus}">
-					${editMessage}
+					${this.localize('editTagline')}
 				</button>
 				<d2l-input-textarea
 					@focusout="${this._onTextareaFocusout}"
@@ -320,8 +301,8 @@ class UserProfileCard extends LocalizeMixin(LitElement) {
 				</d2l-input-textarea>
 				<div class="d2l-profile-card-tagline"
 					@click="${this._onTaglineClick}"
-					title="${editMessage}">
-					${this.tagline ? this.tagline : editMessage}
+					title="${this.localize('editTagline')}">
+					${this.tagline ? this.tagline : this.localize('editTagline')}
 				</div>
 			</div>
 		`;
