@@ -1,6 +1,7 @@
+import '@brightspace-ui/core/components/button/button-subtle.js';
 import '@brightspace-ui/core/components/colors/colors.js';
 import '@brightspace-ui/core/components/icons/icon.js';
-import '@brightspace-ui/core/components/button/button-subtle.js';
+import '@brightspace-ui/core/components/inputs/input-textarea.js';
 import { bodySmallStyles, bodyStandardStyles, heading2Styles, labelStyles } from '@brightspace-ui/core/components/typography/styles.js';
 import { css, html, LitElement } from 'lit-element/lit-element.js';
 import { classMap } from 'lit-html/directives/class-map.js';
@@ -284,14 +285,17 @@ class UserProfileCard extends LocalizeMixin(LitElement) {
 	update() {
 		super.update();
 		if (this._isEditing) {
-			this.shadowRoot.querySelector('textarea[name=tagline-edit]').focus();
+			this.shadowRoot.querySelector('d2l-input-textarea').focus();
 		}
 	}
 
-	_generateTaglineHtml()
-	{
+	_generateTaglineHtml() {
 		if (this.editable && this._isEditing) {
-			return html `<textarea name="tagline-edit" class="d2l-input" @focusout="${this._onTextareaFocusout}">${this.tagline}</textarea>`;
+			return html`<d2l-input-textarea
+				@focusout="${this._onTextareaFocusout}"
+				rows="2"
+				value="${this.tagline}">
+			</d2l-input-textarea>`;
 		} else if (this.editable) {
 			return html `<span name="tagline" title="${editMessage}" class="d2l-profile-card-tagline"
 				@click="${this._onTaglineClick}">${this.tagline ? this.tagline : editMessage}</span>
