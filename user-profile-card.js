@@ -355,7 +355,7 @@ class UserProfileCard extends LocalizeMixin(LitElement) {
 		this.tagline = e.target.value;
 
 		this.dispatchEvent(new CustomEvent('d2l-labs-user-profile-card-tagline-updated', {
-			details: {
+			detail: {
 				tagline: this.tagline
 			}
 		}));
