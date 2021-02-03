@@ -352,8 +352,9 @@ class UserProfileCard extends LocalizeMixin(LitElement) {
 
 	_onTextareaFocusout(e) {
 		this._isTaglineEditing = false;
-		this.tagline = e.target.value;
+		if (this.tagline === e.target.value) return;
 
+		this.tagline = e.target.value;
 		this.dispatchEvent(new CustomEvent('d2l-labs-user-profile-card-tagline-updated', {
 			detail: {
 				tagline: this.tagline
