@@ -238,7 +238,6 @@ class UserProfileCard extends LocalizeUserProfileCard(LitElement) {
 		this.progressViewable = false;
 		this.tagline = '';
 		this.userAttributes = [];
-		this._isEditing = false;
 		this._isTagLineButtonFocusing = false;
 		this._isTaglineEditing = false;
 	}
