@@ -14,10 +14,12 @@ class UserProfileCard extends LocalizeUserProfileCard(LitElement) {
 
 	static get properties() {
 		return {
+			displayName: { type: String, attribute: 'display-name' },
 			editable: {type: Boolean},
 			online: { type: Boolean },
-			displayName: { type: String, attribute: 'display-name' },
-			progressViewable: { type: Boolean, attribute: 'progress-viewable' },
+			showEmail: { type: Boolean, attribute: 'show-email' },
+			showIM: { type: Boolean, attribute: 'show-im' },
+			showProgress: { type: Boolean, attribute: 'show-progress' },
 			tagline: { type: String, reflect: true },
 			userAttributes: { type: Array, attribute: 'user-attributes', reflect: true },
 			_isTagLineButtonFocusing: { type: Boolean },
@@ -236,6 +238,9 @@ class UserProfileCard extends LocalizeUserProfileCard(LitElement) {
 		this.editable = false;
 		this.online = false;
 		this.progressViewable = false;
+		this.showEmail = false;
+		this.showIM = false;
+		this.showProgress = false;
 		this.tagline = '';
 		this.userAttributes = [];
 		this._isTagLineButtonFocusing = false;
@@ -275,15 +280,28 @@ class UserProfileCard extends LocalizeUserProfileCard(LitElement) {
 				<div class="d2l-labs-profile-card-awards">
 					<slot name="awards-icons"></slot>
 				</div>
-				<div class="d2l-labs-profile-card-contact">
-					<div class="d2l-profile-card-contact-info">
-						<div>
-							<d2l-button-subtle id="email" text="${this.localize('email')}" icon="tier1:email" @click="${this._onEmailClick}"></d2l-button-subtle>
-							<d2l-button-subtle id="message" text="${this.localize('instantMessage')}" icon="tier1:add-message" @click="${this._onMessageClick}"></d2l-button-subtle>
+				${ this.showEmail || this.showIM || this.showProgress ? html`
+					<div class="d2l-labs-profile-card-contact">
+						<div class="d2l-profile-card-contact-info">
+							<div>
+								${ this.showEmail ? html`<d2l-button-subtle
+									@click="${this._onEmailClick}"
+									icon="tier1:email"
+									id="email"
+									text="${this.localize('email')}"></d2l-button-subtle>` : html`` }
+								${ this.showIM ? html`<d2l-button-subtle
+									@click="${this._onMessageClick}"
+									icon="tier1:add-message"
+									id="message"
+									text="${this.localize('instantMessage')}"></d2l-button-subtle>` : html`` }
+							</div>
+							${ this.showProgress ? html`<d2l-button-subtle
+								@click="${this._onProgressClick}"
+								icon="tier1:user-progress"
+								id="progress"
+								text="${this.localize('userProgress')}" ></d2l-button-subtle>` : html`` }
 						</div>
-						${ this.progressViewable ? html`<d2l-button-subtle id="progress" text="${this.localize('userProgress')}" icon="tier1:user-progress" @click="${this._onProgressClick}"></d2l-button-subtle>` : html`` }
-					</div>
-				</div>
+					</div>` : html``}
 			</div>
 		`;
 	}

@@ -25,4 +25,9 @@ describe('d2l-labs-user-profile-card', () => {
 		await visualDiff.screenshotAndCompare(page, this.test.fullTitle(), { clip: rect });
 	});
 
+	it('passes visual-diff with actions', async function() {
+		const rect = await visualDiff.getRect(page, '#with-actions');
+		await visualDiff.screenshotAndCompare(page, this.test.fullTitle(), { clip: rect });
+	});
+
 });
