@@ -290,7 +290,7 @@ class UserProfileCard extends LocalizeUserProfileCard(LitElement) {
 									id="email"
 									text="${this.localize('email')}"></d2l-button-subtle>` : html`` }
 								${ this.showIM ? html`<d2l-button-subtle
-									@click="${this._onMessageClick}
+									@click="${this._onMessageClick}"
 									icon="tier1:add-message"
 									id="message"
 									text="${this.localize('instantMessage')}"></d2l-button-subtle>` : html`` }
