@@ -1,26 +1,29 @@
+import '@brightspace-ui/core/components/button/button-subtle.js';
 import '@brightspace-ui/core/components/colors/colors.js';
 import '@brightspace-ui/core/components/icons/icon.js';
-import '@brightspace-ui/core/components/button/button-subtle.js';
+import '@brightspace-ui/core/components/inputs/input-textarea.js';
 import { bodySmallStyles, bodyStandardStyles, heading2Styles, labelStyles } from '@brightspace-ui/core/components/typography/styles.js';
 import { css, html, LitElement } from 'lit-element/lit-element.js';
 import { classMap } from 'lit-html/directives/class-map.js';
 import { inputStyles } from '@brightspace-ui/core/components/inputs/input-styles.js';
-import { LocalizeMixin } from '@brightspace-ui/core/mixins/localize-mixin.js';
+import { linkStyles } from '@brightspace-ui/core/components/link/link.js';
+import { LocalizeUserProfileCard } from './lang/localize-user-profile-card.js';
+import { offscreenStyles } from '@brightspace-ui/core/components/offscreen/offscreen.js';
 
-const editMessage = 'Click to edit tagline';
-
-class UserProfileCard extends LocalizeMixin(LitElement) {
+class UserProfileCard extends LocalizeUserProfileCard(LitElement) {
 
 	static get properties() {
 		return {
-			_isEditing: { type : Boolean },
+			displayName: { type: String, attribute: 'display-name' },
 			editable: {type: Boolean},
 			online: { type: Boolean },
-			userAttributes: { type: Array, attribute: 'user-attributes', reflect: true },
-			tagline: { type: String, reflect: true },
 			showEmail: { type: Boolean, attribute: 'show-email' },
 			showIM: { type: Boolean, attribute: 'show-im' },
-			showProgress: { type: Boolean, attribute: 'show-progress' }
+			showProgress: { type: Boolean, attribute: 'show-progress' },
+			tagline: { type: String, reflect: true },
+			userAttributes: { type: Array, attribute: 'user-attributes', reflect: true },
+			_isTagLineButtonFocusing: { type: Boolean },
+			_isTaglineEditing: { type: Boolean }
 		};
 	}
 
@@ -119,85 +122,107 @@ class UserProfileCard extends LocalizeMixin(LitElement) {
 		`;
 
 		const content = css`
-		.d2l-labs-profile-card-content {
-			grid-column: start / end;
-			grid-row: 2 / 3;
-			margin: 22px 26px;
-			color: black;
-			display: flex;
-			flex-direction: column;
-		}
-		.d2l-profile-card-media {
-			display: flex;
-
-			align-items: center;
-		}
-		::slotted([slot=website]) {
-			margin-left: 40px;
-		}
-		::slotted([slot=social-media-icons]) {
-			display: grid;
-			grid-gap: 14px;
-			grid-auto-flow: column;
-			grid-auto-columns: 24px;
-			margin: 13px 0;
-			margin-top: 11px;
-		}
-		.d2l-profile-card-tagline:hover {
-			background-color: var(--d2l-color-sylvite);
-			transition: background-color .2s ease-in;
-		}
-		@media (prefers-reduced-motion)
-		{
-			.d2l-profile-card-tagline:hover {
-				background-color: inherit;
-				transition: none;
+			.d2l-labs-profile-card-content {
+				grid-column: start / end;
+				grid-row: 2 / 3;
+				margin: 22px 26px;
+				color: var(--d2l-color-ferrite);
+				display: flex;
+				flex-direction: column;
 			}
-		}
+			.d2l-profile-card-media {
+				display: flex;
+
+				align-items: center;
+			}
+			::slotted([slot=website]) {
+				margin-left: 40px;
+			}
+			::slotted([slot=social-media-icons]) {
+				display: grid;
+				grid-gap: 14px;
+				grid-auto-flow: column;
+				grid-auto-columns: 24px;
+				margin: 13px 0;
+				margin-top: 11px;
+			}
+
+			.d2l-profile-card-tagline-container d2l-input-textarea {
+				display: none;
+			}
+			.d2l-is-editing .d2l-profile-card-tagline-container d2l-input-textarea {
+				display: block;
+			}
+			.d2l-is-editing .d2l-profile-card-tagline-container div,
+			.d2l-is-editing .d2l-profile-card-tagline-container button {
+				display: none;
+			}
+			.d2l-profile-card-tagline-container div:hover,
+			.d2l-profile-card-tagline-focusing div {
+				background-color: var(--d2l-color-sylvite);
+				transition: background-color .2s ease-in;
+			}
+			@media (prefers-reduced-motion) {
+				.d2l-profile-card-tagline-container div:hover,
+				.d2l-profile-card-tagline-focusing div {
+					transition: none;
+				}
+			}
 		`;
 
 		const awards = css`
-		.d2l-labs-profile-card-awards {
-			grid-column: start / end;
-			grid-row: 3 / 4;
-			padding: 22px 26px;
-			color: black;
-			display: flex;
-			flex-direction: column;
-		}
-		::slotted([slot=awards-icons]) {
-			display: grid;
-			grid-gap: 14px;
-			grid-auto-flow: column;
-			grid-auto-columns: 40px;
-			margin: 5px 0;
-		}
+			.d2l-labs-profile-card-awards {
+				grid-column: start / end;
+				grid-row: 3 / 4;
+				padding: 22px 26px;
+				color: black;
+				display: flex;
+				flex-direction: column;
+			}
+			::slotted([slot=awards-icons]) {
+				display: grid;
+				grid-gap: 14px;
+				grid-auto-flow: column;
+				grid-auto-columns: 40px;
+				margin: 5px 0;
+			}
 		`;
 
 		const contact = css`
-		.d2l-labs-profile-card-contact {
-			grid-column: start / end;
-			grid-row: media-start / media-end;
-			padding: 22px;
-			color: black;
-		}
+			.d2l-labs-profile-card-contact {
+				grid-column: start / end;
+				grid-row: media-start / media-end;
+				padding: 22px;
+				color: black;
+			}
 
-		.d2l-profile-card-contact-info {
-			display: flex;
-			justify-content: space-between;
-		}
+			.d2l-profile-card-contact-info {
+				display: flex;
+				justify-content: space-between;
+			}
 
-		::slotted([slot=contact-items]) {
-			display: grid;
-			grid-gap: 14px;
-			grid-auto-flow: column;
-			grid-auto-columns: 24px;
-			margin: 13px 0;
-			margin-top: 11px;
-		}
+			::slotted([slot=contact-items]) {
+				display: grid;
+				grid-gap: 14px;
+				grid-auto-flow: column;
+				grid-auto-columns: 24px;
+				margin: 13px 0;
+				margin-top: 11px;
+			}
 		`;
 
-		return [ bodyStandardStyles, bodySmallStyles, heading2Styles, inputStyles, labelStyles, profileLayout, basicInfo, content, awards, contact, css`
+		return [ bodyStandardStyles,
+			bodySmallStyles,
+			heading2Styles,
+			inputStyles,
+			labelStyles,
+			offscreenStyles,
+			profileLayout,
+			basicInfo,
+			content,
+			awards,
+			contact,
+			linkStyles, css`
 			:host {
 				display: inline-block;
 			}
@@ -207,48 +232,33 @@ class UserProfileCard extends LocalizeMixin(LitElement) {
 		`];
 	}
 
-	static async getLocalizeResources(langs) {
-		const langResources = {
-			'en': { 'online': 'Online', 'offline': 'Offline', 'none': 'None' }
-		};
-
-		for (let i = 0; i < langs.length; i++) {
-			if (langResources[langs[i]]) {
-				return {
-					language: langs[i],
-					resources: langResources[langs[i]]
-				};
-			}
-		}
-
-		return null;
-	}
-
 	constructor() {
 		super();
+		this.displayName = '';
 		this.editable = false;
 		this.online = false;
-		this.tagline = '';
-		this.userAttributes = [];
-		this._isEditing = false;
+		this.progressViewable = false;
 		this.showEmail = false;
 		this.showIM = false;
 		this.showProgress = false;
+		this.tagline = '';
+		this.userAttributes = [];
+		this._isTagLineButtonFocusing = false;
+		this._isTaglineEditing = false;
 	}
 
 	render() {
 		this.userAttributes.map((item) => {
-			console.log(item);
 			return html`<li>${item}</li>`;
 		});
 
-		const classes = { 'd2l-labs-profile-card': true, 'd2l-is-editing': this._isEditing};
+		const classes = { 'd2l-labs-profile-card': true, 'd2l-is-editing': this._isTaglineEditing};
 
 		return html`
 			<div class="${classMap(classes)}">
-				<slot name="illustration"></slot>
+				<slot name="illustration" class="d2l-link" @click="${this._onProfileImageClick}"></slot>
 				<div class="d2l-labs-profile-card-basic-info">
-					<h2 class="d2l-heading-2 d2l-labs-profile-card-name"><slot>${this.localize('none')}</slot></h2>
+					<a class="d2l-heading-2 d2l-labs-profile-card-name d2l-link" @click="${this._onDisplayNameClick}">${this.displayName}</a>
 					<div class="d2l-labs-profile-card-status d2l-label-text">
 					${ this.online ? html`
 						<d2l-icon icon="tier2:dot"></d2l-icon>${this.localize('online')}
@@ -260,7 +270,6 @@ class UserProfileCard extends LocalizeMixin(LitElement) {
 						${this.userAttributes.map((item) => html`<li>${item}</li>`)}
 					</ul>
 				</div>
-				</slot>
 				<div class="d2l-labs-profile-card-content">
 					${this._generateTaglineHtml()}
 					<div class="d2l-profile-card-media">
@@ -275,47 +284,92 @@ class UserProfileCard extends LocalizeMixin(LitElement) {
 					<div class="d2l-labs-profile-card-contact">
 						<div class="d2l-profile-card-contact-info">
 							<div>
-								${ this.showEmail ? html`<d2l-button-subtle id="email" text="Email" icon="tier1:email" @click="${this._onEmailClick}"></d2l-button-subtle>` : html`` }
-								${ this.showIM ? html`<d2l-button-subtle id="message" text="Instant Message" icon="tier1:add-message" @click="${this._onMessageClick}"></d2l-button-subtle>` : html`` }
+								${ this.showEmail ? html`<d2l-button-subtle
+									@click="${this._onEmailClick}"
+									icon="tier1:email"
+									id="email"
+									text="${this.localize('email')}"></d2l-button-subtle>` : html`` }
+								${ this.showIM ? html`<d2l-button-subtle
+									@click="${this._onMessageClick}
+									icon="tier1:add-message"
+									id="message"
+									text="${this.localize('instantMessage')}"></d2l-button-subtle>` : html`` }
 							</div>
-							${ this.showProgress ? html`<d2l-button-subtle id="progress" text="User Progress" icon="tier1:user-progress" @click="${this._onProgressClick}"></d2l-button-subtle>` : html`` }
+							${ this.showProgress ? html`<d2l-button-subtle
+								@click="${this._onProgressClick}"
+								icon="tier1:user-progress"
+								id="progress"
+								text="${this.localize('userProgress')}" ></d2l-button-subtle>` : html`` }
 						</div>
 					</div>` : html``}
 			</div>
 		`;
 	}
 
-	// Add focus to the tagline textarea after it is rendered
-	update() {
-		super.update();
-		if (this._isEditing) {
-			this.shadowRoot.querySelector('textarea[name=tagline-edit]').focus();
+	_generateTaglineHtml() {
+
+		if (!this.editable) {
+			return html`<div>${this.tagline}</div>`;
 		}
+
+		const classes = {
+			'd2l-profile-card-tagline-container': true,
+			'd2l-profile-card-tagline-focusing': this._isTagLineButtonFocusing
+		};
+
+		return html`
+			<div class="${classMap(classes)}">
+				<button @blur="${this._onTaglineButtonBlur}"
+					class="d2l-offscreen"
+					@click="${this._onTaglineClick}"
+					@focus="${this._onTaglineButtonFocus}">
+					${this.localize('editTagline')}
+				</button>
+				<d2l-input-textarea
+					@focusout="${this._onTextareaFocusout}"
+					@keyup="${this._onTaglineKeyUp}"
+					rows="2"
+					value="${this.tagline}">
+				</d2l-input-textarea>
+				<div class="d2l-profile-card-tagline"
+					@click="${this._onTaglineClick}"
+					title="${this.localize('editTagline')}">
+					${this.tagline ? this.tagline : this.localize('editTagline')}
+				</div>
+			</div>
+		`;
 	}
 
-	_generateTaglineHtml()
-	{
-		if (this.editable && this._isEditing) {
-			return html `<textarea name="tagline-edit" class="d2l-input" @focusout="${this._onTextareaFocusout}">${this.tagline}</textarea>`;
-		} else if (this.editable) {
-			return html `<span name="tagline" title="${editMessage}" class="d2l-profile-card-tagline"
-				@click="${this._onTaglineClick}">${this.tagline ? this.tagline : editMessage}</span>
-			`;
-		} else {
-			return html `<span name="tagline">${this.tagline}</span>`;
-		}
+	_onTaglineButtonBlur() {
+		this._isTagLineButtonFocusing = false;
 	}
 
-	_onTaglineClick() {
-		this._isEditing = true;
+	_onTaglineButtonFocus() {
+		this._isTagLineButtonFocusing = true;
 	}
 
-	_onTextareaFocusout(evt) {
-		this._isEditing = false;
-		this.tagline = evt.target.value;
+	async _onTaglineClick() {
+		this._isTaglineEditing = true;
+		this._originalTagline = this.tagline;
+		await this.updateComplete;
+		this.shadowRoot.querySelector('d2l-input-textarea').focus();
+	}
 
+	async _onTaglineKeyUp(e) {
+		if (e.keyCode !== 27) return;
+		this.shadowRoot.querySelector('d2l-input-textarea').value = this._originalTagline;
+		this._isTaglineEditing = false;
+		await this.updateComplete;
+		this.shadowRoot.querySelector('.d2l-profile-card-tagline-container button').focus();
+	}
+
+	_onTextareaFocusout(e) {
+		this._isTaglineEditing = false;
+		if (this.tagline === e.target.value) return;
+
+		this.tagline = e.target.value;
 		this.dispatchEvent(new CustomEvent('d2l-labs-user-profile-card-tagline-updated', {
-			details: {
+			detail: {
 				tagline: this.tagline
 			}
 		}));
@@ -331,6 +385,14 @@ class UserProfileCard extends LocalizeMixin(LitElement) {
 
 	_onProgressClick() {
 		this.dispatchEvent(new CustomEvent('d2l-labs-user-profile-card-progress'));
+	}
+
+	_onProfileImageClick() {
+		this.dispatchEvent(new CustomEvent('d2l-labs-user-profile-card-profile'));
+	}
+
+	_onDisplayNameClick() {
+		this.dispatchEvent(new CustomEvent('d2l-labs-user-profile-card-profile'));
 	}
 }
 customElements.define('d2l-labs-user-profile-card', UserProfileCard);

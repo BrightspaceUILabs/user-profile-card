@@ -34,9 +34,10 @@ npm install @brightspace-ui-labs/user-profile-card
 <script type="module">
     import '@brightspace-ui-labs/user-profile-card/user-profile-card.js';
 </script>
-<d2l-labs-user-profile-card online user-attributes=["Adminstrator","she/her"]>
+<d2l-labs-user-profile-card online
+    display-name="Maya Jones"
+    user-attributes=["Adminstrator","she/her"]>
     <img slot="illustration" src="maya.jpg" width="116px" height="116px" />
-    Maya Jones
     <div slot="tagline">I am a tagline!</div>
     <d2l-link href="#" slot="website">www.mayaSuperWebsite.com</d2l-link>
     <div slot="social-media-icons">
@@ -52,12 +53,13 @@ npm install @brightspace-ui-labs/user-profile-card
 | Property | Type | Description |
 |--|--|--|
 |online|Boolean|Whether the user is currently online|
+|display-name|String|Name to be displayed for user|
 |user-attributes|Array|A list of attributes for the user such as role and pronouns|
 |show-email|Boolean|Whether the current viewer can send emails to this user|
 |show-im|Boolean|Whether the current viewer can send instant messages to this user|
 |show-progress|Boolean|Whether the current viewer can access the users progress|
 |editable|Boolean|Whether the tagline is editable by the current viewer|
-|tagline|String|The tagling for the user|
+|tagline|String|The tagline for the user|
 
 
 **Accessibility:**
