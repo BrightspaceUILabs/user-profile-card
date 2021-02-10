@@ -298,7 +298,7 @@ class UserProfileCard extends LocalizeUserProfileCard(LitElement) {
 	}
 
 	_renderOnlineStatus() {
-		if(this.showStatus) {
+		if (this.showStatus) {
 			return html`
 				<div class="d2l-labs-profile-card-status d2l-label-text">
 					${ this.online ? html`
@@ -322,7 +322,7 @@ class UserProfileCard extends LocalizeUserProfileCard(LitElement) {
 	}
 
 	_renderProfileCardContent() {
-		if(this.tagline !== '') {
+		if (this.tagline !== '') {
 			return html`
 				<div class="d2l-labs-profile-card-content">
 					${this._generateTaglineHtml()}
