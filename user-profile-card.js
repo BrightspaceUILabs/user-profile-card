@@ -47,12 +47,14 @@ class UserProfileCard extends LocalizeUserProfileCard(LitElement) {
 				grid-column: basic-info-start / end;
 				grid-row: header-start / header-end;
 			}
-
 			::slotted([slot=illustration]),
 			.d2l-labs-profile-card-basic-info {
 				grid-row: header-start / header-end;
 				border-bottom: 1px solid var(--d2l-color-mica);
 				overflow: hidden;
+				text-align: center;
+				line-height: 124px;
+				vertical-align: middle;
 				width: 100%;
 				height: 100%;
 			}
@@ -132,7 +134,6 @@ class UserProfileCard extends LocalizeUserProfileCard(LitElement) {
 			}
 			.d2l-profile-card-media {
 				display: flex;
-
 				align-items: center;
 			}
 			::slotted([slot=website]) {
