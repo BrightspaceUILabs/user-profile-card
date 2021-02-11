@@ -20,7 +20,6 @@ class UserProfileCard extends LocalizeUserProfileCard(LitElement) {
 			showEmail: { type: Boolean, attribute: 'show-email' },
 			showIM: { type: Boolean, attribute: 'show-im' },
 			showProgress: { type: Boolean, attribute: 'show-progress' },
-			showAwards: { type: Boolean, attribute: 'show-awards' },
 			showStatus: { type: Boolean, attribute: 'show-status' },
 			tagline: { type: String, reflect: true },
 			userAttributes: { type: Array, attribute: 'user-attributes', reflect: true },
@@ -53,7 +52,6 @@ class UserProfileCard extends LocalizeUserProfileCard(LitElement) {
 			.d2l-labs-profile-card-basic-info {
 				grid-row: header-start / header-end;
 				border-bottom: 1px solid var(--d2l-color-mica);
-				overflow: hidden;
 				text-align: center;
 				line-height: 124px;
 				vertical-align: middle;
@@ -244,13 +242,21 @@ class UserProfileCard extends LocalizeUserProfileCard(LitElement) {
 		this.showEmail = false;
 		this.showIM = false;
 		this.showProgress = false;
-		this.showAwards = false;
+		this._showAwards = false;
 		this.showStatus = false;
 		this.tagline = '';
 		this.userAttributes = [];
 		this._isTagLineButtonFocusing = false;
 		this._isTaglineEditing = false;
 	}
+
+	firstUpdated() {
+		const awardSlot = this.shadowRoot.querySelector("slot[name=awards-icons]");
+		const awardNodes = awardSlot.assignedNodes();
+		if (awardNodes.length !== 0){
+			this._showAwards = true;
+		}
+  	}
 
 	render() {
 		this.userAttributes.map((item) => {
@@ -312,13 +318,11 @@ class UserProfileCard extends LocalizeUserProfileCard(LitElement) {
 	}
 
 	_renderAwardIcons() {
-		if (this.showAwards) {
-			return html`
-				<div class="d2l-labs-profile-card-awards">
-					<slot name="awards-icons"></slot>
-				</div>
-			`;
-		}
+		return html`
+			<div class="${this._showAwards ? 'd2l-labs-profile-card-awards' : '' }">
+				<slot name="awards-icons"></slot>
+			</div>
+		`;
 	}
 
 	_renderProfileCardContent() {
