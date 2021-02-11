@@ -275,8 +275,8 @@ class UserProfileCard extends LocalizeUserProfileCard(LitElement) {
 					${this._renderOnlineStatus()}
 					${this.userAttributes.length > 1 ? html`
 						<ul class="d2l-labs-profile-card-attributes d2l-body-small">
-						${this.userAttributes.map((item) => html`<li>${item}</li>`)}`: html`` }
-					</ul>
+							${this.userAttributes.map((item) => html`<li>${item}</li>`)}
+						</ul>` : html`` }
 				</div>
 				${this._renderProfileCardContent()}
 				${this._renderAwardIcons()}
