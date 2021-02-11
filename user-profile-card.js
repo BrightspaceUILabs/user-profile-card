@@ -20,8 +20,10 @@ class UserProfileCard extends LocalizeUserProfileCard(LitElement) {
 			showEmail: { type: Boolean, attribute: 'show-email' },
 			showIM: { type: Boolean, attribute: 'show-im' },
 			showProgress: { type: Boolean, attribute: 'show-progress' },
+			showStatus: { type: Boolean, attribute: 'show-status' },
 			tagline: { type: String, reflect: true },
 			userAttributes: { type: Array, attribute: 'user-attributes', reflect: true },
+			_showAwards: { type: Boolean, attribute: false},
 			_isTagLineButtonFocusing: { type: Boolean },
 			_isTaglineEditing: { type: Boolean }
 		};
@@ -51,7 +53,6 @@ class UserProfileCard extends LocalizeUserProfileCard(LitElement) {
 			.d2l-labs-profile-card-basic-info {
 				grid-row: header-start / header-end;
 				border-bottom: 1px solid var(--d2l-color-mica);
-				overflow: hidden;
 				text-align: center;
 				line-height: 124px;
 				vertical-align: middle;
@@ -242,10 +243,20 @@ class UserProfileCard extends LocalizeUserProfileCard(LitElement) {
 		this.showEmail = false;
 		this.showIM = false;
 		this.showProgress = false;
+		this._showAwards = false;
+		this.showStatus = false;
 		this.tagline = '';
 		this.userAttributes = [];
 		this._isTagLineButtonFocusing = false;
 		this._isTaglineEditing = false;
+	}
+
+	firstUpdated() {
+		const awardSlot = this.shadowRoot.querySelector('slot[name=awards-icons]');
+		const awardNodes = awardSlot.assignedNodes();
+		if (awardNodes.length !== 0) {
+			this._showAwards = true;
+		}
 	}
 
 	render() {
@@ -257,30 +268,16 @@ class UserProfileCard extends LocalizeUserProfileCard(LitElement) {
 
 		return html`
 			<div class="${classMap(classes)}">
-				<slot name="illustration" class="d2l-link" @click="${this._onProfileImageClick}"></slot>
+				<slot name="illustration" class="d2l-link" title="${this.localize('openProfile', {displayName : this.displayName})}"  @click="${this._onProfileImageClick}"></slot>
 				<div class="d2l-labs-profile-card-basic-info">
-					<a class="d2l-heading-2 d2l-labs-profile-card-name d2l-link" @click="${this._onDisplayNameClick}">${this.displayName}</a>
-					<div class="d2l-labs-profile-card-status d2l-label-text">
-					${ this.online ? html`
-						<d2l-icon icon="tier2:dot"></d2l-icon>${this.localize('online')}
-					` : html`
-						<d2l-icon icon="tier2:dot"></d2l-icon>${this.localize('offline')}
-					`}
-					</div>
+					<a class="d2l-heading-2 d2l-labs-profile-card-name d2l-link" title="${this.localize('openProfile', {displayName : this.displayName})}" @click="${this._onDisplayNameClick}">${this.displayName}</a>
+					${this._renderOnlineStatus()}
 					<ul class="d2l-labs-profile-card-attributes d2l-body-small">
 						${this.userAttributes.map((item) => html`<li>${item}</li>`)}
 					</ul>
 				</div>
-				<div class="d2l-labs-profile-card-content">
-					${this._generateTaglineHtml()}
-					<div class="d2l-profile-card-media">
-						<slot name="social-media-icons"></slot>
-						<slot name="website"></slot>
-					</div>
-				</div>
-				<div class="d2l-labs-profile-card-awards">
-					<slot name="awards-icons"></slot>
-				</div>
+				${this._renderProfileCardContent()}
+				${this._renderAwardIcons()}
 				${ this.showEmail || this.showIM || this.showProgress ? html`
 					<div class="d2l-labs-profile-card-contact">
 						<div class="d2l-profile-card-contact-info">
@@ -305,6 +302,42 @@ class UserProfileCard extends LocalizeUserProfileCard(LitElement) {
 					</div>` : html``}
 			</div>
 		`;
+	}
+
+	_renderOnlineStatus() {
+		if (this.showStatus) {
+			return html`
+				<div class="d2l-labs-profile-card-status d2l-label-text">
+					${ this.online ? html`
+						<d2l-icon icon="tier2:dot"></d2l-icon>${this.localize('online')}
+					` : html`
+						<d2l-icon icon="tier2:dot"></d2l-icon>${this.localize('offline')}
+					`}
+				</div>
+			`;
+		}
+	}
+
+	_renderAwardIcons() {
+		return html`
+			<div class="${this._showAwards ? 'd2l-labs-profile-card-awards' : '' }">
+				<slot name="awards-icons"></slot>
+			</div>
+		`;
+	}
+
+	_renderProfileCardContent() {
+		if (this.tagline !== '') {
+			return html`
+				<div class="d2l-labs-profile-card-content">
+					${this._generateTaglineHtml()}
+					<div class="d2l-profile-card-media">
+						<slot name="social-media-icons"></slot>
+						<slot name="website"></slot>
+					</div>
+				</div>
+			`;
+		}
 	}
 
 	_generateTaglineHtml() {

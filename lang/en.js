@@ -6,5 +6,6 @@ export default {
 	"instantMessage": "Instant Message",
 	"offline": "Offline",
 	"online": "Online",
+	"openProfile": "Open {displayName}'s profile in a new window",
 	"userProgress": "User Progress"
 };
