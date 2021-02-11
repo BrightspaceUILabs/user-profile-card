@@ -10,9 +10,14 @@
 		<title>d2l-labs-user-profile-card visual-diff tests</title>
 		<meta name="viewport" content="width=device-width, initial-scale=1.0">
 		<meta charset="UTF-8">
+		<style>
+			.test-case {
+				padding: 50px;
+			}
+		</style>
 	</head>
 	<body class="d2l-typography">
-		<div>
+		<div class="test-case">
 			<d2l-labs-user-profile-card id="default"
 				display-name="Person's Name"
 				tagline="This is a tagline!">
@@ -24,7 +29,7 @@
 				<d2l-link href="#" slot="website">www.website.com</d2l-link>
 			</d2l-labs-user-profile-card>
 		</div>
-		<div>
+		<div class="test-case">
 			<d2l-labs-user-profile-card id="with-actions"
 				show-email show-im show-progress
 				display-name="Person's Name"
@@ -37,7 +42,7 @@
 				<d2l-link href="#" slot="website">www.website.com</d2l-link>
 			</d2l-labs-user-profile-card>
 		</div>
-		<div>
+		<div class="test-case">
 			<d2l-labs-user-profile-card id="with-awards"
 				show-email show-im show-progress
 				display-name="Person's Name"
