@@ -252,12 +252,12 @@ class UserProfileCard extends LocalizeUserProfileCard(LitElement) {
 	}
 
 	firstUpdated() {
-		const awardSlot = this.shadowRoot.querySelector("slot[name=awards-icons]");
+		const awardSlot = this.shadowRoot.querySelector('slot[name=awards-icons]');
 		const awardNodes = awardSlot.assignedNodes();
-		if (awardNodes.length !== 0){
+		if (awardNodes.length !== 0) {
 			this._showAwards = true;
 		}
-  	}
+	}
 
 	render() {
 		this.userAttributes.map((item) => {
