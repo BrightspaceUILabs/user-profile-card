@@ -271,10 +271,11 @@ class UserProfileCard extends LocalizeUserProfileCard(LitElement) {
 			<div class="${classMap(classes)}">
 				<slot name="illustration" class="d2l-link" title="${this.localize('openProfile', {displayName : this.displayName})}"  @click="${this._onProfileImageClick}"></slot>
 				<div class="d2l-labs-profile-card-basic-info">
-					<a class="d2l-heading-2 d2l-labs-profile-card-name d2l-link" title="${this.localize('openProfile', {displayName : this.displayName})}" @click="${this._onDisplayNameClick}">${this.displayName}</a>
+					<a class="d2l-heading-2 d2l-labs-profile-card-name d2l-link" tabindex="1" title="${this.localize('openProfile', {displayName : this.displayName})}" @click="${this._onDisplayNameClick}">${this.displayName}</a>
 					${this._renderOnlineStatus()}
-					<ul class="d2l-labs-profile-card-attributes d2l-body-small">
-						${this.userAttributes.map((item) => html`<li>${item}</li>`)}
+					${this.userAttributes.length > 1 ? html`
+						<ul class="d2l-labs-profile-card-attributes d2l-body-small">
+						${this.userAttributes.map((item) => html`<li>${item}</li>`)}`: html`` }
 					</ul>
 				</div>
 				${this._renderProfileCardContent()}
