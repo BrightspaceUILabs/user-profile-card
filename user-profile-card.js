@@ -32,6 +32,7 @@ class UserProfileCard extends LocalizeUserProfileCard(LitElement) {
 	static get styles() {
 		const profileLayout = css`
 			.d2l-labs-profile-card {
+				background-color: white;
 				display: grid;
 				width: 600px;
 				grid-template-columns: [start illustration-start] 22px [info-start] 94px [illustration-end basic-info-start] auto [basic-info-end info-end] 22px [end];
