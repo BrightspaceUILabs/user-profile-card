@@ -23,6 +23,7 @@ class UserProfileCard extends LocalizeUserProfileCard(LitElement) {
 			showStatus: { type: Boolean, attribute: 'show-status' },
 			tagline: { type: String, reflect: true },
 			userAttributes: { type: Array, attribute: 'user-attributes', reflect: true },
+			_showAwards: { type: Boolean, attribute: false},
 			_isTagLineButtonFocusing: { type: Boolean },
 			_isTaglineEditing: { type: Boolean }
 		};
