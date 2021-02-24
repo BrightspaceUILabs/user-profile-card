@@ -1,10 +1,11 @@
 /* eslint quotes: 0 */
 
 export default {
-	"editTagline": "Click to edit tagline",
-	"email": "Email",
-	"instantMessage": "Instant Message",
+	"editTagline": "Klicka för att redigera tagline",
+	"email": "E-post",
+	"instantMessage": "Snabbmeddelande",
 	"offline": "Offline",
 	"online": "Online",
-	"userProgress": "User Progress"
+	"openProfile": "Öppna profilen för {displayName} i ett nytt fönster",
+	"userProgress": "Användarstatus"
 };

@@ -1,10 +1,11 @@
 /* eslint quotes: 0 */
 
 export default {
-	"editTagline": "Click to edit tagline",
-	"email": "Email",
-	"instantMessage": "Instant Message",
-	"offline": "Offline",
-	"online": "Online",
-	"userProgress": "User Progress"
+	"editTagline": "Cliciwch i olygu llinell tag.",
+	"email": "E-bost",
+	"instantMessage": "Neges Sydyn",
+	"offline": "All-lein",
+	"online": "Ar-lein",
+	"openProfile": "Agor proffil {displayName} mewn ffenestr newydd",
+	"userProgress": "Cynnydd Defnyddiwr"
 };
