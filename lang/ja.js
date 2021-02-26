@@ -1,10 +1,11 @@
 /* eslint quotes: 0 */
 
 export default {
-	"editTagline": "Click to edit tagline",
-	"email": "Email",
-	"instantMessage": "Instant Message",
-	"offline": "Offline",
-	"online": "Online",
-	"userProgress": "User Progress"
+	"editTagline": "クリックしてタグラインを編集します",
+	"email": "電子メール",
+	"instantMessage": "インスタントメッセージ",
+	"offline": "オフライン",
+	"online": "オンライン",
+	"openProfile": "{displayName} さんのプロファイルを新しいウィンドウで開く",
+	"userProgress": "ユーザー進行状況"
 };
