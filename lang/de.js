@@ -1,10 +1,11 @@
 /* eslint quotes: 0 */
 
 export default {
-	"editTagline": "Click to edit tagline",
-	"email": "Email",
-	"instantMessage": "Instant Message",
+	"editTagline": "Zum Bearbeiten des Mottos hier klicken",
+	"email": "E-Mail-Adresse",
+	"instantMessage": "Chat-Nachricht",
 	"offline": "Offline",
 	"online": "Online",
-	"userProgress": "User Progress"
+	"openProfile": "Profil von {displayName} in einem neuen Fenster öffnen",
+	"userProgress": "Benutzerfortschritt"
 };
