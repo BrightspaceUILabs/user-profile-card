@@ -15,7 +15,7 @@ class UserProfileCard extends LocalizeUserProfileCard(LitElement) {
 	static get properties() {
 		return {
 			displayName: { type: String, attribute: 'display-name' },
-			editable: {type: Boolean},
+			editable: { type: Boolean },
 			online: { type: Boolean },
 			showEmail: { type: Boolean, attribute: 'show-email' },
 			showIM: { type: Boolean, attribute: 'show-im' },
@@ -23,7 +23,7 @@ class UserProfileCard extends LocalizeUserProfileCard(LitElement) {
 			showStatus: { type: Boolean, attribute: 'show-status' },
 			tagline: { type: String, reflect: true },
 			userAttributes: { type: Array, attribute: 'user-attributes', reflect: true },
-			_showAwards: { type: Boolean, attribute: false},
+			_showAwards: { type: Boolean, attribute: false },
 			_isTagLineButtonFocusing: { type: Boolean },
 			_isTaglineEditing: { type: Boolean }
 		};
@@ -265,13 +265,13 @@ class UserProfileCard extends LocalizeUserProfileCard(LitElement) {
 			return html`<li>${item}</li>`;
 		});
 
-		const classes = { 'd2l-labs-profile-card': true, 'd2l-is-editing': this._isTaglineEditing};
+		const classes = { 'd2l-labs-profile-card': true, 'd2l-is-editing': this._isTaglineEditing };
 
 		return html`
 			<div class="${classMap(classes)}">
-				<slot name="illustration" class="d2l-link" title="${this.localize('openProfile', {displayName : this.displayName})}"  @click="${this._onProfileImageClick}"></slot>
+				<slot name="illustration" class="d2l-link" title="${this.localize('openProfile', { displayName : this.displayName })}"  @click="${this._onProfileImageClick}"></slot>
 				<div class="d2l-labs-profile-card-basic-info">
-					<a class="d2l-heading-2 d2l-labs-profile-card-name d2l-link" tabindex="0" title="${this.localize('openProfile', {displayName : this.displayName})}" @click="${this._onDisplayNameClick}">${this.displayName}</a>
+					<a class="d2l-heading-2 d2l-labs-profile-card-name d2l-link" tabindex="0" title="${this.localize('openProfile', { displayName : this.displayName })}" @click="${this._onDisplayNameClick}">${this.displayName}</a>
 					${this._renderOnlineStatus()}
 					${this.userAttributes.length > 1 ? html`
 						<ul class="d2l-labs-profile-card-attributes d2l-body-small">
@@ -306,74 +306,24 @@ class UserProfileCard extends LocalizeUserProfileCard(LitElement) {
 		`;
 	}
 
-	_renderOnlineStatus() {
-		if (this.showStatus) {
-			return html`
-				<div class="d2l-labs-profile-card-status d2l-label-text">
-					${ this.online ? html`
-						<d2l-icon icon="tier2:dot"></d2l-icon>${this.localize('online')}
-					` : html`
-						<d2l-icon icon="tier2:dot"></d2l-icon>${this.localize('offline')}
-					`}
-				</div>
-			`;
-		}
+	_onDisplayNameClick() {
+		this.dispatchEvent(new CustomEvent('d2l-labs-user-profile-card-profile'));
 	}
 
-	_renderAwardIcons() {
-		return html`
-			<div class="${this._showAwards ? 'd2l-labs-profile-card-awards' : '' }">
-				<slot name="awards-icons"></slot>
-			</div>
-		`;
+	_onEmailClick() {
+		this.dispatchEvent(new CustomEvent('d2l-labs-user-profile-card-email'));
 	}
 
-	_renderProfileCardContent() {
-		if (this.tagline !== '') {
-			return html`
-				<div class="d2l-labs-profile-card-content">
-					${this._generateTaglineHtml()}
-					<div class="d2l-profile-card-media">
-						<slot name="social-media-icons"></slot>
-						<slot name="website"></slot>
-					</div>
-				</div>
-			`;
-		}
+	_onMessageClick() {
+		this.dispatchEvent(new CustomEvent('d2l-labs-user-profile-card-message'));
 	}
 
-	_generateTaglineHtml() {
+	_onProfileImageClick() {
+		this.dispatchEvent(new CustomEvent('d2l-labs-user-profile-card-profile'));
+	}
 
-		if (!this.editable) {
-			return html`<div>${this.tagline}</div>`;
-		}
-
-		const classes = {
-			'd2l-profile-card-tagline-container': true,
-			'd2l-profile-card-tagline-focusing': this._isTagLineButtonFocusing
-		};
-
-		return html`
-			<div class="${classMap(classes)}">
-				<button @blur="${this._onTaglineButtonBlur}"
-					class="d2l-offscreen"
-					@click="${this._onTaglineClick}"
-					@focus="${this._onTaglineButtonFocus}">
-					${this.localize('editTagline')}
-				</button>
-				<d2l-input-textarea
-					@focusout="${this._onTextareaFocusout}"
-					@keyup="${this._onTaglineKeyUp}"
-					rows="2"
-					value="${this.tagline}">
-				</d2l-input-textarea>
-				<div class="d2l-profile-card-tagline"
-					@click="${this._onTaglineClick}"
-					title="${this.localize('editTagline')}">
-					${this.tagline ? this.tagline : this.localize('editTagline')}
-				</div>
-			</div>
-		`;
+	_onProgressClick() {
+		this.dispatchEvent(new CustomEvent('d2l-labs-user-profile-card-progress'));
 	}
 
 	_onTaglineButtonBlur() {
@@ -411,24 +361,73 @@ class UserProfileCard extends LocalizeUserProfileCard(LitElement) {
 		}));
 	}
 
-	_onEmailClick() {
-		this.dispatchEvent(new CustomEvent('d2l-labs-user-profile-card-email'));
+	_renderAwardIcons() {
+		return html`
+			<div class="${this._showAwards ? 'd2l-labs-profile-card-awards' : '' }">
+				<slot name="awards-icons"></slot>
+			</div>
+		`;
 	}
 
-	_onMessageClick() {
-		this.dispatchEvent(new CustomEvent('d2l-labs-user-profile-card-message'));
+	_renderOnlineStatus() {
+		if (this.showStatus) {
+			return html`
+				<div class="d2l-labs-profile-card-status d2l-label-text">
+					${ this.online ? html`
+						<d2l-icon icon="tier2:dot"></d2l-icon>${this.localize('online')}
+					` : html`
+						<d2l-icon icon="tier2:dot"></d2l-icon>${this.localize('offline')}
+					`}
+				</div>
+			`;
+		}
 	}
 
-	_onProgressClick() {
-		this.dispatchEvent(new CustomEvent('d2l-labs-user-profile-card-progress'));
+	_renderProfileCardContent() {
+		if (this.tagline !== '') {
+			return html`
+				<div class="d2l-labs-profile-card-content">
+					${this._renderTagline()}
+					<div class="d2l-profile-card-media">
+						<slot name="social-media-icons"></slot>
+						<slot name="website"></slot>
+					</div>
+				</div>
+			`;
+		}
 	}
 
-	_onProfileImageClick() {
-		this.dispatchEvent(new CustomEvent('d2l-labs-user-profile-card-profile'));
-	}
+	_renderTagline() {
+		if (!this.editable) {
+			return html`<div>${this.tagline}</div>`;
+		}
 
-	_onDisplayNameClick() {
-		this.dispatchEvent(new CustomEvent('d2l-labs-user-profile-card-profile'));
+		const classes = {
+			'd2l-profile-card-tagline-container': true,
+			'd2l-profile-card-tagline-focusing': this._isTagLineButtonFocusing
+		};
+
+		return html`
+			<div class="${classMap(classes)}">
+				<button @blur="${this._onTaglineButtonBlur}"
+					class="d2l-offscreen"
+					@click="${this._onTaglineClick}"
+					@focus="${this._onTaglineButtonFocus}">
+					${this.localize('editTagline')}
+				</button>
+				<d2l-input-textarea
+					@focusout="${this._onTextareaFocusout}"
+					@keyup="${this._onTaglineKeyUp}"
+					rows="2"
+					value="${this.tagline}">
+				</d2l-input-textarea>
+				<div class="d2l-profile-card-tagline"
+					@click="${this._onTaglineClick}"
+					title="${this.localize('editTagline')}">
+					${this.tagline ? this.tagline : this.localize('editTagline')}
+				</div>
+			</div>
+		`;
 	}
 }
 customElements.define('d2l-labs-user-profile-card', UserProfileCard);
