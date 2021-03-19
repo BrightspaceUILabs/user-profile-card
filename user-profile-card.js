@@ -7,7 +7,7 @@ import { css, html, LitElement } from 'lit-element/lit-element.js';
 import { classMap } from 'lit-html/directives/class-map.js';
 import { inputStyles } from '@brightspace-ui/core/components/inputs/input-styles.js';
 import { linkStyles } from '@brightspace-ui/core/components/link/link.js';
-import { LocalizeUserProfileCard } from './lang/localize-user-profile-card.js';
+import { LocalizeUserProfileCard } from './localize-user-profile-card.js';
 import { offscreenStyles } from '@brightspace-ui/core/components/offscreen/offscreen.js';
 
 class UserProfileCard extends LocalizeUserProfileCard(LitElement) {
