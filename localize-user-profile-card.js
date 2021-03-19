@@ -4,7 +4,7 @@ export const LocalizeUserProfileCard = superclass => class extends LocalizeDynam
 
 	static get localizeConfig() {
 		return {
-			importFunc: async lang => (await import(`../lang/${lang}.js`)).default
+			importFunc: async lang => (await import(`./lang/${lang}.js`)).default
 		};
 	}
 };
