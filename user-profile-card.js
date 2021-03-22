@@ -5,6 +5,7 @@ import '@brightspace-ui/core/components/inputs/input-textarea.js';
 import { bodySmallStyles, bodyStandardStyles, heading2Styles, labelStyles } from '@brightspace-ui/core/components/typography/styles.js';
 import { css, html, LitElement } from 'lit-element/lit-element.js';
 import { classMap } from 'lit-html/directives/class-map.js';
+import { getUniqueId } from '@brightspace-ui/core/helpers/uniqueId.js';
 import { inputStyles } from '@brightspace-ui/core/components/inputs/input-styles.js';
 import { linkStyles } from '@brightspace-ui/core/components/link/link.js';
 import { LocalizeUserProfileCard } from './localize-user-profile-card.js';
@@ -42,9 +43,6 @@ class UserProfileCard extends LocalizeUserProfileCard(LitElement) {
 				border-radius: 6px;
 				box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
 				overflow: hidden;
-			}
-			.d2l-labs-profile-card[hidden] {
-				display: none;
 			}
 			::slotted([slot=illustration]) {
 				grid-column: illustration-start / illustration-end;
@@ -246,8 +244,9 @@ class UserProfileCard extends LocalizeUserProfileCard(LitElement) {
 		this.editable = false;
 		this.online = false;
 		this.progressViewable = false;
-		this._showing = false;
+		this.hidden = true;
 		this._isHovering = false;
+		this._setTimeoutId = getUniqueId();
 		this.showEmail = false;
 		this.showIM = false;
 		this.showProgress = false;
@@ -258,19 +257,14 @@ class UserProfileCard extends LocalizeUserProfileCard(LitElement) {
 		this._isTagLineButtonFocusing = false;
 		this._isTaglineEditing = false;
 
-		this._onTargetMouseEnter = this._onTargetMouseEnter.bind(this);
-		this._onTargetMouseLeave = this._onTargetMouseLeave.bind(this);
+		this._onMouseEnter = this._onMouseEnter.bind(this);
+		this._onMouseLeave = this._onMouseLeave.bind(this);
 	}
 
-	get showing() {
-		return this._showing;
-	}
-	set showing(val) {
-		const oldVal = this._showing;
-		if (oldVal !== val) {
-			this._showing = val;
-			this.requestUpdate('showing', oldVal);
-		}
+	connectedCallback() {
+		super.connectedCallback();
+		this.addEventListener('mouseenter', this._onMouseEnter);
+		this.addEventListener('mouseleave', this._onMouseLeave);
 	}
 
 	firstUpdated() {
@@ -290,7 +284,7 @@ class UserProfileCard extends LocalizeUserProfileCard(LitElement) {
 
 		const classes = { 'd2l-labs-profile-card': true, 'd2l-is-editing': this._isTaglineEditing };
 		return html`
-			<div class="${classMap(classes)}" ?hidden="${!this.showing}">
+			<div class="${classMap(classes)}">
 				<slot name="illustration" class="d2l-link" title="${this.localize('openProfile', { displayName : this.displayName })}"  @click="${this._onProfileImageClick}"></slot>
 				<div class="d2l-labs-profile-card-basic-info">
 					<a class="d2l-heading-2 d2l-labs-profile-card-name d2l-link" tabindex="0" title="${this.localize('openProfile', { displayName : this.displayName })}" @click="${this._onDisplayNameClick}">${this.displayName}</a>
@@ -310,8 +304,8 @@ class UserProfileCard extends LocalizeUserProfileCard(LitElement) {
 		if (!this._target) {
 			return;
 		}
-		this._target.addEventListener('mouseenter', this._onTargetMouseEnter);
-		this._target.addEventListener('mouseleave', this._onTargetMouseLeave);
+		this._target.addEventListener('mouseenter', this._onMouseEnter);
+		this._target.addEventListener('mouseleave', this._onMouseLeave);
 	}
 
 	_findTarget() {
@@ -339,6 +333,22 @@ class UserProfileCard extends LocalizeUserProfileCard(LitElement) {
 
 	_onMessageClick() {
 		this.dispatchEvent(new CustomEvent('d2l-labs-user-profile-card-message'));
+	}
+
+	_onMouseEnter() {
+		clearTimeout(this._setTimeoutId);
+		this._isHovering = true;
+		this._updateHidden();
+	}
+
+	_onMouseLeave() {
+		clearTimeout(this._setTimeoutId);
+		if (!this._hasMouse) {
+			this._setTimeoutId = setTimeout(() => {
+				this._isHovering = false;
+				this._updateHidden();
+			}, 300);
+		}
 	}
 
 	_onProfileImageClick() {
@@ -370,16 +380,6 @@ class UserProfileCard extends LocalizeUserProfileCard(LitElement) {
 		this._isTaglineEditing = false;
 		await this.updateComplete;
 		this.shadowRoot.querySelector('.d2l-profile-card-tagline-container button').focus();
-	}
-
-	_onTargetMouseEnter() {
-			this._isHovering = true;
-			this._updateShowing();
-	}
-
-	_onTargetMouseLeave() {
-		this._isHovering = false;
-		this._updateShowing();
 	}
 
 	_onTextareaFocusout(e) {
@@ -490,8 +490,8 @@ class UserProfileCard extends LocalizeUserProfileCard(LitElement) {
 		`;
 	}
 
-	_updateShowing() {
-		this.showing = this._isHovering;
+	_updateHidden() {
+		this.hidden = !this._isHovering;
 	}
 }
 customElements.define('d2l-labs-user-profile-card', UserProfileCard);
