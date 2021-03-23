@@ -1,5 +1,6 @@
 import '@brightspace-ui/core/components/button/button-subtle.js';
 import '@brightspace-ui/core/components/colors/colors.js';
+import '@brightspace-ui/core/components/focus-trap/focus-trap.js';
 import '@brightspace-ui/core/components/icons/icon.js';
 import '@brightspace-ui/core/components/inputs/input-textarea.js';
 import { bodySmallStyles, bodyStandardStyles, heading2Styles, labelStyles } from '@brightspace-ui/core/components/typography/styles.js';
@@ -10,6 +11,13 @@ import { inputStyles } from '@brightspace-ui/core/components/inputs/input-styles
 import { linkStyles } from '@brightspace-ui/core/components/link/link.js';
 import { LocalizeUserProfileCard } from './localize-user-profile-card.js';
 import { offscreenStyles } from '@brightspace-ui/core/components/offscreen/offscreen.js';
+
+
+const keyCodes = {
+	DOWN: 40,
+	ENTER: 13,
+	ESCAPE: 27
+};
 
 class UserProfileCard extends LocalizeUserProfileCard(LitElement) {
 
@@ -244,9 +252,6 @@ class UserProfileCard extends LocalizeUserProfileCard(LitElement) {
 		this.editable = false;
 		this.online = false;
 		this.progressViewable = false;
-		this.hidden = true;
-		this._isHovering = false;
-		this._setTimeoutId = getUniqueId();
 		this.showEmail = false;
 		this.showIM = false;
 		this.showProgress = false;
@@ -257,17 +262,45 @@ class UserProfileCard extends LocalizeUserProfileCard(LitElement) {
 		this._isTagLineButtonFocusing = false;
 		this._isTaglineEditing = false;
 
+		this._dismissTimerId = getUniqueId();
+		this.hidden = true;
+		this._clickOpened = false;
+		this._isHovering = false;
+		this._keyboardOpened = false;
+
 		this._onMouseEnter = this._onMouseEnter.bind(this);
 		this._onMouseLeave = this._onMouseLeave.bind(this);
-		this._onKeyPress = this._onKeyPress.bind(this);
+		this._onOutsideClick = this._onOutsideClick.bind(this);
+		this._onCardKeyDown = this._onCardKeyDown.bind(this);
+		this._onOpenerKeyDown = this._onOpenerKeyDown.bind(this);
+		this._onOpenerClick = this._onOpenerClick.bind(this);
 	}
 
 	connectedCallback() {
 		super.connectedCallback();
 		this.addEventListener('mouseenter', this._onMouseEnter);
 		this.addEventListener('mouseleave', this._onMouseLeave);
-		this._target = this._findTarget();
-		this._addListeners();
+
+		this._opener = this._findOpener();
+		if (this._opener) {
+			this._opener.addEventListener('mouseenter', this._onMouseEnter);
+			this._opener.addEventListener('mouseleave', this._onMouseLeave);
+			this._opener.addEventListener('keydown', this._onOpenerKeyDown);
+			this._opener.addEventListener('click', this._onOpenerClick);
+			document.body.addEventListener('click', this._onOutsideClick);
+			document.addEventListener('keydown', this._onCardKeyDown);
+		}
+	}
+
+	disconnectedCallback() {
+		super.disconnectedCallback();
+		this._opener.removeEventListener('mouseenter', this._onMouseEnter);
+		this._opener.removeEventListener('mouseleave', this._onMouseLeave);
+		this._opener.removeEventListener('keydown', this._onOpenerKeyDown);
+		this._opener.removeEventListener('click', this._onOpenerClick);
+		this._opener = null;
+		document.body.removeEventListener('click', this._onOutsideClick);
+		document.removeEventListener('keydown', this._onCardKeyDown);
 	}
 
 	firstUpdated() {
@@ -285,6 +318,7 @@ class UserProfileCard extends LocalizeUserProfileCard(LitElement) {
 
 		const classes = { 'd2l-labs-profile-card': true, 'd2l-is-editing': this._isTaglineEditing };
 		return html`
+			<d2l-focus-trap	@d2l-focus-trap-enter="${this._onFocusTrapEnter}" ?trap="${this._keyboardOpened}" @keydown="${this._onCardKeyDown}">
 			<div class="${classMap(classes)}">
 					<slot name="illustration" class="d2l-link" title="${this.localize('openProfile', { displayName : this.displayName })}"  @click="${this._onProfileImageClick}"></slot>
 					<div class="d2l-labs-profile-card-basic-info">
@@ -299,30 +333,25 @@ class UserProfileCard extends LocalizeUserProfileCard(LitElement) {
 					${this._renderAwardIcons()}
 					${this._renderContactInfo()}
 			</div>
+			</d2l-focus-trap>
 		`;
 	}
-	_addListeners() {
-		if (!this._target) {
+
+	_findOpener() {
+		if (!this.opener) {
+			console.error("d2l-labs-user-profile-card has no opener.");
 			return;
 		}
-		this._target.addEventListener('mouseenter', this._onMouseEnter);
-		this._target.addEventListener('mouseleave', this._onMouseLeave);
-		this._target.addEventListener('keypress', this._onKeyPress);
+		const targetSelector = `#${this.opener}`;
+		let target = this.getRootNode().querySelector(targetSelector);
+		return target;
 	}
 
-	_findTarget() {
-		const ownerRoot = this.getRootNode();
-
-		let target;
-		if (this.opener) {
-			const targetSelector = `#${this.opener}`;
-			target = ownerRoot.querySelector(targetSelector);
-			target = target || (ownerRoot && ownerRoot.host && ownerRoot.host.querySelector(targetSelector));
-		} else {
-			const parentNode = this.parentNode;
-			target = parentNode.nodeType === Node.DOCUMENT_FRAGMENT_NODE ? ownerRoot.host : parentNode;
-		}
-		return target;
+	_forceClose() {
+		this._keyboardOpened = false;
+		this._clickOpened = false;
+		this._isHovering = false;
+		this._updateHidden();
 	}
 
 	_onDisplayNameClick() {
@@ -333,26 +362,41 @@ class UserProfileCard extends LocalizeUserProfileCard(LitElement) {
 		this.dispatchEvent(new CustomEvent('d2l-labs-user-profile-card-email'));
 	}
 
-	_onKeyPress(e) {
-		//Opening Keycodes: 13 (Enter) 32 (Spacebar)
-		if (e.keyCode !== 13 && e.keyCode !== 32) return;
+	_onCardKeyDown(e){
+		if (e.keyCode === keyCodes.ESCAPE) {
+			this._forceClose();
+			this._opener.focus();
+		}
+	}
+
+	_onOpenerKeyDown(e) {
+		if (e.keyCode !== keyCodes.ENTER && e.keyCode !== keyCodes.DOWN) return;
 		this._keyboardOpened = true;
 		this._updateHidden();
+		const name = this.shadowRoot.querySelector('.d2l-labs-profile-card-name');
+		name.focus();
 }
+
+	_onOutsideClick(e) {
+		if((this._clickOpened || this._keyboardOpened) && e.target != this._opener && !this.contains(e.target)) {
+				this._forceClose();
+		}
+	}
+
 	_onMessageClick() {
 		this.dispatchEvent(new CustomEvent('d2l-labs-user-profile-card-message'));
 	}
 
 	_onMouseEnter() {
-		clearTimeout(this._setTimeoutId);
+		clearTimeout(this._dismissTimerId);
 		this._isHovering = true;
 		this._updateHidden();
 	}
 
 	_onMouseLeave() {
-		clearTimeout(this._setTimeoutId);
+		clearTimeout(this._dismissTimerId);
 		if (!this._hasMouse) {
-			this._setTimeoutId = setTimeout(() => {
+			this._dismissTimerId = setTimeout(() => {
 				this._isHovering = false;
 				this._updateHidden();
 			}, 300);
@@ -388,6 +432,13 @@ class UserProfileCard extends LocalizeUserProfileCard(LitElement) {
 		this._isTaglineEditing = false;
 		await this.updateComplete;
 		this.shadowRoot.querySelector('.d2l-profile-card-tagline-container button').focus();
+	}
+
+	_onOpenerClick() {
+		//If we're hovering it's already open, so close it.
+		this._clickOpened = this._isHovering ? false : !this._clickOpened;
+		this._isHovering = false;
+		this._updateHidden();
 	}
 
 	_onTextareaFocusout(e) {
@@ -499,7 +550,7 @@ class UserProfileCard extends LocalizeUserProfileCard(LitElement) {
 	}
 
 	_updateHidden() {
-		this.hidden = !this._isHovering && !this._keyboardOpened;
+		this.hidden = !this._isHovering && !this._keyboardOpened && !this._clickOpened;
 	}
 }
 customElements.define('d2l-labs-user-profile-card', UserProfileCard);
