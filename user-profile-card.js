@@ -264,16 +264,16 @@ class UserProfileCard extends LocalizeUserProfileCard(LitElement) {
 
 		this._dismissTimerId = getUniqueId();
 		this.hidden = true;
-		this._clickOpened = false;
+		this._isOpen = false;
 		this._isHovering = false;
-		this._keyboardOpened = false;
 
 		this._onMouseEnter = this._onMouseEnter.bind(this);
 		this._onMouseLeave = this._onMouseLeave.bind(this);
 		this._onOutsideClick = this._onOutsideClick.bind(this);
-		this._onCardKeyDown = this._onCardKeyDown.bind(this);
+		this._onKeyDown = this._onKeyDown.bind(this);
 		this._onOpenerKeyDown = this._onOpenerKeyDown.bind(this);
 		this._onOpenerClick = this._onOpenerClick.bind(this);
+		this._onTouch = this._onTouch.bind(this);
 	}
 
 	connectedCallback() {
@@ -285,10 +285,13 @@ class UserProfileCard extends LocalizeUserProfileCard(LitElement) {
 		if (this._opener) {
 			this._opener.addEventListener('mouseenter', this._onMouseEnter);
 			this._opener.addEventListener('mouseleave', this._onMouseLeave);
+
+			this._opener.addEventListener('touchstart', this._onTouch);
 			this._opener.addEventListener('keydown', this._onOpenerKeyDown);
 			this._opener.addEventListener('click', this._onOpenerClick);
+
 			document.body.addEventListener('click', this._onOutsideClick);
-			document.addEventListener('keydown', this._onCardKeyDown);
+			document.body.addEventListener('keydown', this._onKeyDown);
 		}
 	}
 
@@ -296,11 +299,14 @@ class UserProfileCard extends LocalizeUserProfileCard(LitElement) {
 		super.disconnectedCallback();
 		this._opener.removeEventListener('mouseenter', this._onMouseEnter);
 		this._opener.removeEventListener('mouseleave', this._onMouseLeave);
+
+		this._opener.removeEventListener('touchstart', this._onTouch);
 		this._opener.removeEventListener('keydown', this._onOpenerKeyDown);
 		this._opener.removeEventListener('click', this._onOpenerClick);
 		this._opener = null;
+
 		document.body.removeEventListener('click', this._onOutsideClick);
-		document.removeEventListener('keydown', this._onCardKeyDown);
+		document.body.removeEventListener('keydown', this._onKeyDown);
 	}
 
 	firstUpdated() {
@@ -318,7 +324,7 @@ class UserProfileCard extends LocalizeUserProfileCard(LitElement) {
 
 		const classes = { 'd2l-labs-profile-card': true, 'd2l-is-editing': this._isTaglineEditing };
 		return html`
-			<d2l-focus-trap	@d2l-focus-trap-enter="${this._onFocusTrapEnter}" ?trap="${this._keyboardOpened}" @keydown="${this._onCardKeyDown}">
+			<d2l-focus-trap ?trap="${this._isOpen}" @keydown="${this._onKeyDown}">
 			<div class="${classMap(classes)}">
 					<slot name="illustration" class="d2l-link" title="${this.localize('openProfile', { displayName : this.displayName })}"  @click="${this._onProfileImageClick}"></slot>
 					<div class="d2l-labs-profile-card-basic-info">
@@ -348,8 +354,7 @@ class UserProfileCard extends LocalizeUserProfileCard(LitElement) {
 	}
 
 	_forceClose() {
-		this._keyboardOpened = false;
-		this._clickOpened = false;
+		this._isOpen = false;
 		this._isHovering = false;
 		this._updateHidden();
 	}
@@ -362,7 +367,7 @@ class UserProfileCard extends LocalizeUserProfileCard(LitElement) {
 		this.dispatchEvent(new CustomEvent('d2l-labs-user-profile-card-email'));
 	}
 
-	_onCardKeyDown(e){
+	_onKeyDown(e){
 		if (e.keyCode === keyCodes.ESCAPE) {
 			this._forceClose();
 			this._opener.focus();
@@ -371,14 +376,14 @@ class UserProfileCard extends LocalizeUserProfileCard(LitElement) {
 
 	_onOpenerKeyDown(e) {
 		if (e.keyCode !== keyCodes.ENTER && e.keyCode !== keyCodes.DOWN) return;
-		this._keyboardOpened = true;
+		this._isOpen = true;
 		this._updateHidden();
 		const name = this.shadowRoot.querySelector('.d2l-labs-profile-card-name');
 		name.focus();
 }
 
 	_onOutsideClick(e) {
-		if((this._clickOpened || this._keyboardOpened) && e.target != this._opener && !this.contains(e.target)) {
+		if(this._isOpen && e.target != this._opener && !this.contains(e.target)) {
 				this._forceClose();
 		}
 	}
@@ -394,13 +399,11 @@ class UserProfileCard extends LocalizeUserProfileCard(LitElement) {
 	}
 
 	_onMouseLeave() {
-		clearTimeout(this._dismissTimerId);
-		if (!this._hasMouse) {
-			this._dismissTimerId = setTimeout(() => {
-				this._isHovering = false;
-				this._updateHidden();
-			}, 300);
-		}
+		//Wait before closing so we don't lose hover when we jump from opener to card
+		this._dismissTimerId = setTimeout(() => {
+			this._isHovering = false;
+			this._updateHidden();
+		}, 300);
 	}
 
 	_onProfileImageClick() {
@@ -434,9 +437,15 @@ class UserProfileCard extends LocalizeUserProfileCard(LitElement) {
 		this.shadowRoot.querySelector('.d2l-profile-card-tagline-container button').focus();
 	}
 
+	_onTouch(e) {
+		//Prevents touch from triggering mouseover/hover behavior
+		e.preventDefault();
+		this._onOpenerClick();
+	}
+
 	_onOpenerClick() {
 		//If we're hovering it's already open, so close it.
-		this._clickOpened = this._isHovering ? false : !this._clickOpened;
+		this._isOpen = this._isHovering ? false : !this._isOpen;
 		this._isHovering = false;
 		this._updateHidden();
 	}
@@ -550,7 +559,7 @@ class UserProfileCard extends LocalizeUserProfileCard(LitElement) {
 	}
 
 	_updateHidden() {
-		this.hidden = !this._isHovering && !this._keyboardOpened && !this._clickOpened;
+		this.hidden = !this._isHovering && !this._isOpen;
 	}
 }
 customElements.define('d2l-labs-user-profile-card', UserProfileCard);
