@@ -4,8 +4,8 @@ export default {
 	"editTagline": "انقر لتحرير سطر العلامة",
 	"email": "البريد الإلكتروني",
 	"instantMessage": "رسالة فورية",
-	"offline": "بلا إنترنت",
-	"online": "على الإنترنت",
+	"offline": "غير متصل بالإنترنت",
+	"online": "متصل بالإنترنت",
 	"openProfile": "فتح ملف تعريف {displayName} في نافذة جديدة",
 	"userProgress": "تقدم المستخدم"
 };
