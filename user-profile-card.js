@@ -380,19 +380,6 @@ class UserProfileCard extends LocalizeUserProfileCard(LitElement) {
 		}
 	}
 
-	_onOpenerKeyDown(e) {
-		if (e.keyCode !== keyCodes.ENTER && e.keyCode !== keyCodes.DOWN) return;
-		this._isOpen = true;
-		const name = this.shadowRoot.querySelector('.d2l-labs-profile-card-name');
-		name.focus();
-	}
-
-	_onOutsideClick(e) {
-		if (this._isOpen && e.target !== this._opener && !this.contains(e.target)) {
-			this.close();
-		}
-	}
-
 	_onMessageClick() {
 		this.dispatchEvent(new CustomEvent('d2l-labs-user-profile-card-message'));
 	}
@@ -408,6 +395,31 @@ class UserProfileCard extends LocalizeUserProfileCard(LitElement) {
 		this._dismissTimerId = setTimeout(() => {
 			this._isHovering = false;
 		}, 300);
+	}
+
+	_onOpenerClick() {
+		//If we're hovering it's already open, so close it.
+		this._isOpen = this._isHovering ? false : !this._isOpen;
+		this._isHovering = false;
+	}
+
+	_onOpenerKeyDown(e) {
+		if (e.keyCode !== keyCodes.ENTER && e.keyCode !== keyCodes.DOWN) return;
+		this._isOpen = true;
+		const name = this.shadowRoot.querySelector('.d2l-labs-profile-card-name');
+		name.focus();
+	}
+
+	_onOpenerTouch(e) {
+		//Prevents touch from triggering mouseover/hover behavior
+		e.preventDefault();
+		this._isOpen = !this._isOpen;
+	}
+
+	_onOutsideClick(e) {
+		if (this._isOpen && e.target !== this._opener && !this.contains(e.target)) {
+			this.close();
+		}
 	}
 
 	_onProfileImageClick() {
@@ -439,18 +451,6 @@ class UserProfileCard extends LocalizeUserProfileCard(LitElement) {
 		this._isTaglineEditing = false;
 		await this.updateComplete;
 		this.shadowRoot.querySelector('.d2l-profile-card-tagline-container button').focus();
-	}
-
-	_onOpenerTouch(e) {
-		//Prevents touch from triggering mouseover/hover behavior
-		e.preventDefault();
-		this._isOpen = !this._isOpen;
-	}
-
-	_onOpenerClick() {
-		//If we're hovering it's already open, so close it.
-		this._isOpen = this._isHovering ? false : !this._isOpen;
-		this._isHovering = false;
 	}
 
 	_onTextareaFocusout(e) {
