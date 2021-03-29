@@ -19,8 +19,13 @@
 	<body class="d2l-typography">
 		<div class="test-case">
 			<d2l-labs-user-profile-card id="default"
+				online show-status
 				display-name="Person's Name"
-				tagline="This is a tagline!">
+				tagline="This is a tagline!"
+				user-attributes=["Attribute1","Attribute2"]
+				href="./data/user.json"
+				token="token">
+				<img slot="illustration" src="./img/maya.jpg" width="116px" height="116px" />
 				<div slot="social-media-icons">
 					<d2l-icon icon="tier2:save"></d2l-icon>
 					<d2l-icon icon="tier2:browser"></d2l-icon>
@@ -33,7 +38,11 @@
 			<d2l-labs-user-profile-card id="with-actions"
 				show-email show-im show-progress
 				display-name="Person's Name"
-				tagline="This is a tagline!" >
+				tagline="This is a tagline!"
+				user-attributes=["Attribute1","Attribute2"]
+				href="./data/user.json"
+				token="token">
+				<img slot="illustration" src="./img/maya.jpg" width="116px" height="116px" />
 				<div slot="social-media-icons">
 					<d2l-icon icon="tier2:save"></d2l-icon>
 					<d2l-icon icon="tier2:browser"></d2l-icon>
@@ -46,7 +55,11 @@
 			<d2l-labs-user-profile-card id="with-awards"
 				show-email show-im show-progress
 				display-name="Person's Name"
-				tagline="This is a tagline!" >
+				tagline="This is a tagline!"
+				user-attributes=["Attribute1","Attribute2"]
+				href="./data/user.json"
+				token="token">
+				<img slot="illustration" src="./img/maya.jpg" width="116px" height="116px" />
 				<div slot="social-media-icons">
 					<d2l-icon icon="tier2:save"></d2l-icon>
 					<d2l-icon icon="tier2:browser"></d2l-icon>
@@ -54,8 +67,8 @@
 				</div>
 				<d2l-link href="#" slot="website">www.website.com</d2l-link>
 				<div slot="awards-icons">
-					<img src="data/Badge_Grad_Hat.png" width="40px"/>
-					<img src="data/book-award.png" width="40px"/>
+					<img src="./img/Badge_Grad_Hat.png" width="40px"/>
+					<img src="./img/book-award.png" width="40px"/>
 				</div>
 
 			</d2l-labs-user-profile-card>

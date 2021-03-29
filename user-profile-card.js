@@ -363,6 +363,7 @@ class UserProfileCard extends LocalizeUserProfileCard(LitElement) {
 
 	open() {
 		this._isOpen = true;
+		this.dispatchEvent(new CustomEvent('d2l-labs-user-profile-card-opened'));
 	}
 
 	_onDisplayNameClick() {
