@@ -282,27 +282,18 @@ class UserProfileCard extends LocalizeUserProfileCard(LitElement) {
 		this._isOpen = false;
 		this._isHovering = false;
 
-		this._onMouseEnter = this._onMouseEnter.bind(this);
-		this._onMouseLeave = this._onMouseLeave.bind(this);
 		this._onOutsideClick = this._onOutsideClick.bind(this);
-		this._onKeyDown = this._onKeyDown.bind(this);
-		this._onOpenerKeyDown = this._onOpenerKeyDown.bind(this);
-		this._onOpenerClick = this._onOpenerClick.bind(this);
-		this._onOpenerTouch = this._onOpenerTouch.bind(this);
 	}
 
 	connectedCallback() {
 		super.connectedCallback();
 		document.body.addEventListener('click', this._onOutsideClick);
-		document.body.addEventListener('keydown', this._onKeyDown);
-		this.addEventListener('mouseenter', this._onMouseEnter);
-		this.addEventListener('mouseleave', this._onMouseLeave);
+		this.addEventListener('keydown', this._onKeyDown);
 	}
 
 	disconnectedCallback() {
 		super.disconnectedCallback();
 		document.body.removeEventListener('click', this._onOutsideClick);
-		document.body.removeEventListener('keydown', this._onKeyDown);
 	}
 
 	firstUpdated() {
@@ -323,6 +314,7 @@ class UserProfileCard extends LocalizeUserProfileCard(LitElement) {
 		});
 
 		const classes = { 'd2l-labs-profile-card': true, 'd2l-is-editing': this._isTaglineEditing };
+		const hidden = !this._isOpen && !this._isHovering;
 		return html`
 			<d2l-profile-image ?small=${this.small} ?medium=${this.medium} ?large=${this.large} ?xlarge=${this.xlarge}
 				class="d2l-labs-user-profile-card-opener"
@@ -335,8 +327,8 @@ class UserProfileCard extends LocalizeUserProfileCard(LitElement) {
 				@keydown=${this._onOpenerKeyDown}
 				@click=${this._onOpenerClick}
 			></d2l-profile-image>
-			<d2l-focus-trap ?trap="${this._isOpen}" @keydown="${this._onKeyDown}">
-			<div class="${classMap(classes)}" ?hidden="${!this._isOpen && !this._isHovering}"
+			<d2l-focus-trap ?trap="${this._isOpen}">
+			<div class="${classMap(classes)}" ?hidden="${hidden}"
 				@mouseenter=${this._onMouseEnter}
 				@mouseleave=${this._onMouseLeave}>
 					<slot name="illustration" class="d2l-link" title="${this.localize('openProfile', { displayName : this.displayName })}"  @click="${this._onProfileImageClick}"></slot>
@@ -375,7 +367,7 @@ class UserProfileCard extends LocalizeUserProfileCard(LitElement) {
 	}
 
 	_onKeyDown(e) {
-		if (e.keyCode === keyCodes.ESCAPE) {
+		if (e.keyCode === keyCodes.ESCAPE && this._isOpen) {
 			this.close();
 			this._opener.focus();
 		}
@@ -398,17 +390,23 @@ class UserProfileCard extends LocalizeUserProfileCard(LitElement) {
 		}, 300);
 	}
 
-	_onOpenerClick() {
-		//If we're hovering it's already open, so close it.
-		this._isOpen = this._isHovering ? false : !this._isOpen;
-		this._isHovering = false;
+	_onOpenerClick(e) {
+		//If we're hovering it's already showing, so force-close it.
+		if (this._isHovering) {
+			this.close();
+		} else {
+			this.open();
+		}
 	}
 
 	_onOpenerKeyDown(e) {
 		if (e.keyCode !== keyCodes.ENTER && e.keyCode !== keyCodes.DOWN) return;
-		this._isOpen = true;
+		this.open();
 		const name = this.shadowRoot.querySelector('.d2l-labs-profile-card-name');
-		name.focus();
+		//Ensures the card is open and ready to accept focus before we try
+		setTimeout(() => {
+			name.focus();
+    }, 0);
 	}
 
 	_onOpenerTouch(e) {
