@@ -315,8 +315,12 @@ class UserProfileCard extends LocalizeUserProfileCard(LitElement) {
 
 		const classes = { 'd2l-labs-profile-card': true, 'd2l-is-editing': this._isTaglineEditing };
 		const hidden = !this._isOpen && !this._isHovering;
+		const openAlert = hidden ? this.localize('profileCardClosed') : this.localize('profileCardOpened');
 		return html`
 			<d2l-profile-image ?small=${this.small} ?medium=${this.medium} ?large=${this.large} ?xlarge=${this.xlarge}
+				aria-expanded="${!hidden}"
+				aria-haspopup="true"
+				aria-label="${this.localize('profileCardOpener', { displayName : this.displayName })}"
 				class="d2l-labs-user-profile-card-opener"
 				href=${this.href}
 				.token=${this.token}
@@ -328,6 +332,7 @@ class UserProfileCard extends LocalizeUserProfileCard(LitElement) {
 				@click=${this._onOpenerClick}
 			></d2l-profile-image>
 			<d2l-focus-trap ?trap="${this._isOpen}">
+			<d2l-offscreen role="alert">${openAlert}</d2l-offscreen>
 			<div class="${classMap(classes)}" ?hidden="${hidden}"
 				@mouseenter=${this._onMouseEnter}
 				@mouseleave=${this._onMouseLeave}>
@@ -353,8 +358,12 @@ class UserProfileCard extends LocalizeUserProfileCard(LitElement) {
 		this._isHovering = false;
 	}
 
-	open() {
+	async open() {
 		this._isOpen = true;
+		this._isHovering = true;
+		await this.updateComplete;
+		const name = this.shadowRoot.querySelector('.d2l-labs-profile-card-name');
+		name.focus();
 		this.dispatchEvent(new CustomEvent('d2l-labs-user-profile-card-opened'));
 	}
 
@@ -390,7 +399,7 @@ class UserProfileCard extends LocalizeUserProfileCard(LitElement) {
 		}, 300);
 	}
 
-	_onOpenerClick(e) {
+	_onOpenerClick() {
 		//If we're hovering it's already showing, so force-close it.
 		if (this._isHovering) {
 			this.close();
@@ -401,12 +410,8 @@ class UserProfileCard extends LocalizeUserProfileCard(LitElement) {
 
 	_onOpenerKeyDown(e) {
 		if (e.keyCode !== keyCodes.ENTER && e.keyCode !== keyCodes.DOWN) return;
+		e.preventDefault();
 		this.open();
-		const name = this.shadowRoot.querySelector('.d2l-labs-profile-card-name');
-		//Ensures the card is open and ready to accept focus before we try
-		setTimeout(() => {
-			name.focus();
-    }, 0);
 	}
 
 	_onOpenerTouch(e) {

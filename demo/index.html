@@ -67,6 +67,8 @@
 			const profileCards = document.querySelectorAll('d2l-labs-user-profile-card');
 			profileCards.forEach((card) => {
 				card.addEventListener('d2l-labs-user-profile-card-tagline-updated', (e) => {console.log(e);});
+				card.addEventListener('d2l-labs-user-profile-card-profile', (e) => {console.log(e);});
+				card.addEventListener('d2l-labs-user-profile-card-opened', (e) => {console.log(e);});
 				card.addEventListener('d2l-labs-user-profile-card-message', (e) => {console.log(e);});
 				card.addEventListener('d2l-labs-user-profile-card-email', (e) => {console.log(e);});
 				card.addEventListener('d2l-labs-user-profile-card-progress', (e) => {console.log(e);});
