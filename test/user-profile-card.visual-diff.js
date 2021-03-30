@@ -9,7 +9,7 @@ describe('d2l-labs-user-profile-card', () => {
 
 	before(async() => {
 		browser = await puppeteer.launch();
-		page = await visualDiff.createPage(browser);
+		page = await visualDiff.createPage(browser, { viewport: { width: 900, height: 1500 } });
 		await page.goto(`${visualDiff.getBaseUrl()}/test/user-profile-card.visual-diff.html`, { waitUntil: ['networkidle0', 'load'] });
 		await page.bringToFront();
 	});
