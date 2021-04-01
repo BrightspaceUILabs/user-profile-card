@@ -5,7 +5,12 @@ import { runConstructor } from '@brightspace-ui/core/tools/constructor-test-help
 describe('d2l-labs-user-profile-card', () => {
 
 	describe('accessibility', () => {
-		it('should pass all axe tests', async() => {
+		it('should pass all axe tests when open', async() => {
+			const el = await fixture(html`<d2l-labs-user-profile-card></d2l-labs-user-profile-card>`);
+			el.open();
+			await expect(el).to.be.accessible();
+		});
+		it('should pass all axe tests when closed', async() => {
 			const el = await fixture(html`<d2l-labs-user-profile-card></d2l-labs-user-profile-card>`);
 			await expect(el).to.be.accessible();
 		});
