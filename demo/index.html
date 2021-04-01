@@ -18,7 +18,7 @@
 		<d2l-demo-page page-title="d2l-labs-user-profile-card">
 			<h2>d2l-labs-user-profile-card</h2>
 			<d2l-demo-snippet>
-				<d2l-labs-user-profile-card online editable show-status large-opener
+				<d2l-labs-user-profile-card online show-status large-opener
 					href="./data/user.json"
 					token="token"
 					display-name="Maya Jones"
@@ -66,7 +66,6 @@
 		<script type="text/javascript">
 			const profileCards = document.querySelectorAll('d2l-labs-user-profile-card');
 			profileCards.forEach((card) => {
-				card.addEventListener('d2l-labs-user-profile-card-tagline-updated', (e) => {console.log(e);});
 				card.addEventListener('d2l-labs-user-profile-card-profile', (e) => {console.log(e);});
 				card.addEventListener('d2l-labs-user-profile-card-opened', (e) => {console.log(e);});
 				card.addEventListener('d2l-labs-user-profile-card-message', (e) => {console.log(e);});

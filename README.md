@@ -60,7 +60,6 @@ npm install @brightspace-ui-labs/user-profile-card
 |show-email|Boolean|Whether the current viewer can send emails to this user|
 |show-im|Boolean|Whether the current viewer can send instant messages to this user|
 |show-progress|Boolean|Whether the current viewer can access the users progress|
-|editable|Boolean|Whether the tagline is editable by the current viewer|
 |tagline|String|The tagline for the user|
 |small-opener|Boolean|Use a small user-avatar for the opener (defaults to medium)|
 |medium-opener|Boolean|Use a medium user-avatar for the opener (default)|
