@@ -10,9 +10,9 @@
 > - [ ] [Continuous integration](https://github.com/BrightspaceUI/guide/wiki/Testing#testing-continuously-with-travis-ci)
 > - [ ] [Cross-browser testing](https://github.com/BrightspaceUI/guide/wiki/Testing#cross-browser-testing-with-sauce-labs)
 > - [ ] [Unit tests](https://github.com/BrightspaceUI/guide/wiki/Testing#testing-with-polymer-test) (if applicable)
-> - [ ] [Accessibility tests](https://github.com/BrightspaceUI/guide/wiki/Testing#automated-accessibility-testing-with-axe)
-> - [ ] [Visual diff tests](https://github.com/BrightspaceUI/visual-diff)
-> - [ ] [Localization](https://github.com/BrightspaceUI/guide/wiki/Localization) with Serge (if applicable)
+> - [x] [Accessibility tests](https://github.com/BrightspaceUI/guide/wiki/Testing#automated-accessibility-testing-with-axe)
+> - [x] [Visual diff tests](https://github.com/BrightspaceUI/visual-diff)
+> - [x] [Localization](https://github.com/BrightspaceUI/guide/wiki/Localization) with Serge (if applicable)
 > - [x] Demo page
 > - [x] README documentation
 
@@ -36,7 +36,9 @@ npm install @brightspace-ui-labs/user-profile-card
 </script>
 <d2l-labs-user-profile-card online
     display-name="Maya Jones"
-    user-attributes=["Adminstrator","she/her"]>
+    user-attributes=["Adminstrator","she/her"]
+    token="sometoken"
+    href="somehref">
     <img slot="illustration" src="maya.jpg" width="116px" height="116px" />
     <div slot="tagline">I am a tagline!</div>
     <d2l-link href="#" slot="website">www.mayaSuperWebsite.com</d2l-link>
@@ -58,9 +60,13 @@ npm install @brightspace-ui-labs/user-profile-card
 |show-email|Boolean|Whether the current viewer can send emails to this user|
 |show-im|Boolean|Whether the current viewer can send instant messages to this user|
 |show-progress|Boolean|Whether the current viewer can access the users progress|
-|editable|Boolean|Whether the tagline is editable by the current viewer|
 |tagline|String|The tagline for the user|
-
+|small-opener|Boolean|Use a small user-avatar for the opener (defaults to medium)|
+|medium-opener|Boolean|Use a medium user-avatar for the opener (default)|
+|large-opener|Boolean|Use a large user-avatar for the opener (defaults to medium)|
+|xlarge-opener|Boolean|Use an extra-large user-avatar for the opener (defaults to medium)|
+|href|String|Hypermedia href for [user-profile-image](https://github.com/BrightspaceHypermediaComponents/users/blob/master/components/d2l-profile-image-base.js) opener|
+|token|String/Object|token for [user-profile-image](https://github.com/BrightspaceHypermediaComponents/users/blob/master/components/d2l-profile-image-base.js) opener|
 
 **Accessibility:**
 
