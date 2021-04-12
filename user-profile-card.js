@@ -259,17 +259,20 @@ class UserProfileCard extends LocalizeUserProfileCard(LitElement) {
 		this._isHovering = false;
 
 		this._onOutsideClick = this._onOutsideClick.bind(this);
+		this._reposition = this._reposition.bind(this);
 	}
 
 	connectedCallback() {
 		super.connectedCallback();
 		document.body.addEventListener('click', this._onOutsideClick);
+		window.addEventListener('resize', this._reposition);
 		this.addEventListener('keydown', this._onKeyDown);
 	}
 
 	disconnectedCallback() {
 		super.disconnectedCallback();
 		document.body.removeEventListener('click', this._onOutsideClick);
+		window.removeEventListener('resize', this._reposition);
 	}
 
 	firstUpdated() {
