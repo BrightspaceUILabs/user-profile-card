@@ -483,12 +483,26 @@ class UserProfileCard extends LocalizeUserProfileCard(LitElement) {
 			left: openerRect.left - viewportMargin,
 			right: document.documentElement.clientWidth - (openerRect.left + openerRect.width) - viewportMargin
 		};
+
+		//Vertical
 		const openAbove = spaceAround.above > spaceAround.below;
 		const top = openAbove ?
 			-(cardRect.height + openerRect.height / 2 + openerGap * 2)
 			: openerRect.height / 2 + openerGap;
 
 		this._card.style.top = `${top}px`;
+
+		//Horizontal
+		if (this.getAttribute('dir') === 'rtl') {
+			this._card.style.left = '';
+			const right = -Math.min(cardRect.width / 2, spaceAround.right);
+			this._card.style.right = `${right}px`;
+
+		} else {
+			this._card.style.right = '';
+			const left = -Math.min(cardRect.width / 2, spaceAround.left);
+			this._card.style.left = `${left}px`;
+		}
 	}
 }
 customElements.define('d2l-labs-user-profile-card', UserProfileCard);
