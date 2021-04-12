@@ -17,6 +17,8 @@ const keyCodes = {
 	ESCAPE: 27
 };
 
+const openerGap = 10; /* spacing between card and opener */
+const viewportMargin = 18;
 class UserProfileCard extends LocalizeUserProfileCard(LitElement) {
 
 	static get properties() {
@@ -230,7 +232,12 @@ class UserProfileCard extends LocalizeUserProfileCard(LitElement) {
 			content,
 			awards,
 			contact,
-			linkStyles
+			linkStyles,
+			css`
+			:host {
+				position: relative;
+			}
+			`
 		];
 	}
 
@@ -266,7 +273,7 @@ class UserProfileCard extends LocalizeUserProfileCard(LitElement) {
 	}
 
 	firstUpdated() {
-		if (!this.small && !this.large && !this.xlarge) {
+		if (!this.small && !this.large && !this.xLarge) {
 			this.medium = true;
 		}
 		const awardSlot = this.shadowRoot.querySelector('slot[name=awards-icons]');
@@ -275,6 +282,7 @@ class UserProfileCard extends LocalizeUserProfileCard(LitElement) {
 			this._showAwards = true;
 		}
 		this._opener = this.shadowRoot.querySelector('.d2l-labs-user-profile-card-opener');
+		this._card = this.shadowRoot.querySelector('.d2l-labs-profile-card');
 	}
 
 	render() {
@@ -300,23 +308,23 @@ class UserProfileCard extends LocalizeUserProfileCard(LitElement) {
 				@click=${this._onOpenerClick}
 			></d2l-profile-image>
 			<d2l-focus-trap ?trap="${this._isOpen}">
-			<d2l-offscreen role="alert">${openAlert}</d2l-offscreen>
-			<div class="d2l-labs-profile-card" ?hidden="${hidden}"
-				@mouseenter=${this._onMouseEnter}
-				@mouseleave=${this._onMouseLeave}>
-					<slot name="illustration" class="d2l-link" title="${this.localize('openProfile', { displayName : this.displayName })}"  @click="${this._onProfileImageClick}"></slot>
-					<div class="d2l-labs-profile-card-basic-info">
-						<a class="d2l-heading-2 d2l-labs-profile-card-name d2l-link" tabindex="0" title="${this.localize('openProfile', { displayName : this.displayName })}" @click="${this._onDisplayNameClick}">${this.displayName}</a>
-						${this._renderOnlineStatus()}
-						${this.userAttributes.length > 0 ? html`
-							<ul class="d2l-labs-profile-card-attributes d2l-body-small">
-								${this.userAttributes.map((item) => html`<li>${item}</li>`)}
-							</ul>` : html`` }
-					</div>
-					${this._renderProfileCardContent()}
-					${this._renderAwardIcons()}
-					${this._renderContactInfo()}
-			</div>
+				<d2l-offscreen role="alert">${openAlert}</d2l-offscreen>
+				<div class="d2l-labs-profile-card" ?hidden="${hidden}"
+					@mouseenter=${this._onMouseEnter}
+					@mouseleave=${this._onMouseLeave}>
+						<slot name="illustration" class="d2l-link" title="${this.localize('openProfile', { displayName : this.displayName })}"  @click="${this._onProfileImageClick}"></slot>
+						<div class="d2l-labs-profile-card-basic-info">
+							<a class="d2l-heading-2 d2l-labs-profile-card-name d2l-link" tabindex="0" title="${this.localize('openProfile', { displayName : this.displayName })}" @click="${this._onDisplayNameClick}">${this.displayName}</a>
+							${this._renderOnlineStatus()}
+							${this.userAttributes.length > 0 ? html`
+								<ul class="d2l-labs-profile-card-attributes d2l-body-small">
+									${this.userAttributes.map((item) => html`<li>${item}</li>`)}
+								</ul>` : html`` }
+						</div>
+						${this._renderProfileCardContent()}
+						${this._renderAwardIcons()}
+						${this._renderContactInfo()}
+				</div>
 			</d2l-focus-trap>
 		`;
 	}
@@ -330,6 +338,7 @@ class UserProfileCard extends LocalizeUserProfileCard(LitElement) {
 		this._isOpen = true;
 		this._isHovering = true;
 		await this.updateComplete;
+		this._reposition();
 		const name = this.shadowRoot.querySelector('.d2l-labs-profile-card-name');
 		name.focus();
 		this.dispatchEvent(new CustomEvent('d2l-labs-user-profile-card-opened'));
@@ -357,6 +366,7 @@ class UserProfileCard extends LocalizeUserProfileCard(LitElement) {
 	_onMouseEnter() {
 		clearTimeout(this._dismissTimerId);
 		this._isHovering = true;
+		this._reposition();
 	}
 
 	_onMouseLeave() {
@@ -461,6 +471,24 @@ class UserProfileCard extends LocalizeUserProfileCard(LitElement) {
 				</div>
 			</div>
 		`;
+	}
+
+	async _reposition() {
+		await this.updateComplete;
+		const openerRect = this._opener.getBoundingClientRect();
+		const cardRect = this._card.getBoundingClientRect();
+		const spaceAround = {
+			above: openerRect.top - viewportMargin,
+			below: window.innerHeight - (openerRect.top + openerRect.height) - viewportMargin,
+			left: openerRect.left - viewportMargin,
+			right: document.documentElement.clientWidth - (openerRect.left + openerRect.width) - viewportMargin
+		};
+		const openAbove = spaceAround.above > spaceAround.below;
+		const top = openAbove ?
+			-(cardRect.height + openerRect.height / 2 + openerGap * 2)
+			: openerRect.height / 2 + openerGap;
+
+		this._card.style.top = `${top}px`;
 	}
 }
 customElements.define('d2l-labs-user-profile-card', UserProfileCard);
