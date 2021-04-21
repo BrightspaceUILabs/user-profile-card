@@ -488,7 +488,7 @@ class UserProfileCard extends LocalizeUserProfileCard(LitElement) {
 		};
 
 		//Vertical
-		const openAbove = spaceAround.above > spaceAround.below;
+		const openAbove = spaceAround.below < cardRect.height && spaceAround.above > spaceAround.below;
 		const top = openAbove ?
 			-(cardRect.height + openerRect.height / 2 + openerGap * 2)
 			: openerRect.height / 2 + openerGap;
@@ -496,14 +496,14 @@ class UserProfileCard extends LocalizeUserProfileCard(LitElement) {
 		this._card.style.top = `${top}px`;
 
 		//Horizontal
-		if (this.getAttribute('dir') === 'rtl') {
+		if (spaceAround.left > spaceAround.right) {
 			this._card.style.left = '';
-			const right = -Math.min(cardRect.width / 2, spaceAround.right);
+			const right = -Math.min((cardRect.width - openerRect.width) / 2, spaceAround.right);
 			this._card.style.right = `${right}px`;
 
 		} else {
 			this._card.style.right = '';
-			const left = -Math.min(cardRect.width / 2, spaceAround.left);
+			const left = -Math.min((cardRect.width - openerRect.width) / 2, spaceAround.left);
 			this._card.style.left = `${left}px`;
 		}
 	}
