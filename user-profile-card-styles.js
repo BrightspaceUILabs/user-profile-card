@@ -16,12 +16,36 @@ export const profileCardStyles = css`
 	grid-template-rows: [start header-start] 116px [header-end tagline-start] auto [tagline-end awards-start] auto [awards-end contact-start] auto [contact-end end];
 	border: 1px solid var(--d2l-color-mica);
 	border-radius: 6px;
-	box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+	box-shadow: 0 4px 8px 0 rgba(73, 76, 78, 0.2), 0 6px 20px 0 rgba(73, 76, 78, 0.2); /* ferrite */
 	overflow: hidden;
 	z-index: 1001;
 }
-.d2l-labs-profile-card[hidden] {
+.d2l-labs-profile-card[hidden],
+.d2l-labs-profile-card-pointer[hidden] {
 	display: none;
+}
+.d2l-labs-profile-card-pointer {
+	clip: rect(-5px, 21px, 8px, -7px);
+	left: calc(50% - 10px);
+	display: inline-block;
+	position: absolute;
+	z-index: 1002;
+}
+.d2l-labs-profile-card-pointer > div {
+	background-color: white;
+	border: 1px solid var(--d2l-color-mica);
+	border-radius: 0.1rem;
+	box-shadow: -4px -4px 12px -5px rgba(73, 76, 78, 0.2); /* ferrite */
+	height: 16px;
+	-webkit-transform: rotate(45deg);
+	transform: rotate(45deg);
+	width: 16px;
+}
+:host([opened-above]) .d2l-labs-profile-card-pointer {
+		clip: rect(9px, 21px, 22px, -3px);
+	}
+:host([opened-above]) .d2l-labs-profile-card-pointer > div {
+	box-shadow: 4px 4px 12px -5px rgba(73, 76, 78, 0.2); /* ferrite */
 }
 
 /* Layout */

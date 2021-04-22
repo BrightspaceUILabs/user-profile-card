@@ -51,7 +51,12 @@ class UserProfileCard extends LocalizeUserProfileCard(LitElement) {
 			userAttributes: { type: Array, attribute: 'user-attributes', reflect: true },
 			_showAwards: { type: Boolean, attribute: false },
 			_isOpen: { type: Boolean },
-			_isHovering: { type: Boolean }
+			_isHovering: { type: Boolean },
+			_openedAbove: {
+				type: Boolean,
+				reflect: true,
+				attribute: 'opened-above'
+			},
 		};
 	}
 
@@ -111,6 +116,7 @@ class UserProfileCard extends LocalizeUserProfileCard(LitElement) {
 		}
 		this._opener = this.shadowRoot.querySelector('.d2l-labs-user-profile-card-opener');
 		this._card = this.shadowRoot.querySelector('.d2l-labs-profile-card');
+		this._pointer = this.shadowRoot.querySelector('.d2l-labs-profile-card-pointer');
 	}
 
 	render() {
@@ -137,6 +143,9 @@ class UserProfileCard extends LocalizeUserProfileCard(LitElement) {
 			></d2l-profile-image>
 			<d2l-focus-trap ?trap="${this._isOpen}">
 				<d2l-offscreen role="alert">${openAlert}</d2l-offscreen>
+				<div class="d2l-labs-profile-card-pointer" ?hidden="${hidden}">
+					<div></div>
+				</div>
 				<div class="d2l-labs-profile-card" ?hidden="${hidden}"
 					@mouseenter=${this._onMouseEnter}
 					@mouseleave=${this._onMouseLeave}>
@@ -313,11 +322,13 @@ class UserProfileCard extends LocalizeUserProfileCard(LitElement) {
 		};
 
 		//Vertical
-		const openAbove = spaceAround.below < cardRect.height && spaceAround.above > spaceAround.below;
-		const top = openAbove ?
+		this._openedAbove = spaceAround.below < cardRect.height && spaceAround.above > spaceAround.below;
+		const top = this._openedAbove ?
 			-(cardRect.height + openerRect.height + openerGap - 15)
 			: openerGap + 15;
 		this._card.style.top = `${top}px`;
+		const pointerTop = this._openedAbove ? -openerRect.height - openerGap + 5 : openerGap + 8;
+		this._pointer.style.top = `${pointerTop}px`;
 
 		//Horizontal
 		if (spaceAround.left > spaceAround.right) {
