@@ -18,7 +18,7 @@ const keyCodes = {
 	ESCAPE: 27
 };
 
-const openerGap = 18; /* spacing between card and opener */
+const openerGap = 10; /* spacing between card and opener */
 const viewportMargin = 18;
 class UserProfileCard extends LocalizeUserProfileCard(LitElement) {
 
@@ -324,10 +324,10 @@ class UserProfileCard extends LocalizeUserProfileCard(LitElement) {
 		//Vertical
 		this._openedAbove = spaceAround.below < cardRect.height && spaceAround.above > spaceAround.below;
 		const top = this._openedAbove ?
-			-(cardRect.height + openerRect.height + openerGap - 15)
+			-(cardRect.height + openerRect.height + openerGap - 8)
 			: openerGap + 15;
 		this._card.style.top = `${top}px`;
-		const pointerTop = this._openedAbove ? -openerRect.height - openerGap + 5 : openerGap + 8;
+		const pointerTop = this._openedAbove ? -openerRect.height - openerGap - 2 : openerGap + 8;
 		this._pointer.style.top = `${pointerTop}px`;
 
 		//Horizontal
