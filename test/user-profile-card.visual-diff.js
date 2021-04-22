@@ -40,7 +40,8 @@ describe('d2l-labs-user-profile-card', () => {
 			const x = Math.min(openerRect.x, cardRect.x);
 			const y = Math.min(openerRect.y, cardRect.y);
 			const width = Math.max(openerRect.right, cardRect.right) - x;
-			const height = Math.max(openerRect.bottom, cardRect.bottom) - y;
+			//For some reason it reads the middle of the opener instead of the bottom, so 20px fixes this
+			const height = Math.max(openerRect.bottom + 20, cardRect.bottom) - y;
 			return {
 				x: x - 10,
 				y: y - 10,
