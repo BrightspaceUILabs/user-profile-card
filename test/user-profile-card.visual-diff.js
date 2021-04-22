@@ -9,7 +9,7 @@ describe('d2l-labs-user-profile-card', () => {
 
 	before(async() => {
 		browser = await puppeteer.launch();
-		page = await visualDiff.createPage(browser, { viewport: { width: 900, height: 1500 } });
+		page = await visualDiff.createPage(browser, { viewport: { width: 1500, height: 1000 } });
 		await page.goto(`${visualDiff.getBaseUrl()}/test/user-profile-card.visual-diff.html`, { waitUntil: ['networkidle0', 'load'] });
 		await page.bringToFront();
 	});
@@ -40,7 +40,8 @@ describe('d2l-labs-user-profile-card', () => {
 			const x = Math.min(openerRect.x, cardRect.x);
 			const y = Math.min(openerRect.y, cardRect.y);
 			const width = Math.max(openerRect.right, cardRect.right) - x;
-			const height = Math.max(openerRect.bottom, cardRect.bottom) - y;
+			//For some reason it reads the middle of the opener instead of the bottom, so 20px fixes this
+			const height = Math.max(openerRect.bottom + 20, cardRect.bottom) - y;
 			return {
 				x: x - 10,
 				y: y - 10,
@@ -50,25 +51,28 @@ describe('d2l-labs-user-profile-card', () => {
 		});
 	}
 
-	it('passes visual-diff comparison', async function() {
-		const selector = '#default';
-		await open(page, selector);
-		const rect = await getRect(page, selector);
-		await visualDiff.screenshotAndCompare(page, this.test.fullTitle(), { clip: rect });
-	});
+	[
+		'default',
+		'with-actions',
+		'with-awards',
+		'with-awards-rtl',
+		'position-top-left',
+		'position-top-middle',
+		'position-top-right',
+		'position-bottom-left',
+		'position-bottom-middle',
+		'position-bottom-right',
+		'position-offset-left',
+		'position-offset-right'
+	].forEach((testName) => {
 
-	it('passes visual-diff with actions', async function() {
-		const selector = '#with-actions';
-		await open(page, selector);
-		const rect = await getRect(page, selector);
-		await visualDiff.screenshotAndCompare(page, this.test.fullTitle(), { clip: rect });
-	});
+		it(testName, async function() {
+			const selector = `#${testName}`;
+			await open(page, selector);
+			const rect = await getRect(page, selector);
+			await visualDiff.screenshotAndCompare(page, this.test.fullTitle(), { clip: rect });
+		});
 
-	it('passes visual-diff with awards', async function() {
-		const selector = '#with-awards';
-		await open(page, selector);
-		const rect = await getRect(page, selector);
-		await visualDiff.screenshotAndCompare(page, this.test.fullTitle(), { clip: rect });
 	});
 
 });
