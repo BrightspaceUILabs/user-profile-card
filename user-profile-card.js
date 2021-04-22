@@ -26,6 +26,7 @@ class UserProfileCard extends LocalizeUserProfileCard(LitElement) {
 		return {
 			displayName: { type: String, attribute: 'display-name' },
 			href: { type: String },
+			image: { type: String },
 			online: { type: Boolean },
 			showEmail: { type: Boolean, attribute: 'show-email' },
 			showIM: { type: Boolean, attribute: 'show-im' },
@@ -49,6 +50,7 @@ class UserProfileCard extends LocalizeUserProfileCard(LitElement) {
 				}
 			},
 			userAttributes: { type: Array, attribute: 'user-attributes', reflect: true },
+			website: { type: String },
 			_showAwards: { type: Boolean, attribute: false },
 			_isOpen: { type: Boolean },
 			_isHovering: { type: Boolean },
@@ -82,6 +84,7 @@ class UserProfileCard extends LocalizeUserProfileCard(LitElement) {
 		this._showAwards = false;
 		this.showStatus = false;
 		this.tagline = '';
+		this.website = '';
 		this.userAttributes = [];
 
 		this._dismissTimerId = getUniqueId();
@@ -149,18 +152,24 @@ class UserProfileCard extends LocalizeUserProfileCard(LitElement) {
 				<div class="d2l-labs-profile-card" ?hidden="${hidden}"
 					@mouseenter=${this._onMouseEnter}
 					@mouseleave=${this._onMouseLeave}>
-						<slot name="illustration" class="d2l-link" title="${this.localize('openProfile', { displayName : this.displayName })}"  @click="${this._onProfileImageClick}"></slot>
-						<div class="d2l-labs-profile-card-basic-info">
-							<a class="d2l-heading-2 d2l-labs-profile-card-name d2l-link" tabindex="0" title="${this.localize('openProfile', { displayName : this.displayName })}" @click="${this._onDisplayNameClick}">${this.displayName}</a>
-							${this._renderOnlineStatus()}
-							${this.userAttributes.length > 0 ? html`
-								<ul class="d2l-labs-profile-card-attributes d2l-body-small">
-									${this.userAttributes.map((item) => html`<li>${item}</li>`)}
-								</ul>` : html`` }
+						<div class="d2l-labs-profile-card-image-wrapper"
+								@click="${this._onProfileImageClick}">
+							${this.image ? html`
+								<img class="d2l-labs-profile-card-image d2l-link" title="${this.localize('openProfile', { displayName : this.displayName })}"
+									src="${this.image}"/>
+							` : ''}
 						</div>
-						${this._renderProfileCardContent()}
-						${this._renderAwardIcons()}
-						${this._renderContactInfo()}
+					<div class="d2l-labs-profile-card-basic-info">
+						<a class="d2l-heading-2 d2l-labs-profile-card-name d2l-link" tabindex="0" title="${this.localize('openProfile', { displayName : this.displayName })}" @click="${this._onDisplayNameClick}">${this.displayName}</a>
+						${this._renderOnlineStatus()}
+						${this.userAttributes.length > 0 ? html`
+							<ul class="d2l-labs-profile-card-attributes d2l-body-small">
+								${this.userAttributes.map((item) => html`<li>${item}</li>`)}
+							</ul>` : html`` }
+					</div>
+					${this._renderProfileCardContent()}
+					${this._renderAwardIcons()}
+					${this._renderContactInfo()}
 				</div>
 			</d2l-focus-trap>
 		`;
@@ -304,7 +313,7 @@ class UserProfileCard extends LocalizeUserProfileCard(LitElement) {
 				${this.tagline !== '' ? html`<div>${this.tagline}</div>` : html``}
 				<div class="d2l-profile-card-media">
 					<slot name="social-media-icons"></slot>
-					<slot name="website"></slot>
+					${this.website !== '' ? html`<d2l-link class="d2l-profile-card-website" href="#">${this.website}</d2l-link>` : ''}
 				</div>
 			</div>
 		`;

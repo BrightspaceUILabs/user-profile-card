@@ -3,7 +3,6 @@
 <head>
 	<script type="module">
 		import '@brightspace-ui/core/components/icons/icon.js';
-		import '@brightspace-ui/core/components/link/link.js';
 		import '@brightspace-ui/core/components/typography/typography.js';
 		import '../user-profile-card.js';
 	</script>
@@ -58,17 +57,17 @@
 			<d2l-labs-user-profile-card id="default"
 				online show-status
 				display-name="Person's Name"
+				image="./img/maya.jpg"
 				tagline="This is a tagline!"
 				user-attributes=["Attribute1","Attribute2"]
 				href="./data/user.json"
-				token="token">
-				<img slot="illustration" src="./img/maya.jpg" width="116px" height="116px" />
+				token="token"
+				website="www.website.com">
 				<div slot="social-media-icons">
 					<d2l-icon icon="tier2:save"></d2l-icon>
 					<d2l-icon icon="tier2:browser"></d2l-icon>
 					<d2l-icon icon="tier2:send"></d2l-icon>
 				</div>
-				<d2l-link href="#" slot="website">www.website.com</d2l-link>
 			</d2l-labs-user-profile-card>
 		</div>
 
@@ -76,17 +75,17 @@
 			<d2l-labs-user-profile-card id="with-actions"
 				show-email show-im show-progress
 				display-name="Person's Name"
+				image="./img/maya.jpg"
 				tagline="This is a tagline!"
 				user-attributes=["Attribute1","Attribute2"]
 				href="./data/user.json"
-				token="token">
-				<img slot="illustration" src="./img/maya.jpg" width="116px" height="116px" />
+				token="token"
+				website="www.website.com">
 				<div slot="social-media-icons">
 					<d2l-icon icon="tier2:save"></d2l-icon>
 					<d2l-icon icon="tier2:browser"></d2l-icon>
 					<d2l-icon icon="tier2:send"></d2l-icon>
 				</div>
-				<d2l-link href="#" slot="website">www.website.com</d2l-link>
 			</d2l-labs-user-profile-card>
 		</div>
 
@@ -94,17 +93,17 @@
 			<d2l-labs-user-profile-card id="with-awards"
 				show-email show-im show-progress
 				display-name="Person's Name"
+				image="./img/maya.jpg"
 				tagline="This is a tagline!"
 				user-attributes=["Attribute1","Attribute2"]
 				href="./data/user.json"
-				token="token">
-				<img slot="illustration" src="./img/maya.jpg" width="116px" height="116px" />
+				token="token"
+				website="www.website.com">
 				<div slot="social-media-icons">
 					<d2l-icon icon="tier2:save"></d2l-icon>
 					<d2l-icon icon="tier2:browser"></d2l-icon>
 					<d2l-icon icon="tier2:send"></d2l-icon>
 				</div>
-				<d2l-link href="#" slot="website">www.website.com</d2l-link>
 				<div slot="awards-icons">
 					<img src="./img/Badge_Grad_Hat.png" width="40px"/>
 					<img src="./img/book-award.png" width="40px"/>
@@ -117,17 +116,17 @@
 				dir="rtl"
 				show-email show-im show-progress
 				display-name="Person's Name"
+				image="./img/maya.jpg"
 				tagline="This is a tagline!"
 				user-attributes=["Attribute1","Attribute2"]
 				href="./data/user.json"
-				token="token">
-				<img slot="illustration" src="./img/maya.jpg" width="116px" height="116px" />
+				token="token"
+				website="www.website.com">
 				<div slot="social-media-icons">
 					<d2l-icon icon="tier2:save"></d2l-icon>
 					<d2l-icon icon="tier2:browser"></d2l-icon>
 					<d2l-icon icon="tier2:send"></d2l-icon>
 				</div>
-				<d2l-link href="#" slot="website">www.website.com</d2l-link>
 				<div slot="awards-icons">
 					<img src="./img/Badge_Grad_Hat.png" width="40px"/>
 					<img src="./img/book-award.png" width="40px"/>
@@ -136,82 +135,82 @@
 		</div>
 
 		<div class="test-case top left">
-			<d2l-labs-user-profile-card id="position-top-left"
+			<d2l-labs-user-profile-card id="position-top-left" small-opener
 				display-name="Person's Name"
+				image="./img/maya.jpg"
 				tagline="This is a tagline!"
 				href="./data/user.json"
 				token="token">
-				<img slot="illustration" src="./img/maya.jpg" width="116px" height="116px" />
 			</d2l-labs-user-profile-card>
 		</div>
 
 		<div class="test-case top middle-horizontal">
 			<d2l-labs-user-profile-card id="position-top-middle"
 				display-name="Person's Name"
+				image="./img/maya.jpg"
 				tagline="This is a tagline!"
 				href="./data/user.json"
 				token="token">
-				<img slot="illustration" src="./img/maya.jpg" width="116px" height="116px" />
 			</d2l-labs-user-profile-card>
 		</div>
 
 		<div class="test-case top right">
-			<d2l-labs-user-profile-card id="position-top-right"
+			<d2l-labs-user-profile-card id="position-top-right" large-opener
 				display-name="Person's Name"
+				image="./img/maya.jpg"
 				tagline="This is a tagline!"
 				href="./data/user.json"
 				token="token">
-				<img slot="illustration" src="./img/maya.jpg" width="116px" height="116px" />
 			</d2l-labs-user-profile-card>
 		</div>
 
 		<div class="test-case bottom left">
-			<d2l-labs-user-profile-card id="position-bottom-left"
+			<d2l-labs-user-profile-card id="position-bottom-left" small-opener
 				display-name="Person's Name"
+				image="./img/maya.jpg"
 				tagline="This is a tagline!"
 				href="./data/user.json"
 				token="token">
-				<img slot="illustration" src="./img/maya.jpg" width="116px" height="116px" />
 			</d2l-labs-user-profile-card>
 		</div>
 
 		<div class="test-case bottom middle-horizontal">
 			<d2l-labs-user-profile-card id="position-bottom-middle"
 				display-name="Person's Name"
+				image="./img/maya.jpg"
 				tagline="This is a tagline!"
 				href="./data/user.json"
 				token="token">
-				<img slot="illustration" src="./img/maya.jpg" width="116px" height="116px" />
 			</d2l-labs-user-profile-card>
 		</div>
 
 		<div class="test-case bottom right">
-			<d2l-labs-user-profile-card id="position-bottom-right"
+			<d2l-labs-user-profile-card id="position-bottom-right" large-opener
 				display-name="Person's Name"
+				image="./img/maya.jpg"
 				tagline="This is a tagline!"
 				href="./data/user.json"
 				token="token">
-				<img slot="illustration" src="./img/maya.jpg" width="116px" height="116px" />
 			</d2l-labs-user-profile-card>
 		</div>
 
 		<div class="test-case middle-vertical offset-left">
 			<d2l-labs-user-profile-card id="position-offset-left"
 				display-name="Person's Name"
+				image="./img/maya.jpg"
 				tagline="This is a tagline!"
 				href="./data/user.json"
 				token="token">
-				<img slot="illustration" src="./img/maya.jpg" width="116px" height="116px" />
 			</d2l-labs-user-profile-card>
 		</div>
 
 		<div class="test-case middle-vertical offset-right">
 			<d2l-labs-user-profile-card id="position-offset-right"
 				display-name="Person's Name"
+				image="./img/maya.jpg"
 				tagline="This is a tagline!"
 				href="./data/user.json"
 				token="token">
-				<img slot="illustration" src="./img/maya.jpg" width="116px" height="116px" />
 			</d2l-labs-user-profile-card>
 		</div>
 

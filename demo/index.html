@@ -6,7 +6,6 @@
 		<script type="module">
 			import '@brightspace-ui/core/components/demo/demo-page.js';
 			import '@brightspace-ui/core/components/button/button-icon.js';
-			import '@brightspace-ui/core/components/link/link.js';
 			import '../user-profile-card.js';
 		</script>
 		<title>d2l-labs-user-profile-card</title>
@@ -21,41 +20,43 @@
 				<d2l-labs-user-profile-card online show-status large-opener
 					href="./data/user.json"
 					token="token"
+					image="./img/maya.jpg"
+					website="www.mayaSuperWebsite.com"
 					display-name="Maya Jones"
 					user-attributes=["Adminstrator","she/her"]
-					tagline="This is my tagline, yo! It could potentially be long enough to cause wrapping. I don't think we impose any limits on the length of this field.">
-					<img slot="illustration" src="./img/maya.jpg" width="116px" height="116px" />
+					tagline="This is my tagline, yo! It could potentially be long enough to cause wrapping. I don't think we impose any limits on the length of this field."
+					>
 					<div slot="social-media-icons">
 						<d2l-icon icon="tier2:save"></d2l-icon>
 						<d2l-icon icon="tier2:browser"></d2l-icon>
 						<d2l-icon icon="tier2:send"></d2l-icon>
 					</div>
-					<d2l-link href="#" slot="website">www.mayaSuperWebsite.com</d2l-link>
 				</d2l-labs-user-profile-card>
 			</d2l-demo-snippet>
 			<d2l-demo-snippet>
 				<d2l-labs-user-profile-card  show-email show-im show-progress
 					href="./data/user.json"
 					token="token"
+					image="./img/maya.jpg"
+					website="www.mayaSuperWebsite.com"
 					display-name="Maya Jones"
 					tagline="This is my tagline, yo! It could potentially be long enough to cause wrapping. I don't think we impose any limits on the length of this field.">
-					<img slot="illustration" src="./img/maya.jpg" width="116px" height="116px" />
 				</d2l-labs-user-profile-card>
 			</d2l-demo-snippet>
 			<d2l-demo-snippet>
 				<d2l-labs-user-profile-card offline
 					href="./data/user.json"
 					token="token"
+					image="./img/maya.jpg"
+					website="www.mayaSuperWebsite.com"
 					display-name="Maya Jones"
 					user-attributes=["Adminstrator","she/her"]
 					tagline="This is my tagline, yo! It could potentially be long enough to cause wrapping. I don't think we impose any limits on the length of this field.">
-					<img slot="illustration" src="./img/maya.jpg" width="116px" height="116px" />
 					<div slot="social-media-icons">
 						<d2l-icon icon="tier2:save"></d2l-icon>
 						<d2l-icon icon="tier2:browser"></d2l-icon>
 						<d2l-icon icon="tier2:send"></d2l-icon>
 					</div>
-					<d2l-link href="#" slot="website">www.mayaSuperWebsite.com</d2l-link>
 					<div slot="awards-icons">
 						<img src="img/Badge_Grad_Hat.png" width="40px"/>
 						<img src="img/book-award.png" width="40px"/>

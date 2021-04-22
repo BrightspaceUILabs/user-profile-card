@@ -12,12 +12,11 @@ export const profileCardStyles = css`
 	background-color: white;
 	display: grid;
 	width: 600px;
-	grid-template-columns: [start illustration-start] 22px [info-start] 94px [illustration-end basic-info-start] auto [basic-info-end info-end] 22px [end];
-	grid-template-rows: [start header-start] 116px [header-end tagline-start] auto [tagline-end awards-start] auto [awards-end contact-start] auto [contact-end end];
-	border: 1px solid var(--d2l-color-mica);
+	grid-template-columns: [start illustration-start] 5rem [info-start] 0px [illustration-end basic-info-start] auto [basic-info-end info-end] auto [end];
+	grid-template-rows: [start header-start] 5rem [header-end tagline-start] auto [tagline-end awards-start] auto [awards-end contact-start] auto [contact-end end];
+	border: 1px solid var(--d2l-color-gypsum);
 	border-radius: 6px;
 	box-shadow: 0 4px 8px 0 rgba(73, 76, 78, 0.2), 0 6px 20px 0 rgba(73, 76, 78, 0.2); /* ferrite */
-	overflow: hidden;
 	z-index: 1001;
 }
 .d2l-labs-profile-card[hidden],
@@ -33,7 +32,7 @@ export const profileCardStyles = css`
 }
 .d2l-labs-profile-card-pointer > div {
 	background-color: white;
-	border: 1px solid var(--d2l-color-mica);
+	border: 1px solid var(--d2l-color-gypsum);
 	border-radius: 0.1rem;
 	box-shadow: -4px -4px 12px -5px rgba(73, 76, 78, 0.2); /* ferrite */
 	height: 16px;
@@ -49,15 +48,38 @@ export const profileCardStyles = css`
 }
 
 /* Layout */
-::slotted([slot=illustration]) {
+.d2l-labs-profile-card-image {
 	grid-column: illustration-start / illustration-end;
 	grid-row: header-start / header-end;
+	border-top-left-radius: 6px;
+	margin-left: -1px;
+	margin-top: -1px;
+	width: calc(5rem + 2px);
+	height: calc(5rem + 2px);
+	z-index: 10;
+	background-origin: border-box;
 }
+.d2l-labs-profile-card-image-wrapper {
+    position:relative;
+}
+.d2l-labs-profile-card-image-wrapper:after {
+	content:"";
+	position:absolute;
+	border-top-left-radius: 6px;
+	top: -1px;
+	left: -1px;
+	box-sizing: border-box;
+	width: calc(5rem + 2px);
+	height: calc(5rem + 2px);
+	opacity:0.2;
+	border: 1px solid  var(--d2l-color-tungsten);
+}
+
 .d2l-labs-profile-card-basic-info {
 	grid-column: basic-info-start / end;
 	grid-row: header-start / header-end;
 }
-::slotted([slot=illustration]),
+
 .d2l-labs-profile-card-basic-info {
 	grid-row: header-start / header-end;
 	border-bottom: 1px solid var(--d2l-color-mica);
@@ -143,8 +165,8 @@ export const profileCardStyles = css`
 	display: flex;
 	align-items: center;
 }
-::slotted([slot=website]) {
-	margin-left: 40px;
+.d2l-profile-card-website {
+	margin-left: 0.6rem;
 }
 ::slotted([slot=social-media-icons]) {
 	display: grid;
