@@ -8,6 +8,7 @@
   "version": "0.3.0",
   "files": [
     "user-profile-card.js",
+    "user-profile-html-block.js",
     "/lang"
   ],
   "scripts": {
