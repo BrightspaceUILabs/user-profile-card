@@ -6,6 +6,7 @@ import '@brightspace-ui/core/components/inputs/input-textarea.js';
 import 'd2l-users/components/d2l-profile-image.js';
 import { bodyCompactStyles, bodySmallStyles, bodyStandardStyles, heading2Styles, labelStyles } from '@brightspace-ui/core/components/typography/styles.js';
 import { html, LitElement } from 'lit-element/lit-element.js';
+import { classMap } from 'lit-html/directives/class-map.js';
 import { getUniqueId } from '@brightspace-ui/core/helpers/uniqueId.js';
 import { linkStyles } from '@brightspace-ui/core/components/link/link.js';
 import { LocalizeUserProfileCard } from './localize-user-profile-card.js';
@@ -52,8 +53,9 @@ class UserProfileCard extends LocalizeUserProfileCard(LitElement) {
 			userAttributes: { type: Array, attribute: 'user-attributes', reflect: true },
 			website: { type: String },
 			_showAwards: { type: Boolean, attribute: false },
-			_isOpen: { type: Boolean },
+			_isFading: { type: Boolean },
 			_isHovering: { type: Boolean },
+			_isOpen: { type: Boolean },
 			_openedAbove: {
 				type: Boolean,
 				reflect: true,
@@ -91,6 +93,7 @@ class UserProfileCard extends LocalizeUserProfileCard(LitElement) {
 		this._dismissTimerId = getUniqueId();
 		this._isOpen = false;
 		this._isHovering = false;
+		this._isFading = false;
 
 		this._onOutsideClick = this._onOutsideClick.bind(this);
 		this._reposition = this._reposition.bind(this);
@@ -135,6 +138,17 @@ class UserProfileCard extends LocalizeUserProfileCard(LitElement) {
 
 		const hidden = !this._isOpen && !this._isHovering;
 		const openAlert = hidden ? this.localize('profileCardClosed') : this.localize('profileCardOpened');
+
+		const cardClasses = {
+			'd2l-labs-profile-card' : true,
+			'd2l-labs-profile-card-fading' : this._isFading
+		};
+
+		const pointerClasses = {
+			'd2l-labs-profile-card-pointer' : true,
+			'd2l-labs-profile-card-fading' : this._isFading
+		};
+
 		return html`
 			<d2l-profile-image ?small=${this.small} ?medium=${this.medium} ?large=${this.large} ?xlarge=${this.xlarge}
 				aria-expanded="${!hidden}"
@@ -152,10 +166,10 @@ class UserProfileCard extends LocalizeUserProfileCard(LitElement) {
 			></d2l-profile-image>
 			<d2l-focus-trap ?trap="${this._isOpen}">
 				<d2l-offscreen role="alert">${openAlert}</d2l-offscreen>
-				<div class="d2l-labs-profile-card-pointer" ?hidden="${hidden}">
+				<div class="${classMap(pointerClasses)}" ?hidden="${hidden}">
 					<div></div>
 				</div>
-				<div class="d2l-labs-profile-card" ?hidden="${hidden}"
+				<div class="${classMap(cardClasses)}" ?hidden="${hidden}"
 					@mouseenter=${this._onMouseEnter}
 					@mouseleave=${this._onMouseLeave}>
 						<div class="d2l-labs-profile-card-image-wrapper"
@@ -184,11 +198,13 @@ class UserProfileCard extends LocalizeUserProfileCard(LitElement) {
 	close() {
 		this._isOpen = false;
 		this._isHovering = false;
+		this._isFading = false;
 	}
 
 	async open() {
 		this._isOpen = true;
 		this._isHovering = true;
+		this._isFading = false;
 		await this.updateComplete;
 		this._reposition();
 		const name = this.shadowRoot.querySelector('.d2l-labs-profile-card-name');
@@ -218,15 +234,18 @@ class UserProfileCard extends LocalizeUserProfileCard(LitElement) {
 	_onMouseEnter() {
 		clearTimeout(this._dismissTimerId);
 		this._isHovering = true;
+		this._isFading = false;
 		this._reposition();
 	}
 
 	_onMouseLeave() {
+		this._isFading = true;
 		//Wait before closing so we don't lose hover when we jump from opener to card
 		clearTimeout(this._dismissTimerId);
 		this._dismissTimerId = setTimeout(() => {
 			this._isHovering = false;
-		}, 300);
+			this._isFading = false;
+		}, 400);
 	}
 
 	_onOpenerClick() {

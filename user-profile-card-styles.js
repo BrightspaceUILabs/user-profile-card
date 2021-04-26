@@ -19,6 +19,10 @@ export const profileCardStyles = css`
 	box-shadow: 0 4px 8px 0 rgba(73, 76, 78, 0.2), 0 6px 20px 0 rgba(73, 76, 78, 0.2); /* ferrite */
 	z-index: 1001;
 }
+.d2l-labs-profile-card-fading {
+	transition: opacity 0.4s ease-out;
+	opacity: 0;
+}
 .d2l-labs-profile-card[hidden],
 .d2l-labs-profile-card-pointer[hidden] {
 	display: none;
