@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<link rel="stylesheet" href="/node_modules/@brightspace-ui/core/components/demo/styles.css" type="text/css">
+		<script src="/node_modules/@webcomponents/webcomponentsjs/webcomponents-loader.js"></script>
+		<script type="module">
+			import '@brightspace-ui/core/components/demo/demo-page.js';
+			import '@brightspace-ui/core/components/html-block/html-block.js';
+			import { htmlBlockUserProfileRenderer } from '../user-profile-html-block.js';
+			import { provideInstance } from '@brightspace-ui/core/mixins/provider-mixin.js';
+
+			provideInstance(document, 'html-block-renderers', [
+				htmlBlockUserProfileRenderer
+			]);
+
+		</script>
+		<meta name="viewport" content="width=device-width, initial-scale=1.0">
+		<meta http-equiv="X-UA-Compatible" content="ie=edge">
+		<meta charset="UTF-8">
+	</head>
+	<body unresolved>
+
+		<d2l-demo-page page-title="d2l-labs-user-profile-card">
+
+			<h2>d2l-html-block (user profile renderer)</h2>
+
+			<d2l-demo-snippet>
+				<template>
+					<d2l-html-block>
+						<template>The wizard (<span data-mentions-id="0">Elmer Fudd</span>) quickly jinxed the gnomes before they vaporized.</template>
+					</d2l-html-block>
+				</template>
+			</d2l-demo-snippet>
+
+		</d2l-demo-page>
+
+	</body>
+</html>
