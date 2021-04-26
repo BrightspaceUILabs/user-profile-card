@@ -276,7 +276,7 @@ class UserProfileCard extends LocalizeUserProfileCard(LitElement) {
 		if (this.showEmail || this.showIM || this.showProgress) {
 			return html`
 			<div class="d2l-labs-profile-card-contact">
-				<div class="d2l-profile-card-contact-info">
+				<div class="d2l-labs-profile-card-contact-info">
 					${ this.showEmail ? html`<d2l-button-subtle
 						@click="${this._onEmailClick}"
 						h-align="text"
@@ -319,9 +319,9 @@ class UserProfileCard extends LocalizeUserProfileCard(LitElement) {
 			<div class="d2l-labs-profile-card-content d2l-body-compact">
 				${this.tagline !== '' ? html`<div>${this.tagline}</div>` : html``}
 				${this.website !== '' || this._showSocialMedia ? html `
-					<div class="d2l-profile-card-media">
+					<div class="d2l-labs-profile-card-media">
 						<slot name="social-media-icons"></slot>
-						${this.website !== '' ? html`<d2l-link class="d2l-profile-card-website" href="#">${this.website}</d2l-link>` : ''}
+						${this.website !== '' ? html`<d2l-link class="d2l-labs-profile-card-website" href="#">${this.website}</d2l-link>` : ''}
 				</div>` : ''}
 			</div>
 			`;

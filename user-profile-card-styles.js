@@ -175,7 +175,7 @@ export const profileCardStyles = css`
 	display: flex;
 	flex-direction: column;
 }
-.d2l-profile-card-media {
+.d2l-labs-profile-card-media {
 	margin-top: 1.05rem;
 	display: flex;
 	align-items: center;
@@ -216,7 +216,7 @@ export const profileCardStyles = css`
 	padding: 0.7rem 1.2rem;
 	color: black;
 }
-.d2l-profile-card-contact-info {
+.d2l-labs-profile-card-contact-info {
 	display: flex;
 	justify-content: start;
 }
