@@ -4,7 +4,7 @@ import '@brightspace-ui/core/components/focus-trap/focus-trap.js';
 import '@brightspace-ui/core/components/icons/icon.js';
 import '@brightspace-ui/core/components/inputs/input-textarea.js';
 import 'd2l-users/components/d2l-profile-image.js';
-import { bodySmallStyles, bodyStandardStyles, heading2Styles, labelStyles } from '@brightspace-ui/core/components/typography/styles.js';
+import { bodyCompactStyles, bodySmallStyles, bodyStandardStyles, heading2Styles, labelStyles } from '@brightspace-ui/core/components/typography/styles.js';
 import { html, LitElement } from 'lit-element/lit-element.js';
 import { getUniqueId } from '@brightspace-ui/core/helpers/uniqueId.js';
 import { linkStyles } from '@brightspace-ui/core/components/link/link.js';
@@ -63,8 +63,9 @@ class UserProfileCard extends LocalizeUserProfileCard(LitElement) {
 	}
 
 	static get styles() {
-		return [ bodyStandardStyles,
+		return [ bodyCompactStyles,
 			bodySmallStyles,
+			bodyStandardStyles,
 			heading2Styles,
 			labelStyles,
 			linkStyles,
@@ -116,6 +117,11 @@ class UserProfileCard extends LocalizeUserProfileCard(LitElement) {
 		const awardNodes = awardSlot.assignedNodes();
 		if (awardNodes.length !== 0) {
 			this._showAwards = true;
+		}
+		const socialMediaSlot = this.shadowRoot.querySelector('slot[name=social-media-icons]');
+		const socialMediaNodes = socialMediaSlot.assignedNodes();
+		if (socialMediaNodes.length !== 0) {
+			this._showSocialMedia = true;
 		}
 		this._opener = this.shadowRoot.querySelector('.d2l-labs-user-profile-card-opener');
 		this._card = this.shadowRoot.querySelector('.d2l-labs-profile-card');
@@ -271,20 +277,21 @@ class UserProfileCard extends LocalizeUserProfileCard(LitElement) {
 			return html`
 			<div class="d2l-labs-profile-card-contact">
 				<div class="d2l-profile-card-contact-info">
-					<div>
-						${ this.showEmail ? html`<d2l-button-subtle
-							@click="${this._onEmailClick}"
-							icon="tier1:email"
-							id="email"
-							text="${this.localize('email')}"></d2l-button-subtle>` : html`` }
-						${ this.showIM ? html`<d2l-button-subtle
-							@click="${this._onMessageClick}"
-							icon="tier1:add-message"
-							id="message"
-							text="${this.localize('instantMessage')}"></d2l-button-subtle>` : html`` }
-					</div>
+					${ this.showEmail ? html`<d2l-button-subtle
+						@click="${this._onEmailClick}"
+						h-align="text"
+						icon="tier1:email"
+						id="email"
+						text="${this.localize('email')}"></d2l-button-subtle>` : html`` }
+					${ this.showIM ? html`<d2l-button-subtle
+						@click="${this._onMessageClick}"
+						h-align="text"
+						icon="tier1:add-message"
+						id="message"
+						text="${this.localize('instantMessage')}"></d2l-button-subtle>` : html`` }
 					${ this.showProgress ? html`<d2l-button-subtle
 						@click="${this._onProgressClick}"
+						h-align="text"
 						icon="tier1:user-progress"
 						id="progress"
 						text="${this.localize('userProgress')}" ></d2l-button-subtle>` : html`` }
@@ -309,14 +316,15 @@ class UserProfileCard extends LocalizeUserProfileCard(LitElement) {
 
 	_renderProfileCardContent() {
 		return html`
-			<div class="d2l-labs-profile-card-content">
+			<div class="d2l-labs-profile-card-content d2l-body-compact">
 				${this.tagline !== '' ? html`<div>${this.tagline}</div>` : html``}
-				<div class="d2l-profile-card-media">
-					<slot name="social-media-icons"></slot>
-					${this.website !== '' ? html`<d2l-link class="d2l-profile-card-website" href="#">${this.website}</d2l-link>` : ''}
-				</div>
+				${this.website !== '' || this._showSocialMedia ? html `
+					<div class="d2l-profile-card-media">
+						<slot name="social-media-icons"></slot>
+						${this.website !== '' ? html`<d2l-link class="d2l-profile-card-website" href="#">${this.website}</d2l-link>` : ''}
+				</div>` : ''}
 			</div>
-		`;
+			`;
 	}
 
 	async _reposition() {
