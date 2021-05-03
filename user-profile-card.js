@@ -116,16 +116,6 @@ class UserProfileCard extends LocalizeUserProfileCard(LitElement) {
 		if (!this.small && !this.large && !this.xLarge) {
 			this.medium = true;
 		}
-		const awardSlot = this.shadowRoot.querySelector('slot[name=awards-icons]');
-		const awardNodes = awardSlot.assignedNodes();
-		if (awardNodes.length !== 0) {
-			this._showAwards = true;
-		}
-		const socialMediaSlot = this.shadowRoot.querySelector('slot[name=social-media-icons]');
-		const socialMediaNodes = socialMediaSlot.assignedNodes();
-		if (socialMediaNodes.length !== 0) {
-			this._showSocialMedia = true;
-		}
 		this._opener = this.shadowRoot.querySelector('.d2l-labs-user-profile-card-opener');
 		this._card = this.shadowRoot.querySelector('.d2l-labs-profile-card');
 		this._pointer = this.shadowRoot.querySelector('.d2l-labs-profile-card-pointer');
@@ -212,6 +202,13 @@ class UserProfileCard extends LocalizeUserProfileCard(LitElement) {
 		this.dispatchEvent(new CustomEvent('d2l-labs-user-profile-card-opened'));
 	}
 
+	_onAwardsSlotChange(e) {
+		const awardNodes = e.target.assignedNodes();
+		if (awardNodes.length !== 0) {
+			this._showAwards = true;
+		}
+	}
+
 	_onDisplayNameClick() {
 		this.dispatchEvent(new CustomEvent('d2l-labs-user-profile-card-profile'));
 	}
@@ -283,10 +280,17 @@ class UserProfileCard extends LocalizeUserProfileCard(LitElement) {
 		this.dispatchEvent(new CustomEvent('d2l-labs-user-profile-card-progress'));
 	}
 
+	_onSocialSlotChange(e) {
+		const socialMediaNodes = e.target.assignedNodes();
+		if (socialMediaNodes.length !== 0) {
+			this._showSocialMedia = true;
+		}
+	}
+
 	_renderAwardIcons() {
 		return html`
 			<div class="${this._showAwards ? 'd2l-labs-profile-card-awards' : '' }">
-				<slot name="awards-icons"></slot>
+				<slot name="awards-icons" @slotchange="${this._onAwardsSlotChange}"></slot>
 			</div>
 		`;
 	}
@@ -339,7 +343,7 @@ class UserProfileCard extends LocalizeUserProfileCard(LitElement) {
 				${this.tagline !== '' ? html`<div>${this.tagline}</div>` : html``}
 				${this.website !== '' || this._showSocialMedia ? html `
 					<div class="d2l-labs-profile-card-media">
-						<slot name="social-media-icons"></slot>
+						<slot name="social-media-icons"  @slotchange="${this._onSocialSlotChange}"></slot>
 						${this.website !== '' ? html`<d2l-link class="d2l-labs-profile-card-website" href="#">${this.website}</d2l-link>` : ''}
 				</div>` : ''}
 			</div>
