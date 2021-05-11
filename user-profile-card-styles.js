@@ -12,8 +12,8 @@ export const profileCardStyles = css`
 	background-color: white;
 	display: grid;
 	width: 600px;
-	grid-template-columns: [start illustration-start] 5.45rem [info-start] 0px [illustration-end basic-info-start] auto [basic-info-end info-end] 0.4rem [end];
-	grid-template-rows: [start header-start] 5.45rem [header-end tagline-start] auto [tagline-end awards-start] auto [awards-end contact-start] auto [contact-end end];
+	grid-template-columns: [start illustration-start] 5.45rem [illustration-end info-start] auto [info-end] 0.4rem [end];
+	grid-template-rows: [start header-start] 5.45rem [header-end] auto [basic-info-end awards-start] auto [awards-end contact-start] auto [contact-end end];
 	border: 1px solid var(--d2l-color-gypsum);
 	border-radius: 6px;
 	box-shadow: 0 4px 8px 0 rgba(73, 76, 78, 0.2), 0 6px 20px 0 rgba(73, 76, 78, 0.2); /* ferrite */
@@ -53,11 +53,9 @@ export const profileCardStyles = css`
 
 /* Layout */
 .d2l-labs-profile-card-basic-info {
-	grid-column: basic-info-start / basic-info-end;
-	grid-row: header-start / header-end;
+	grid-column: info-start / info-end;
+	grid-row: header-start / basic-info-end;
 	border-bottom: 1px solid var(--d2l-color-mica);
-	text-align: center;
-	line-height: 124px;
 	vertical-align: middle;
 	width: 100%;
 	height: 100%;
@@ -119,15 +117,14 @@ export const profileCardStyles = css`
 
 /*Basic Info */
 .d2l-labs-profile-card-basic-info {
-	display: grid;
-	grid-template-columns: 22px [start name-start] auto [name-end online-start] auto [online-end end] 22px;
-	grid-template-rows: 14px [start online-start name-start] 1.8rem [online-end] auto [name-end] auto [end];
-	justify-content: start;
+	display: flex;
+	flex-direction: column;
+	justify-content: flex-start;
+}
+.d2l-labs-profile-card-name-and-online {
+	display: flex;
 }
 .d2l-labs-profile-card-name {
-	color: var(--d2l-color-celestine);
-	grid-column: name-start / name-end;
-	grid-row: name-start / name-end;
 	margin: 0;
 }
 .d2l-labs-profile-card-status {
@@ -149,8 +146,6 @@ export const profileCardStyles = css`
 	color: var(--d2l-color-olivine);
 }
 .d2l-labs-profile-card-attributes {
-	grid-column: start / end;
-	grid-row: 3 / 4;
 	align-self: flex-start;
 	display:flex;
 	margin: 0;
@@ -172,8 +167,6 @@ export const profileCardStyles = css`
 
 /* Content */
 .d2l-labs-profile-card-content {
-	grid-column: start / end;
-	grid-row: 2 / 3;
 	margin: 0.9rem 1.2rem 1.2rem 1.2rem;
 	color: var(--d2l-color-ferrite);
 	display: flex;
