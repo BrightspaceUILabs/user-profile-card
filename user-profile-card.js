@@ -239,13 +239,15 @@ class UserProfileCard extends LocalizeUserProfileCard(LitElement) {
 	}
 
 	_onMouseLeave() {
-		this._isFading = true;
-		//Wait before closing so we don't lose hover when we jump from opener to card
-		clearTimeout(this._dismissTimerId);
-		this._dismissTimerId = setTimeout(() => {
-			this._isHovering = false;
-			this._isFading = false;
-		}, 400);
+		if (!this._isOpen) {
+			this._isFading = true;
+			//Wait before closing so we don't lose hover when we jump from opener to card
+			clearTimeout(this._dismissTimerId);
+			this._dismissTimerId = setTimeout(() => {
+				this._isHovering = false;
+				this._isFading = false;
+			}, 400);
+		}
 	}
 
 	_onOpenerClick() {
