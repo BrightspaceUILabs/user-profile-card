@@ -72,6 +72,24 @@
 		</div>
 
 		<div class="test-case top middle-horizontal">
+			<d2l-labs-user-profile-card id="long-info"
+				online show-status
+				display-name="Person's Name"
+				image="./img/maya.jpg"
+				tagline="This is my tagline, yo! It could potentially be long enough to cause wrapping. I don't think we impose any limits on the length of this field."
+				user-attributes=["Attribute1","Attribute2"]
+				href="./data/user.json"
+				token="token"
+				website="www.website-with-a-very-long-name.com">
+				<div slot="social-media-icons">
+					<d2l-icon icon="tier2:save"></d2l-icon>
+					<d2l-icon icon="tier2:browser"></d2l-icon>
+					<d2l-icon icon="tier2:send"></d2l-icon>
+				</div>
+			</d2l-labs-user-profile-card>
+		</div>
+
+		<div class="test-case top middle-horizontal">
 			<d2l-labs-user-profile-card id="with-actions"
 				show-email show-im show-progress
 				display-name="Person's Name"

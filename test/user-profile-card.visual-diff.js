@@ -53,6 +53,7 @@ describe('d2l-labs-user-profile-card', () => {
 
 	[
 		'default',
+		'long-info',
 		'with-actions',
 		'with-awards',
 		'with-awards-rtl',
