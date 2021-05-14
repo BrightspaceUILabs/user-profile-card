@@ -178,12 +178,8 @@ class UserProfileCard extends LocalizeUserProfileCard(LitElement) {
 							<ul class="d2l-labs-profile-card-attributes d2l-body-small">
 								${this.userAttributes.map((item) => html`<li>${item}</li>`)}
 							</ul>` : html`` }
-						${this.tagline !== '' ? html`<div class="tagline">${this.tagline}</div>` : html``}
-						${this.website !== '' || this._showSocialMedia ? html `
-							<div class="d2l-labs-profile-card-media">
-								<slot name="social-media-icons"  @slotchange="${this._onSocialSlotChange}"></slot>
-								${this.website !== '' ? html`<d2l-link class="d2l-labs-profile-card-website" href="#">${this.website}</d2l-link>` : ''}
-						</div>` : ''}
+						${this.tagline !== '' ? html`<div class="d2l-labs-profile-card-tagline d2l-body-standard">${this.tagline}</div>` : html``}
+						${this._renderSocialMedia()}
 					</div>
 					${this._renderAwardIcons()}
 					${this._renderContactInfo()}
@@ -342,6 +338,14 @@ class UserProfileCard extends LocalizeUserProfileCard(LitElement) {
 				</div>
 			`;
 		}
+	}
+
+	_renderSocialMedia() {
+		return html`
+			<div class="${this.website !== '' || this._showSocialMedia ? 'd2l-labs-profile-card-media' : '' }">
+				<slot name="social-media-icons"  @slotchange="${this._onSocialSlotChange}"></slot>
+				${this.website !== '' ? html`<d2l-link class="d2l-labs-profile-card-website d2l-body-compact" href="#">${this.website}</d2l-link>` : ''}
+			</div>`;
 	}
 
 	async _reposition() {

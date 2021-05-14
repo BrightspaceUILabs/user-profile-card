@@ -11,14 +11,23 @@ export const profileCardStyles = css`
 	position: absolute;
 	background-color: white;
 	display: grid;
-	width: 600px;
-	grid-template-columns: [start illustration-start] 5.45rem [illustration-end info-start] auto [info-end] 0.4rem [end];
-	grid-template-rows: [start header-start] 5.45rem [header-end] auto [basic-info-end awards-start] auto [awards-end contact-start] auto [contact-end end];
+	width: 520px;
+	grid-template-columns: [start] 20px [illustration-start] 100px [illustration-end] 18px [basic-info-start] minmax(0px, 70%) [basic-info-end] 20px [end];
+	grid-template-rows: [start] 20px [basic-info-start] 120px [illustration-end] auto [basic-info-end awards-start] auto [awards-end contact-start] auto [contact-end end];
 	border: 1px solid var(--d2l-color-gypsum);
 	border-radius: 6px;
 	box-shadow: 0 4px 8px 0 rgba(73, 76, 78, 0.2), 0 6px 20px 0 rgba(73, 76, 78, 0.2); /* ferrite */
 	z-index: 1001;
 }
+
+@media (max-width: 615px) {
+	.d2l-labs-profile-card {
+		max-width: 90vw;
+		grid-template-columns: [start] 0px [illustration-start] 72px [illustration-end] 18px [basic-info-start] minmax(0px, 80%) [basic-info-end] 20px [end];
+		grid-template-rows: [start] 12px [basic-info-start] 72px [illustration-end] auto [basic-info-end awards-start] auto [awards-end contact-start] auto [contact-end end];
+	}
+}
+
 .d2l-labs-profile-card-fading {
 	transition: opacity 0.4s ease-out;
 	opacity: 0;
@@ -50,73 +59,83 @@ export const profileCardStyles = css`
 :host([opened-above]) .d2l-labs-profile-card-pointer > div {
 	box-shadow: 4px 4px 12px -5px rgba(73, 76, 78, 0.2); /* ferrite */
 }
-
-/* Layout */
-.d2l-labs-profile-card-basic-info {
-	grid-column: info-start / info-end;
-	grid-row: header-start / basic-info-end;
-	border-bottom: 1px solid var(--d2l-color-mica);
-	vertical-align: middle;
-	width: 100%;
-	height: 100%;
-}
-.d2l-labs-profile-card-awards {
-	grid-column: start / end;
-	grid-row: awards-start / awards-end;
-	border-top: 1px solid var(--d2l-color-mica);
-	overflow: hidden;
-	width: 100%;
-	height: 100%;
-}
-.d2l-labs-profile-card-contact {
-	grid-column: start / end;
-	grid-row: contact-start / contact-end;
-	border-top: 1px solid var(--d2l-color-mica);
-	background-color: var(--d2l-color-regolith);
+@media (max-width: 615px) {
+	.d2l-labs-profile-card-pointer,
+	.d2l-labs-profile-card-pointer > div  {
+		display: none;
+	}
 }
 
 /* Profile Image */
 .d2l-labs-profile-card-image {
 	grid-column: illustration-start / illustration-end;
-	grid-row: header-start / header-end;
-	border-top-left-radius: 6px;
-	margin-left: 0.4rem;
-	margin-top: 0.4rem;
-	width: calc(5rem + 2px);
-	height: calc(5rem + 2px);
-	z-index: 10;
-	background-origin: border-box;
+	grid-row: basic-info-start / illustration-end;
+	border-radius: 6px;
+	width: 100px;
+	height: 100px;
+	margin-left: 20px;
+	margin-top: 20px;
 }
 :host([dir="rtl"]) .d2l-labs-profile-card-image {
-	border-top-left-radius: 0;
-	border-top-right-radius: 6px;
 	margin-left: auto;
-	margin-right: 0.4rem;
+	margin-right: 20px;
 }
 .d2l-labs-profile-card-image-wrapper {
-    position:relative;
+  position: relative;
 }
 .d2l-labs-profile-card-image-wrapper:after {
 	content:"";
-	position:absolute;
-	border-top-left-radius: 6px;
-	top: 0.4rem;
-	left: 0.4rem;
+	position: absolute;
+	border-radius: 6px;
 	box-sizing: border-box;
-	width: calc(5rem + 2px);
-	height: calc(5rem + 2px);
+	width: 100px;
+	height: 100px;
+	top: 20px;
+	left: 20px;
 	opacity:0.2;
 	border: 1px solid var(--d2l-color-tungsten);
 }
 :host([dir="rtl"]) .d2l-labs-profile-card-image-wrapper:after {
-	border-top-left-radius: 0;
-	border-top-right-radius: 6px;
 	left: auto;
-	right: 0.4rem;
+	right: 20px;
+}
+
+@media (max-width: 615px) {
+	.d2l-labs-profile-card-image {
+		grid-row: start / illustration-end;
+		border-radius: 0px;
+		border-top-left-radius: 6px;
+		margin-left: -1px;
+		margin-top: -1px;
+		width: 72px;
+		height: 72px;
+	}
+	:host([dir="rtl"]) .d2l-labs-profile-card-image {
+		border-radius: 0px;
+		border-top-right-radius: 6px;
+		margin-left: auto;
+		margin-right: -1px;
+	}
+	.d2l-labs-profile-card-image-wrapper:after {
+		border-radius: 0px;
+		border-top-left-radius: 6px;
+		left: -1px;
+		top: -1px;
+		width: 72px;
+		height: 72px;
+	}
+	:host([dir="rtl"]) .d2l-labs-profile-card-image-wrapper:after {
+		left: auto;
+		right: -1px;
+	}
 }
 
 /*Basic Info */
 .d2l-labs-profile-card-basic-info {
+	grid-column: basic-info-start / basic-info-end;
+	grid-row: basic-info-start / basic-info-end;
+	vertical-align: middle;
+	margin-bottom: 12px;
 	display: flex;
 	flex-direction: column;
 	justify-content: flex-start;
@@ -133,11 +152,11 @@ export const profileCardStyles = css`
 	align-self: center;
 	display:flex;
 	align-items: center;
-	margin-left: 0.9rem;
+	margin-left: 18px;
 }
 :host([dir="rtl"]) .d2l-labs-profile-card-status {
 	margin-left: auto;
-	margin-right: 0.9rem;
+	margin-right: 18px;
 }
 :host([online]) .d2l-labs-profile-card-status {
 	color: var(--d2l-color-olivine-minus-1);
@@ -150,7 +169,7 @@ export const profileCardStyles = css`
 	display:flex;
 	margin: 0;
 	padding: 0;
-	margin-top: 0.3rem;
+	margin-top: 6px;
 }
 .d2l-labs-profile-card-attributes li {
 	display: inline;
@@ -164,16 +183,15 @@ export const profileCardStyles = css`
 	margin: 0.05rem 0.35rem;
 	background-color: #6E7376;
 }
-
-/* Content */
-.d2l-labs-profile-card-content {
-	margin: 0.9rem 1.2rem 1.2rem 1.2rem;
-	color: var(--d2l-color-ferrite);
-	display: flex;
-	flex-direction: column;
+.d2l-labs-profile-card-tagline {
+	display: -webkit-box;
+  -webkit-line-clamp: 3;
+	-webkit-box-orient: vertical;
+	overflow: hidden;
+	margin-top: 12px;
 }
 .d2l-labs-profile-card-media {
-	margin-top: 1.05rem;
+	margin-top: 6px;
 	display: flex;
 	align-items: center;
 }
@@ -182,36 +200,42 @@ export const profileCardStyles = css`
 	grid-gap: 14px;
 	grid-auto-flow: column;
 	grid-auto-columns: 24px;
-	margin-right: 0.6rem;
+	margin-right: 12px;
 	width: 100px;
 }
 :host([dir="rtl"]) ::slotted([slot=social-media-icons])  {
 	margin-right: 0;
-	margin-left: 0.6rem;
+	margin-left: 12px;
+}
+.d2l-labs-profile-card-website {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 /* Awards */
 .d2l-labs-profile-card-awards {
 	grid-column: start / end;
-	grid-row: 3 / 4;
+	grid-row: awards-start / awards-end;
+	border-top: 1px solid var(--d2l-color-mica);
 	color: black;
 	display: flex;
-	flex-direction: column;
 }
 ::slotted([slot=awards-icons]) {
 	display: grid;
 	grid-gap: 14px;
 	grid-auto-flow: column;
 	grid-auto-columns: 40px;
-	margin: 0.9rem 1.2rem;
+	margin: 18px 20px;
 }
 
 /* Contact */
 .d2l-labs-profile-card-contact {
 	grid-column: start / end;
-	grid-row: media-start / media-end;
-	padding: 0.7rem 1.2rem;
-	color: black;
+	grid-row: contact-start / contact-end;
+	border-top: 1px solid var(--d2l-color-mica);
+	background-color: var(--d2l-color-regolith);
+	padding: 12px 20px;
 }
 .d2l-labs-profile-card-contact-info {
 	display: flex;
@@ -223,6 +247,6 @@ export const profileCardStyles = css`
 	grid-auto-flow: column;
 	grid-auto-columns: 24px;
 	margin: 13px 0;
-	margin-top: 11px;
+	margin-top: 12px;
 }
 `;
