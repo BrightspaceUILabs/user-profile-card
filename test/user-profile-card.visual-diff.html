@@ -6,12 +6,17 @@
 		import '@brightspace-ui/core/components/typography/typography.js';
 		import '../user-profile-card.js';
 	</script>
+	<script>
+		const rtl = (window.location.search.indexOf('dir=rtl') !== -1);
+		if (rtl) document.documentElement.setAttribute('dir', 'rtl');
+	</script>
 	<title>d2l-user-profile-card visual-diff tests</title>
 	<meta name="viewport" content="width=device-width, minimum-scale=1, initial-scale=1.0">
 	<meta charset="UTF-8">
 	<style>
 
 		html, body {
+			font-size: 20px;
 			height: 100%;
 			margin: 0;
 			box-sizing: border-box;
@@ -109,29 +114,6 @@
 
 		<div class="test-case top middle-horizontal">
 			<d2l-labs-user-profile-card id="with-awards"
-				show-email show-im show-progress
-				display-name="Person's Name"
-				image="./img/maya.jpg"
-				tagline="This is a tagline!"
-				user-attributes=["Attribute1","Attribute2"]
-				href="./data/user.json"
-				token="token"
-				website="www.website.com">
-				<div slot="social-media-icons">
-					<d2l-icon icon="tier2:save"></d2l-icon>
-					<d2l-icon icon="tier2:browser"></d2l-icon>
-					<d2l-icon icon="tier2:send"></d2l-icon>
-				</div>
-				<div slot="awards-icons">
-					<img src="./img/Badge_Grad_Hat.png" width="40px"/>
-					<img src="./img/book-award.png" width="40px"/>
-				</div>
-			</d2l-labs-user-profile-card>
-		</div>
-
-		<div class="test-case top middle-horizontal">
-			<d2l-labs-user-profile-card id="with-awards-rtl"
-				dir="rtl"
 				show-email show-im show-progress
 				display-name="Person's Name"
 				image="./img/maya.jpg"

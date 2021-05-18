@@ -51,12 +51,33 @@ describe('d2l-labs-user-profile-card', () => {
 		});
 	}
 
+	['rtl', 'ltr'].forEach((dir) => {
+		describe(dir, () => {
+
+			before(async() => {
+				await page.goto(`${visualDiff.getBaseUrl()}/test/user-profile-card.visual-diff.html?dir=${dir}`, { waitUntil: ['networkidle0', 'load'] });
+				await page.bringToFront();
+			});
+
+			[
+				'default',
+				'long-info',
+				'with-actions',
+				'with-awards',
+			].forEach((testName) => {
+
+				it(testName, async function() {
+					const selector = `#${testName}`;
+					await open(page, selector);
+					const rect = await getRect(page, selector);
+					await visualDiff.screenshotAndCompare(page, this.test.fullTitle(), { clip: rect });
+				});
+
+			});
+		});
+	});
+
 	[
-		'default',
-		'long-info',
-		'with-actions',
-		'with-awards',
-		'with-awards-rtl',
 		'position-top-left',
 		'position-top-middle',
 		'position-top-right',
