@@ -237,16 +237,4 @@ export const profileCardStyles = css`
 	background-color: var(--d2l-color-regolith);
 	padding: 12px 20px;
 }
-.d2l-labs-profile-card-contact-info {
-	display: flex;
-	justify-content: start;
-}
-::slotted([slot=contact-items]) {
-	display: grid;
-	grid-gap: 14px;
-	grid-auto-flow: column;
-	grid-auto-columns: 24px;
-	margin: 13px 0;
-	margin-top: 12px;
-}
 `;

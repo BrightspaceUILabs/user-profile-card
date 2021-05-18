@@ -2,7 +2,6 @@ import '@brightspace-ui/core/components/button/button-subtle.js';
 import '@brightspace-ui/core/components/colors/colors.js';
 import '@brightspace-ui/core/components/focus-trap/focus-trap.js';
 import '@brightspace-ui/core/components/icons/icon.js';
-import '@brightspace-ui/core/components/inputs/input-textarea.js';
 import 'd2l-users/components/d2l-profile-image.js';
 import { bodyCompactStyles, bodySmallStyles, bodyStandardStyles, heading2Styles, labelStyles } from '@brightspace-ui/core/components/typography/styles.js';
 import { html, LitElement } from 'lit-element/lit-element.js';
@@ -12,6 +11,7 @@ import { linkStyles } from '@brightspace-ui/core/components/link/link.js';
 import { LocalizeUserProfileCard } from './localize-user-profile-card.js';
 import { offscreenStyles } from '@brightspace-ui/core/components/offscreen/offscreen.js';
 import { profileCardStyles } from './user-profile-card-styles.js';
+import { RtlMixin } from '@brightspace-ui/core/mixins/rtl-mixin.js';
 
 const keyCodes = {
 	DOWN: 40,
@@ -21,7 +21,7 @@ const keyCodes = {
 
 const openerGap = 10; /* spacing between card and opener */
 const viewportMargin = 18;
-class UserProfileCard extends LocalizeUserProfileCard(LitElement) {
+class UserProfileCard extends LocalizeUserProfileCard(RtlMixin(LitElement)) {
 
 	static get properties() {
 		return {
