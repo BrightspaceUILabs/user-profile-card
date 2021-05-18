@@ -5,9 +5,11 @@
   "publishConfig": {
     "access": "public"
   },
-  "version": "0.3.0",
+  "version": "0.4.1",
   "files": [
+    "localize-user-profile-card.js",
     "user-profile-card.js",
+    "user-profile-html-block.js",
     "/lang"
   ],
   "scripts": {
