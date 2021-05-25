@@ -23,7 +23,7 @@ export const profileCardStyles = css`
 @media (max-width: 615px) {
 	.d2l-labs-profile-card {
 		max-width: 90vw;
-		grid-template-columns: [start] 0px [illustration-start] 3.6rem [illustration-end] 0.9rem [basic-info-start] minmax(0, 80%) [basic-info-end] 1rem [end];
+		grid-template-columns: [start] 0 [illustration-start] 3.6rem [illustration-end] 0.9rem [basic-info-start] minmax(0, 80%) [basic-info-end] 1rem [end];
 		grid-template-rows: [start] 0.6rem [basic-info-start] 3.6rem [illustration-end] auto [basic-info-end awards-start] auto [awards-end contact-start] auto [contact-end end];
 	}
 }
@@ -117,7 +117,7 @@ export const profileCardStyles = css`
 		margin-right: -1px;
 	}
 	.d2l-labs-profile-card-image-wrapper:after {
-		border-radius: 0px;
+		border-radius: 0;
 		border-top-left-radius: 6px;
 		left: -1px;
 		top: -1px;
