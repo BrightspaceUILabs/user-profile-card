@@ -36,12 +36,12 @@ npm install @brightspace-ui-labs/user-profile-card
 </script>
 <d2l-labs-user-profile-card online
     display-name="Maya Jones"
+    image="maya.jpg"
+    tagline="I am a tagline!"
     user-attributes=["Adminstrator","she/her"]
+    website="www.mayaSuperWebsite.com"
     token="sometoken"
     href="somehref">
-    <img slot="illustration" src="maya.jpg" width="116px" height="116px" />
-    <div slot="tagline">I am a tagline!</div>
-    <d2l-link href="#" slot="website">www.mayaSuperWebsite.com</d2l-link>
     <div slot="social-media-icons">
         <d2l-icon icon="tier2:save"></d2l-icon>
         <d2l-icon icon="tier2:browser"></d2l-icon>
@@ -56,11 +56,13 @@ npm install @brightspace-ui-labs/user-profile-card
 |--|--|--|
 |online|Boolean|Whether the user is currently online|
 |display-name|String|Name to be displayed for user|
+|image|String|Path to user image to display on card|
 |user-attributes|Array|A list of attributes for the user such as role and pronouns|
 |show-email|Boolean|Whether the current viewer can send emails to this user|
 |show-im|Boolean|Whether the current viewer can send instant messages to this user|
 |show-progress|Boolean|Whether the current viewer can access the users progress|
 |tagline|String|The tagline for the user|
+|website|String|User Website URL|
 |small-opener|Boolean|Use a small user-avatar for the opener (defaults to medium)|
 |medium-opener|Boolean|Use a medium user-avatar for the opener (default)|
 |large-opener|Boolean|Use a large user-avatar for the opener (defaults to medium)|
