@@ -12,7 +12,7 @@
 				"https://api.brightspace.com/rels/display-name"
 			],
 			"properties": {
-				"name": "First"
+				"name": "Person's"
 			}
 		},
 		{
@@ -24,7 +24,7 @@
 				"https://api.brightspace.com/rels/first-name"
 			],
 			"properties": {
-				"name": "First"
+				"name": "Person's"
 			}
 		},
 		{
@@ -36,7 +36,7 @@
 				"https://api.brightspace.com/rels/last-name"
 			],
 			"properties": {
-				"name": "Last"
+				"name": "Name"
 			}
 		},
 		{

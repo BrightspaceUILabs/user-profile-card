@@ -15,12 +15,10 @@
 
 			<h2>large opener, show status, social-media, user attributes</h2>
 			<d2l-demo-snippet>
-				<d2l-labs-user-profile-card online show-status large-opener
-					href="./data/user.json"
+				<d2l-labs-user-profile-card show-status large-opener
+					href="./data/user-enrolled.json"
 					token="token"
-					image="./img/maya.jpg"
 					website="www.mayaSuperWebsiteExtraLongName.com"
-					display-name="Maya Jones"
 					user-attributes=["Adminstrator","she/her"]
 					tagline="This is my tagline, yo! It could potentially be long enough to cause wrapping. I don't think we impose any limits on the length of this field."
 					>
@@ -35,10 +33,8 @@
 			<h2>small opener, email, user attributes</h2>
 			<d2l-demo-snippet>
 				<d2l-labs-user-profile-card small-opener
-					href="./data/user.json"
+					href="./data/user-enrolled.json"
 					token="token"
-					image="./img/maya.jpg"
-					display-name="Maya Jones"
 					user-attributes=["Adminstrator","she/her"]
 					website="www.mayaSuperWebsite.com">
 				</d2l-labs-user-profile-card>
@@ -47,10 +43,8 @@
 			<h2>email, instant message, progress</h2>
 			<d2l-demo-snippet>
 				<d2l-labs-user-profile-card  show-email show-im show-progress
-					href="./data/user.json"
+					href="./data/user-enrolled.json"
 					token="token"
-					image="./img/maya.jpg"
-					display-name="Maya Jones"
 					tagline="This is my tagline, yo!">
 				</d2l-labs-user-profile-card>
 			</d2l-demo-snippet>
@@ -58,11 +52,9 @@
 			<h2>user-attributes, social-media, awards</h2>
 			<d2l-demo-snippet>
 				<d2l-labs-user-profile-card offline
-					href="./data/user.json"
+					href="./data/user-enrolled.json"
 					token="token"
-					image="./img/maya.jpg"
 					website="www.mayaSuperWebsite.com"
-					display-name="Maya Jones"
 					user-attributes=["Adminstrator","she/her"]
 					tagline="This is my tagline, yo! It could potentially be long enough to cause wrapping. I don't think we impose any limits on the length of this field.">
 					<div slot="social-media-icons">
@@ -80,10 +72,7 @@
 		<script type="text/javascript">
 			const profileCards = document.querySelectorAll('d2l-labs-user-profile-card');
 			profileCards.forEach((card) => {
-				card.addEventListener('d2l-labs-user-profile-card-profile', (e) => {console.log(e);});
 				card.addEventListener('d2l-labs-user-profile-card-opened', (e) => {console.log(e);});
-				card.addEventListener('d2l-labs-user-profile-card-message', (e) => {console.log(e);});
-				card.addEventListener('d2l-labs-user-profile-card-email', (e) => {console.log(e);});
 				card.addEventListener('d2l-labs-user-profile-card-progress', (e) => {console.log(e);});
 			});
 		</script>

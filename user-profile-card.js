@@ -12,6 +12,7 @@ import { LocalizeUserProfileCard } from './localize-user-profile-card.js';
 import { offscreenStyles } from '@brightspace-ui/core/components/offscreen/offscreen.js';
 import { profileCardStyles } from './user-profile-card-styles.js';
 import { RtlMixin } from '@brightspace-ui/core/mixins/rtl-mixin.js';
+import { UserProfileCardController } from './user-profile-card-controller.js';
 
 const keyCodes = {
 	DOWN: 40,
@@ -25,10 +26,7 @@ class UserProfileCard extends LocalizeUserProfileCard(RtlMixin(LitElement)) {
 
 	static get properties() {
 		return {
-			displayName: { type: String, attribute: 'display-name' },
 			href: { type: String },
-			image: { type: String },
-			online: { type: Boolean },
 			showEmail: { type: Boolean, attribute: 'show-email' },
 			showIM: { type: Boolean, attribute: 'show-im' },
 			showProgress: { type: Boolean, attribute: 'show-progress' },
@@ -52,6 +50,9 @@ class UserProfileCard extends LocalizeUserProfileCard(RtlMixin(LitElement)) {
 			},
 			userAttributes: { type: Array, attribute: 'user-attributes', reflect: true },
 			website: { type: String },
+			_displayName: { type: String },
+			_onlineStatus: { type: Boolean },
+			_profileImage: { type: String },
 			_showAwards: { type: Boolean, attribute: false },
 			_isFading: { type: Boolean },
 			_isHovering: { type: Boolean },
@@ -78,8 +79,8 @@ class UserProfileCard extends LocalizeUserProfileCard(RtlMixin(LitElement)) {
 
 	constructor() {
 		super();
-		this.displayName = '';
-		this.online = false;
+		this._displayName = '';
+		this._onlineStatus = false;
 		this.progressViewable = false;
 		this.showEmail = false;
 		this.showIM = false;
@@ -97,6 +98,9 @@ class UserProfileCard extends LocalizeUserProfileCard(RtlMixin(LitElement)) {
 
 		this._onOutsideClick = this._onOutsideClick.bind(this);
 		this._reposition = this._reposition.bind(this);
+
+		this.messagePopout = undefined;
+		this.emailPopout = undefined;
 	}
 
 	connectedCallback() {
@@ -112,13 +116,23 @@ class UserProfileCard extends LocalizeUserProfileCard(RtlMixin(LitElement)) {
 		window.removeEventListener('resize', this._reposition);
 	}
 
-	firstUpdated() {
+	async firstUpdated() {
 		if (!this.small && !this.large && !this.xLarge) {
 			this.medium = true;
 		}
 		this._opener = this.shadowRoot.querySelector('.d2l-labs-user-profile-card-opener');
 		this._card = this.shadowRoot.querySelector('.d2l-labs-profile-card');
 		this._pointer = this.shadowRoot.querySelector('.d2l-labs-profile-card-pointer');
+
+		const controller = new UserProfileCardController(this.href, this.token);
+		const result = await controller.getEnrolledUser();
+		this._userHref = result.canonicalUserHref;
+		this._displayName = result.displayName;
+		this._emailPath = result.emailPath;
+		this._profileimage = result.userProfileImage;
+		this._onlineStatus = result.onlineStatus;
+		this._pagerPath = result.pagerPath;
+		this._userProfilePath = result.userProfilePath;
 	}
 
 	render() {
@@ -143,9 +157,9 @@ class UserProfileCard extends LocalizeUserProfileCard(RtlMixin(LitElement)) {
 			<d2l-profile-image ?small=${this.small} ?medium=${this.medium} ?large=${this.large} ?xlarge=${this.xlarge}
 				aria-expanded="${!hidden}"
 				aria-haspopup="true"
-				aria-label="${this.localize('profileCardOpener', { displayName : this.displayName })}"
+				aria-label="${this.localize('profileCardOpener', { displayName : this._displayName })}"
 				class="d2l-labs-user-profile-card-opener"
-				href=${this.href}
+				href=${this._userHref}
 				.token=${this.token}
 				tabindex="0"
 				@mouseenter=${this._onMouseEnter}
@@ -163,15 +177,15 @@ class UserProfileCard extends LocalizeUserProfileCard(RtlMixin(LitElement)) {
 					@mouseenter=${this._onMouseEnter}
 					@mouseleave=${this._onMouseLeave}>
 					<div class="d2l-labs-profile-card-image-wrapper"
-							@click="${this._onProfileImageClick}">
-						${this.image ? html`
-							<img class="d2l-labs-profile-card-image d2l-link" title="${this.localize('openProfile', { displayName : this.displayName })}"
-								src="${this.image}"/>
+							@click="${this._openUserProfile}">
+						${this._profileimage ? html`
+							<img class="d2l-labs-profile-card-image d2l-link" title="${this.localize('openProfile', { displayName : this._displayName })}"
+								src="${this._profileimage}"/>
 						` : ''}
 					</div>
 					<div class="d2l-labs-profile-card-basic-info">
 						<div class="d2l-labs-profile-card-name-and-online">
-							<a class="d2l-heading-2 d2l-labs-profile-card-name d2l-link" tabindex="0" title="${this.localize('openProfile', { displayName : this.displayName })}" @click="${this._onDisplayNameClick}">${this.displayName}</a>
+							<a class="d2l-heading-2 d2l-labs-profile-card-name d2l-link" tabindex="0" title="${this.localize('openProfile', { displayName : this._displayName })}" @click="${this._openUserProfile}">${this._displayName}</a>
 							${this._renderOnlineStatus()}
 						</div>
 						${this.userAttributes.length > 0 ? html`
@@ -212,12 +226,19 @@ class UserProfileCard extends LocalizeUserProfileCard(RtlMixin(LitElement)) {
 		}
 	}
 
-	_onDisplayNameClick() {
-		this.dispatchEvent(new CustomEvent('d2l-labs-user-profile-card-profile'));
-	}
-
 	_onEmailClick() {
-		this.dispatchEvent(new CustomEvent('d2l-labs-user-profile-card-email'));
+		if (this.emailPopout) {
+			if (!this.emailPopout.closed) {
+				this.emailPopout.focus();
+				return;
+			}
+		}
+
+		this.emailPopout = window.open(
+			this._emailPath,
+			'emailPopout',
+			'width=1000,height=1000,scrollbars=no,toolbar=no,screenx=0,screeny=0,location=no,titlebar=no,directories=no,status=no,menubar=no'
+		);
 	}
 
 	_onKeyDown(e) {
@@ -228,7 +249,18 @@ class UserProfileCard extends LocalizeUserProfileCard(RtlMixin(LitElement)) {
 	}
 
 	_onMessageClick() {
-		this.dispatchEvent(new CustomEvent('d2l-labs-user-profile-card-message'));
+		if (this.messagePopout) {
+			if (!this.messagePopout.closed) {
+				this.messagePopout.focus();
+				return;
+			}
+		}
+
+		this.messagePopout = window.open(
+			this._pagerPath,
+			'messagePopout',
+			'width=400,height=200,scrollbars=no,toolbar=no,screenx=0,screeny=0,location=no,titlebar=no,directories=no,status=no,menubar=no'
+		);
 	}
 
 	_onMouseEnter() {
@@ -277,10 +309,6 @@ class UserProfileCard extends LocalizeUserProfileCard(RtlMixin(LitElement)) {
 		}
 	}
 
-	_onProfileImageClick() {
-		this.dispatchEvent(new CustomEvent('d2l-labs-user-profile-card-profile'));
-	}
-
 	_onProgressClick() {
 		this.dispatchEvent(new CustomEvent('d2l-labs-user-profile-card-progress'));
 	}
@@ -289,6 +317,12 @@ class UserProfileCard extends LocalizeUserProfileCard(RtlMixin(LitElement)) {
 		const socialMediaNodes = e.target.assignedNodes();
 		if (socialMediaNodes.length !== 0) {
 			this._showSocialMedia = true;
+		}
+	}
+
+	_openUserProfile() {
+		if (this._userProfilePath) {
+			window.open(this._userProfilePath);
 		}
 	}
 
@@ -330,9 +364,15 @@ class UserProfileCard extends LocalizeUserProfileCard(RtlMixin(LitElement)) {
 
 	_renderOnlineStatus() {
 		if (this.showStatus) {
+			const onlineClasses = {
+				'd2l-labs-profile-card-status' : true,
+				'd2l-labs-profile-card-status-online' : this._onlineStatus,
+				'd2l-label-text': true
+			};
+
 			return html`
-				<div class="d2l-labs-profile-card-status d2l-label-text">
-					${ this.online ? html`
+				<div class="${classMap(onlineClasses)}">
+					${ this._onlineStatus ? html`
 						<d2l-icon icon="tier2:dot"></d2l-icon>${this.localize('online')}
 					` : html`
 						<d2l-icon icon="tier2:dot"></d2l-icon>${this.localize('offline')}
