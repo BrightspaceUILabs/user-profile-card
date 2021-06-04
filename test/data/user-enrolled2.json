@@ -6,37 +6,13 @@
   "entities": [
     {
       "class": [
-        "email"
-      ],
-      "rel": [
-        "https://api.brightspace.com/rels/email"
-      ],
-      "properties": {
-        "path": "#fake-email-path"
-      }
-    },
-    {
-      "class": [
-        "pager",
-        "relative-uri"
-      ],
-      "rel": [
-        "https://api.brightspace.com/rels/pager"
-      ],
-      "properties": {
-        "path": "#fake-pager-path"
-      }
-    },
-    {
-      "class": [
         "profile"
       ],
       "rel": [
         "https://api.brightspace.com/rels/user-profile"
       ],
       "properties": {
-        "path": "#fake-profile-path",
-        "isOnline": true
+        "path": "#fake-profile-path"
       },
       "entities": [
         {
@@ -83,7 +59,7 @@
         "https://api.brightspace.com/rels/display-name"
       ],
       "properties": {
-        "name": "Maya Jones"
+        "name": "Person's Name"
       }
     },
     {

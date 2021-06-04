@@ -27,10 +27,6 @@ class UserProfileCard extends LocalizeUserProfileCard(RtlMixin(LitElement)) {
 	static get properties() {
 		return {
 			href: { type: String },
-			showEmail: { type: Boolean, attribute: 'show-email' },
-			showIM: { type: Boolean, attribute: 'show-im' },
-			showProgress: { type: Boolean, attribute: 'show-progress' },
-			showStatus: { type: Boolean, attribute: 'show-status' },
 			small: { type: Boolean, attribute: 'small-opener' },
 			medium: { type: Boolean, attribute: 'medium-opener' },
 			large: { type: Boolean, attribute: 'large-opener' },
@@ -49,6 +45,7 @@ class UserProfileCard extends LocalizeUserProfileCard(RtlMixin(LitElement)) {
 				}
 			},
 			userAttributes: { type: Array, attribute: 'user-attributes', reflect: true },
+			userProgressHref: { type: String, attribute: 'user-progress-href' },
 			website: { type: String },
 			_displayName: { type: String },
 			_onlineStatus: { type: Boolean },
@@ -62,6 +59,9 @@ class UserProfileCard extends LocalizeUserProfileCard(RtlMixin(LitElement)) {
 				reflect: true,
 				attribute: 'opened-above'
 			},
+			_userProfileCardSettings: {
+				type: Object
+			}
 		};
 	}
 
@@ -81,12 +81,7 @@ class UserProfileCard extends LocalizeUserProfileCard(RtlMixin(LitElement)) {
 		super();
 		this._displayName = '';
 		this._onlineStatus = false;
-		this.progressViewable = false;
-		this.showEmail = false;
-		this.showIM = false;
-		this.showProgress = false;
 		this._showAwards = false;
-		this.showStatus = false;
 		this.tagline = '';
 		this.website = '';
 		this.userAttributes = [];
@@ -131,15 +126,18 @@ class UserProfileCard extends LocalizeUserProfileCard(RtlMixin(LitElement)) {
 		this._emailPath = result.emailPath;
 		this._profileimage = result.userProfileImage;
 		this._onlineStatus = result.onlineStatus;
+		this._orgDefinedId = result.orgDefinedId;
 		this._pagerPath = result.pagerPath;
 		this._userProfilePath = result.userProfilePath;
+
+		this._userProfileCardSettings = await controller.getProfileCardSettings();
 	}
 
 	render() {
-		this.userAttributes.map((item) => {
-			return html`<li>${item}</li>`;
-		});
-
+		const userAttributes = [...this.userAttributes];
+		if (this._userProfileCardSettings && this._userProfileCardSettings.showOrgDefinedId && this._orgDefinedId !== undefined) {
+			userAttributes.push(this._orgDefinedId);
+		}
 		const hidden = !this._isOpen && !this._isHovering;
 		const openAlert = hidden ? this.localize('profileCardClosed') : this.localize('profileCardOpened');
 
@@ -152,7 +150,6 @@ class UserProfileCard extends LocalizeUserProfileCard(RtlMixin(LitElement)) {
 			'd2l-labs-profile-card-pointer' : true,
 			'd2l-labs-profile-card-fading' : this._isFading
 		};
-
 		return html`
 			<d2l-profile-image ?small=${this.small} ?medium=${this.medium} ?large=${this.large} ?xlarge=${this.xlarge}
 				aria-expanded="${!hidden}"
@@ -178,7 +175,7 @@ class UserProfileCard extends LocalizeUserProfileCard(RtlMixin(LitElement)) {
 					@mouseleave=${this._onMouseLeave}>
 					<div class="d2l-labs-profile-card-image-wrapper"
 							@click="${this._openUserProfile}">
-						${this._profileimage ? html`
+						${this._userProfileCardSettings && this._userProfileCardSettings.showPicture && this._profileimage ? html`
 							<img class="d2l-labs-profile-card-image d2l-link" title="${this.localize('openProfile', { displayName : this._displayName })}"
 								src="${this._profileimage}"/>
 						` : ''}
@@ -188,11 +185,11 @@ class UserProfileCard extends LocalizeUserProfileCard(RtlMixin(LitElement)) {
 							<a class="d2l-heading-2 d2l-labs-profile-card-name d2l-link" tabindex="0" title="${this.localize('openProfile', { displayName : this._displayName })}" @click="${this._openUserProfile}">${this._displayName}</a>
 							${this._renderOnlineStatus()}
 						</div>
-						${this.userAttributes.length > 0 ? html`
+						${userAttributes.length > 0 ? html`
 							<ul class="d2l-labs-profile-card-attributes d2l-body-small">
-								${this.userAttributes.map((item) => html`<li>${item}</li>`)}
+								${userAttributes.map((item) => html`<li>${item}</li>`)}
 							</ul>` : html`` }
-						${this.tagline !== '' ? html`<div class="d2l-labs-profile-card-tagline d2l-body-standard">${this.tagline}</div>` : html``}
+						${this._userProfileCardSettings && this._userProfileCardSettings.showTagline && this.tagline !== '' ? html`<div class="d2l-labs-profile-card-tagline d2l-body-standard">${this.tagline}</div>` : html``}
 						${this._renderSocialMedia()}
 					</div>
 					${this._renderAwardIcons()}
@@ -310,7 +307,9 @@ class UserProfileCard extends LocalizeUserProfileCard(RtlMixin(LitElement)) {
 	}
 
 	_onProgressClick() {
-		this.dispatchEvent(new CustomEvent('d2l-labs-user-profile-card-progress'));
+		if (this.userProgressHref) {
+			window.open(this.userProgressHref);
+		}
 	}
 
 	_onSocialSlotChange(e) {
@@ -327,31 +326,33 @@ class UserProfileCard extends LocalizeUserProfileCard(RtlMixin(LitElement)) {
 	}
 
 	_renderAwardIcons() {
-		return html`
+		if (this._userProfileCardSettings && this._userProfileCardSettings.showBadgeTrophy) {
+			return html`
 			<div class="${this._showAwards ? 'd2l-labs-profile-card-awards' : '' }">
 				<slot name="awards-icons" @slotchange="${this._onAwardsSlotChange}"></slot>
 			</div>
 		`;
+		}
 	}
 
 	_renderContactInfo() {
-		if (this.showEmail || this.showIM || this.showProgress) {
+		if (this._emailPath || this._pagerPath || this.userProgressHref) {
 			return html`
 			<div class="d2l-labs-profile-card-contact">
 				<div class="d2l-labs-profile-card-contact-info">
-					${ this.showEmail ? html`<d2l-button-subtle
+					${ this._emailPath ? html`<d2l-button-subtle
 						@click="${this._onEmailClick}"
 						h-align="text"
 						icon="tier1:email"
 						id="email"
 						text="${this.localize('email')}"></d2l-button-subtle>` : html`` }
-					${ this.showIM ? html`<d2l-button-subtle
+					${ this._pagerPath ? html`<d2l-button-subtle
 						@click="${this._onMessageClick}"
 						h-align="text"
 						icon="tier1:add-message"
 						id="message"
 						text="${this.localize('instantMessage')}"></d2l-button-subtle>` : html`` }
-					${ this.showProgress ? html`<d2l-button-subtle
+					${ this.userProgressHref ? html`<d2l-button-subtle
 						@click="${this._onProgressClick}"
 						h-align="text"
 						icon="tier1:user-progress"
@@ -363,7 +364,7 @@ class UserProfileCard extends LocalizeUserProfileCard(RtlMixin(LitElement)) {
 	}
 
 	_renderOnlineStatus() {
-		if (this.showStatus) {
+		if (this._userProfileCardSettings && this._userProfileCardSettings.showOnlineStatus) {
 			const onlineClasses = {
 				'd2l-labs-profile-card-status' : true,
 				'd2l-labs-profile-card-status-online' : this._onlineStatus,
@@ -383,10 +384,14 @@ class UserProfileCard extends LocalizeUserProfileCard(RtlMixin(LitElement)) {
 	}
 
 	_renderSocialMedia() {
+		//if we don't render this div we can't check for slot contents
+		const showSocialMedia = this._userProfileCardSettings && this._userProfileCardSettings.showSocialMedia && this._showSocialMedia;
+		const showWebsite = this._userProfileCardSettings && this._userProfileCardSettings.showHomepageUrl && this.website !== '';
+
 		return html`
-			<div class="${this.website !== '' || this._showSocialMedia ? 'd2l-labs-profile-card-media' : '' }">
-				<slot name="social-media-icons"  @slotchange="${this._onSocialSlotChange}"></slot>
-				${this.website !== '' ? html`<d2l-link class="d2l-labs-profile-card-website d2l-body-compact" href="#">${this.website}</d2l-link>` : ''}
+			<div class="${showSocialMedia || showWebsite ? 'd2l-labs-profile-card-media' : '' }">
+				${showSocialMedia ? html`<slot name="social-media-icons"  @slotchange="${this._onSocialSlotChange}"></slot>` : ''}
+				${showWebsite ? html`<d2l-link class="d2l-labs-profile-card-website d2l-body-compact" href="#">${this.website}</d2l-link>` : ''}
 			</div>`;
 	}
 

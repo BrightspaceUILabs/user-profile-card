@@ -31,6 +31,21 @@ describe('d2l-labs-user-profile-card', () => {
 		return openEvent;
 	}
 
+	function setSettings(page, selector) {
+		page.$eval(selector, (elem) => {
+			elem._userProfileCardSettings = {
+				showPicture: true,
+				showTagline: true,
+				showHomepageUrl: true,
+				showSocial: true,
+				showOnlineStatus: true,
+				showRole: true,
+				showBadgeTrophy: true,
+				showOrgDefinedId: true
+			};
+		});
+	}
+
 	async function getRect(page, selector) {
 		return page.$eval(selector, (elem) => {
 			const opener = elem._opener;
@@ -68,6 +83,7 @@ describe('d2l-labs-user-profile-card', () => {
 
 				it(testName, async function() {
 					const selector = `#${testName}`;
+					setSettings(page, selector);
 					await open(page, selector);
 					const rect = await getRect(page, selector);
 					await visualDiff.screenshotAndCompare(page, this.test.fullTitle(), { clip: rect });
@@ -75,6 +91,13 @@ describe('d2l-labs-user-profile-card', () => {
 
 			});
 		});
+	});
+
+	it('hides info with all settings off', async function() {
+		const selector = '#all-settings-off';
+		await open(page, selector);
+		const rect = await getRect(page, selector);
+		await visualDiff.screenshotAndCompare(page, this.test.fullTitle(), { clip: rect });
 	});
 
 	[
@@ -90,6 +113,7 @@ describe('d2l-labs-user-profile-card', () => {
 
 		it(testName, async function() {
 			const selector = `#${testName}`;
+			setSettings(page, selector);
 			await open(page, selector);
 			const rect = await getRect(page, selector);
 			await visualDiff.screenshotAndCompare(page, this.test.fullTitle(), { clip: rect });

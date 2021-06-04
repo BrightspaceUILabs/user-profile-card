@@ -34,9 +34,7 @@ npm install @brightspace-ui-labs/user-profile-card
 <script type="module">
     import '@brightspace-ui-labs/user-profile-card/user-profile-card.js';
 </script>
-<d2l-labs-user-profile-card online
-    display-name="Maya Jones"
-    image="maya.jpg"
+<d2l-labs-user-profile-card
     tagline="I am a tagline!"
     user-attributes=["Adminstrator","she/her"]
     website="www.mayaSuperWebsite.com"
@@ -54,21 +52,15 @@ npm install @brightspace-ui-labs/user-profile-card
 
 | Property | Type | Description |
 |--|--|--|
-|online|Boolean|Whether the user is currently online|
-|display-name|String|Name to be displayed for user|
-|image|String|Path to user image to display on card|
 |user-attributes|Array|A list of attributes for the user such as role and pronouns|
-|show-email|Boolean|Whether the current viewer can send emails to this user|
-|show-im|Boolean|Whether the current viewer can send instant messages to this user|
-|show-progress|Boolean|Whether the current viewer can access the users progress|
 |tagline|String|The tagline for the user|
 |website|String|User Website URL|
 |small-opener|Boolean|Use a small user-avatar for the opener (defaults to medium)|
 |medium-opener|Boolean|Use a medium user-avatar for the opener (default)|
 |large-opener|Boolean|Use a large user-avatar for the opener (defaults to medium)|
 |xlarge-opener|Boolean|Use an extra-large user-avatar for the opener (defaults to medium)|
-|href|String|Hypermedia href for [user-profile-image](https://github.com/BrightspaceHypermediaComponents/users/blob/master/components/d2l-profile-image-base.js) opener|
-|token|String/Object|token for [user-profile-image](https://github.com/BrightspaceHypermediaComponents/users/blob/master/components/d2l-profile-image-base.js) opener|
+|href|String|Hypermedia href for `enrolled-user`|
+|token|String/Object|token
 
 **Accessibility:**
 

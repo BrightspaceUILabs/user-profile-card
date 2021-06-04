@@ -1,5 +1,6 @@
 {
   "extends": "brightspace/lit-config",
+  "ignorePatterns": ["**/test/screenshots/**/*.html"],
   "overrides": [{
     "files": [
       "**/demo/**.html" ],
