@@ -52,14 +52,15 @@ npm install @brightspace-ui-labs/user-profile-card
 
 | Property | Type | Description |
 |--|--|--|
-|user-attributes|Array|A list of attributes for the user such as role and pronouns|
 |tagline|String|The tagline for the user|
+|user-attributes|Array|A list of attributes for the user such as role and pronouns|
 |website|String|User Website URL|
 |small-opener|Boolean|Use a small user-avatar for the opener (defaults to medium)|
 |medium-opener|Boolean|Use a medium user-avatar for the opener (default)|
 |large-opener|Boolean|Use a large user-avatar for the opener (defaults to medium)|
 |xlarge-opener|Boolean|Use an extra-large user-avatar for the opener (defaults to medium)|
-|href|String|Hypermedia href for `enrolled-user`|
+|href|String|Hypermedia href for `enrolled-user` (required)|
+|user-progress-href|String|Navigation href for user-progress (optional)|
 |token|String/Object|token
 
 **Accessibility:**
