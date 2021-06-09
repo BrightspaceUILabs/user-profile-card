@@ -27,7 +27,7 @@
   "devDependencies": {
     "@babel/eslint-parser": "^7",
     "@open-wc/testing": "^2",
-    "@open-wc/testing-karma": "^3",
+    "@open-wc/testing-karma": "^4.0.9",
     "@webcomponents/webcomponentsjs": "^2",
     "deepmerge": "^3",
     "es-dev-server": "^1",

@@ -152,6 +152,7 @@ class UserProfileCard extends LocalizeUserProfileCard(RtlMixin(LitElement)) {
 		};
 		return html`
 			<d2l-profile-image ?small=${this.small} ?medium=${this.medium} ?large=${this.large} ?xlarge=${this.xlarge}
+				role="button"
 				aria-expanded="${!hidden}"
 				aria-haspopup="true"
 				aria-label="${this.localize('profileCardOpener', { displayName : this._displayName })}"
