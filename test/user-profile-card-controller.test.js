@@ -1,4 +1,4 @@
-import { UserProfileCardController, UserProfileCardControllerErrors } from '../user-profile-card-controller';
+import { UserProfileCardController, UserProfileCardControllerErrors } from '../user-profile-card-controller.js';
 import { assert } from '@open-wc/testing';
 import { Rels } from 'd2l-hypermedia-constants';
 import { stub } from 'sinon';
