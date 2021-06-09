@@ -1,7 +1,7 @@
-import { UserProfileCardController, UserProfileCardControllerErrors } from '../user-profile-card-controller.js';
+import { UserProfileCardController/*, UserProfileCardControllerErrors*/ } from '../user-profile-card-controller.js';
 import { assert } from '@open-wc/testing';
-import { Rels } from 'd2l-hypermedia-constants';
-import { stub } from 'sinon';
+//import { Rels } from 'd2l-hypermedia-constants';
+//import { stub } from 'sinon';
 
 describe('user-profile-card-controller', () => {
 	describe('instantiates properly and throws the correct errors', () => {
