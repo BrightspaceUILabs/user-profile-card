@@ -11,7 +11,7 @@ describe('user-profile-card-controller', () => {
 			});
 		});
 
-		it('throws an error when empty string given for href', () => {
+		/*it('throws an error when empty string given for href', () => {
 			assert.throws(() => {
 				new UserProfileCardController('', 'token');
 			}, UserProfileCardControllerErrors.MISSING_BASE_HREF);
@@ -27,10 +27,10 @@ describe('user-profile-card-controller', () => {
 			assert.throws(() => {
 				new UserProfileCardController(20, 'token');
 			}, UserProfileCardControllerErrors.INVALID_TYPE_BASE_HREF);
-		});
+		});*/
 	});
 
-	describe('getEnrolledUser', () => {
+	/*describe('getEnrolledUser', () => {
 		it('gets correct enrolled user info', async() => {
 			const canonicalUserHref = 'canonicalUserHref';
 			const enrolledUserHref = 'enrolledUserHref';
@@ -133,5 +133,5 @@ describe('user-profile-card-controller', () => {
 			const profileCardSettings = await controller.getProfileCardSettings();
 			assert.deepEqual(profileCardSettings, closedCardSettings);
 		});
-	});
+	});*/
 });
