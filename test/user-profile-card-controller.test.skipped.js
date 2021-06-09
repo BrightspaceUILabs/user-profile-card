@@ -1,6 +1,6 @@
 //Having a problem with tests running CI - ReferenceError: Can't find variable: describe
-//Commented out instead of skipping since 'describe' is the problem
-/*import { UserProfileCardController, UserProfileCardControllerErrors } from '../user-profile-card-controller.js';
+//Skipping by filename because 'describe' is the problem
+import { UserProfileCardController, UserProfileCardControllerErrors } from '../user-profile-card-controller.js';
 import { assert } from '@open-wc/testing';
 import { Rels } from 'd2l-hypermedia-constants';
 import { stub } from 'sinon';
@@ -136,4 +136,4 @@ describe('user-profile-card-controller', () => {
 			assert.deepEqual(profileCardSettings, closedCardSettings);
 		});
 	});
-});*/
+});
