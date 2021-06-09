@@ -1,4 +1,4 @@
-import { UserProfileCardController/*, UserProfileCardControllerErrors*/ } from '../user-profile-card-controller.js';
+import { UserProfileCardController, UserProfileCardControllerErrors } from '../user-profile-card-controller.js';
 import { assert } from '@open-wc/testing';
 //import { Rels } from 'd2l-hypermedia-constants';
 //import { stub } from 'sinon';
@@ -11,13 +11,13 @@ describe('user-profile-card-controller', () => {
 			});
 		});
 
-		/*it('throws an error when empty string given for href', () => {
+		it('throws an error when empty string given for href', () => {
 			assert.throws(() => {
 				new UserProfileCardController('', 'token');
 			}, UserProfileCardControllerErrors.MISSING_BASE_HREF);
 		});
 
-		it('throws an error for null href', () => {
+		/*it('throws an error for null href', () => {
 			assert.throws(() => {
 				new UserProfileCardController(null, 'token');
 			}, UserProfileCardControllerErrors.MISSING_BASE_HREF);
