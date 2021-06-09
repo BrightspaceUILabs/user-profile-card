@@ -1,7 +1,7 @@
 import { UserProfileCardController, UserProfileCardControllerErrors } from '../user-profile-card-controller';
 import { assert } from '@open-wc/testing';
 import { Rels } from 'd2l-hypermedia-constants';
-import sinon from 'sinon';
+import { stub } from 'sinon';
 
 describe('instantiates properly and throws the correct errors', () => {
 	it('accepts a proper href and token string', () => {
@@ -43,7 +43,7 @@ describe('getEnrolledUser', () => {
 
 		const controller = new UserProfileCardController(enrolledUserHref, 'token');
 
-		sinon.stub(controller, '_getEntityFromHref').returns({
+		stub(controller, '_getEntityFromHref').returns({
 			entity: {
 				getSubEntityByRel: (r) => {
 					if (r === Rels.pager) {
@@ -108,7 +108,7 @@ describe('getProfileCardSettings', () => {
 			showOrgDefinedId: true
 		};
 		const controller = new UserProfileCardController('href', 'token');
-		sinon.stub(controller, '_getEntityFromHref').returns({ properties: testCardSettings });
+		stub(controller, '_getEntityFromHref').returns({ properties: testCardSettings });
 
 		const profileCardSettings = await controller.getProfileCardSettings();
 		assert.deepEqual(profileCardSettings, testCardSettings);
@@ -127,7 +127,7 @@ describe('getProfileCardSettings', () => {
 		};
 
 		const controller = new UserProfileCardController('href', 'token');
-		sinon.stub(controller, '_getEntityFromHref').returns(undefined);
+		stub(controller, '_getEntityFromHref').returns(undefined);
 
 		const profileCardSettings = await controller.getProfileCardSettings();
 		assert.deepEqual(profileCardSettings, closedCardSettings);
