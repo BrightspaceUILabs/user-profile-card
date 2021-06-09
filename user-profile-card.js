@@ -121,14 +121,16 @@ class UserProfileCard extends LocalizeUserProfileCard(RtlMixin(LitElement)) {
 
 		const controller = new UserProfileCardController(this.href, this.token);
 		const result = await controller.getEnrolledUser();
-		this._userHref = result.canonicalUserHref;
-		this._displayName = result.displayName;
-		this._emailPath = result.emailPath;
-		this._profileimage = result.userProfileImage;
-		this._onlineStatus = result.onlineStatus;
-		this._orgDefinedId = result.orgDefinedId;
-		this._pagerPath = result.pagerPath;
-		this._userProfilePath = result.userProfilePath;
+		if (result !== undefined) {
+			this._userHref = result.canonicalUserHref;
+			this._displayName = result.displayName;
+			this._emailPath = result.emailPath;
+			this._profileimage = result.userProfileImage;
+			this._onlineStatus = result.onlineStatus;
+			this._orgDefinedId = result.orgDefinedId;
+			this._pagerPath = result.pagerPath;
+			this._userProfilePath = result.userProfilePath;
+		}
 
 		this._userProfileCardSettings = await controller.getProfileCardSettings();
 	}
