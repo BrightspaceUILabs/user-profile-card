@@ -166,10 +166,10 @@ export const profileCardStyles = css`
 		margin-right: 0.5rem;
 	}
 }
-:host([online]) .d2l-labs-profile-card-status {
+.d2l-labs-profile-card-status-online {
 	color: var(--d2l-color-olivine-minus-1);
 }
-:host([online]) .d2l-labs-profile-card-status d2l-icon {
+.d2l-labs-profile-card-status-online d2l-icon {
 	color: var(--d2l-color-olivine);
 }
 .d2l-labs-profile-card-attributes {
