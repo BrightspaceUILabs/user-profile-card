@@ -109,7 +109,7 @@ describe('user-profile-card-controller', () => {
 				showOrgDefinedId: true
 			};
 			const controller = new UserProfileCardController('href', 'token');
-			stub(controller, '_getEntityFromHref').returns({ properties: testCardSettings });
+			stub(controller, '_getEntityFromHref').returns({ entity:{ properties: testCardSettings } });
 
 			const profileCardSettings = await controller.getProfileCardSettings();
 			assert.deepEqual(profileCardSettings, testCardSettings);
