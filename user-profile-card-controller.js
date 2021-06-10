@@ -74,8 +74,8 @@ export class UserProfileCardController {
 	async getProfileCardSettings() {
 		const settingsHref = 'https://users.api.proddev.d2l/settings/userProfileCard';
 		const profileSettingsEntity = await this._getEntityFromHref(settingsHref, false);
-		if (profileSettingsEntity && profileSettingsEntity.properties) {
-			return profileSettingsEntity.properties;
+		if (profileSettingsEntity && profileSettingsEntity.entity && profileSettingsEntity.entity.properties) {
+			return profileSettingsEntity.entity.properties;
 		}
 		return {
 			showPicture: false,
