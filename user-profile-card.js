@@ -179,7 +179,7 @@ class UserProfileCard extends LocalizeUserProfileCard(RtlMixin(LitElement)) {
 					<div class="d2l-labs-profile-card-image-wrapper"
 							@click="${this._openUserProfile}">
 						${this._userProfileCardSettings && this._userProfileCardSettings.showPicture && this._profileimage ? html`
-						<d2l-profile-image ?small=${this.small} ?medium=${this.medium} ?large=${this.large} ?xlarge=${this.xlarge}
+						<d2l-profile-image ?x-large=${true}
 							role="button"
 							aria-expanded="${!hidden}"
 							aria-haspopup="true"
