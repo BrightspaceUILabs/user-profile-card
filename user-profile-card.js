@@ -20,7 +20,7 @@ const keyCodes = {
 	ESCAPE: 27
 };
 
-const openerGap = 10; /* spacing between card and opener */
+const openerGap = 43; /* spacing between card and opener */
 const viewportMargin = 18;
 class UserProfileCard extends LocalizeUserProfileCard(RtlMixin(LitElement)) {
 
