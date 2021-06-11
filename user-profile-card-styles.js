@@ -88,8 +88,8 @@ export const profileCardStyles = css`
 	position: absolute;
 	border-radius: 6px;
 	box-sizing: border-box;
-	width: 5rem;
-	height: 5rem;
+	width: 84px;
+	height: 84px;
 	top: 1rem;
 	left: 1rem;
 	opacity:0.2;
@@ -121,8 +121,8 @@ export const profileCardStyles = css`
 		border-top-left-radius: 6px;
 		left: -1px;
 		top: -1px;
-		width: 3.6rem;
-		height: 3.6rem;
+		width: 84px;
+		height: 84px;
 	}
 	:host([dir="rtl"]) .d2l-labs-profile-card-image-wrapper:after {
 		left: auto;

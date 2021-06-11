@@ -20,7 +20,7 @@ const keyCodes = {
 	ESCAPE: 27
 };
 
-const openerGap = 10; /* spacing between card and opener */
+const openerGap = 43; /* spacing between card and opener */
 const viewportMargin = 18;
 class UserProfileCard extends LocalizeUserProfileCard(RtlMixin(LitElement)) {
 
@@ -179,8 +179,16 @@ class UserProfileCard extends LocalizeUserProfileCard(RtlMixin(LitElement)) {
 					<div class="d2l-labs-profile-card-image-wrapper"
 							@click="${this._openUserProfile}">
 						${this._userProfileCardSettings && this._userProfileCardSettings.showPicture && this._profileimage ? html`
-							<img class="d2l-labs-profile-card-image d2l-link" title="${this.localize('openProfile', { displayName : this._displayName })}"
-								src="${this._profileimage}"/>
+						<d2l-profile-image ?x-large=${true}
+							role="button"
+							aria-expanded="${!hidden}"
+							aria-haspopup="true"
+							aria-label="${this.localize('openProfile', { displayName : this._displayName })}"
+							class="d2l-labs-profile-card-image d2l-link"
+							href=${this._userHref}
+							.token=${this.token}
+							tabindex="0"
+						></d2l-profile-image>
 						` : ''}
 					</div>
 					<div class="d2l-labs-profile-card-basic-info">
