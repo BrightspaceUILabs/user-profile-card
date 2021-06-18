@@ -119,20 +119,7 @@ class UserProfileCard extends LocalizeUserProfileCard(RtlMixin(LitElement)) {
 		this._card = this.shadowRoot.querySelector('.d2l-labs-profile-card');
 		this._pointer = this.shadowRoot.querySelector('.d2l-labs-profile-card-pointer');
 
-		const controller = new UserProfileCardController(this.href, this.token);
-		const result = await controller.getEnrolledUser();
-		if (result !== undefined) {
-			this._userHref = result.canonicalUserHref;
-			this._displayName = result.displayName;
-			this._emailPath = result.emailPath;
-			this._profileimage = result.userProfileImage;
-			this._onlineStatus = result.onlineStatus;
-			this._orgDefinedId = result.orgDefinedId;
-			this._pagerPath = result.pagerPath;
-			this._userProfilePath = result.userProfilePath;
-		}
-
-		this._userProfileCardSettings = await controller.getProfileCardSettings();
+		await this._update();
 	}
 
 	render() {
@@ -210,6 +197,12 @@ class UserProfileCard extends LocalizeUserProfileCard(RtlMixin(LitElement)) {
 		`;
 	}
 
+	async updated(changedProperties) {
+		if (changedProperties.has('href')) {
+			await this._update();
+		}
+	}
+
 	close() {
 		this._isOpen = false;
 		this._isHovering = false;
@@ -233,7 +226,6 @@ class UserProfileCard extends LocalizeUserProfileCard(RtlMixin(LitElement)) {
 			this._showAwards = true;
 		}
 	}
-
 	_onEmailClick() {
 		if (this.emailPopout) {
 			if (!this.emailPopout.closed) {
@@ -248,14 +240,12 @@ class UserProfileCard extends LocalizeUserProfileCard(RtlMixin(LitElement)) {
 			'width=1000,height=1000,scrollbars=no,toolbar=no,screenx=0,screeny=0,location=no,titlebar=no,directories=no,status=no,menubar=no'
 		);
 	}
-
 	_onKeyDown(e) {
 		if (e.keyCode === keyCodes.ESCAPE && this._isOpen) {
 			this.close();
 			this._opener.focus();
 		}
 	}
-
 	_onMessageClick() {
 		if (this.messagePopout) {
 			if (!this.messagePopout.closed) {
@@ -270,14 +260,12 @@ class UserProfileCard extends LocalizeUserProfileCard(RtlMixin(LitElement)) {
 			'width=400,height=200,scrollbars=no,toolbar=no,screenx=0,screeny=0,location=no,titlebar=no,directories=no,status=no,menubar=no'
 		);
 	}
-
 	_onMouseEnter() {
 		clearTimeout(this._dismissTimerId);
 		this._isHovering = true;
 		this._isFading = false;
 		this._reposition();
 	}
-
 	_onMouseLeave() {
 		if (!this._isOpen) {
 			this._isFading = true;
@@ -289,7 +277,6 @@ class UserProfileCard extends LocalizeUserProfileCard(RtlMixin(LitElement)) {
 			}, 400);
 		}
 	}
-
 	_onOpenerClick() {
 		//If we're hovering it's already showing, so force-close it.
 		if (this._isHovering) {
@@ -298,19 +285,16 @@ class UserProfileCard extends LocalizeUserProfileCard(RtlMixin(LitElement)) {
 			this.open();
 		}
 	}
-
 	_onOpenerKeyDown(e) {
 		if (e.keyCode !== keyCodes.ENTER && e.keyCode !== keyCodes.DOWN) return;
 		e.preventDefault();
 		this.open();
 	}
-
 	_onOpenerTouch(e) {
 		//Prevents touch from triggering mouseover/hover behavior
 		e.preventDefault();
 		this._isOpen = !this._isOpen;
 	}
-
 	_onOutsideClick(e) {
 		if (this._isOpen && e.target !== this._opener && !this.contains(e.target)) {
 			this.close();
@@ -438,5 +422,22 @@ class UserProfileCard extends LocalizeUserProfileCard(RtlMixin(LitElement)) {
 			this._card.style.left = `${left}px`;
 		}
 	}
+	async _update() {
+		const controller = new UserProfileCardController(this.href, this.token);
+		const result = await controller.getEnrolledUser();
+		if (result !== undefined) {
+			this._userHref = result.canonicalUserHref;
+			this._displayName = result.displayName;
+			this._emailPath = result.emailPath;
+			this._profileimage = result.userProfileImage;
+			this._onlineStatus = result.onlineStatus;
+			this._orgDefinedId = result.orgDefinedId;
+			this._pagerPath = result.pagerPath;
+			this._userProfilePath = result.userProfilePath;
+		}
+
+		this._userProfileCardSettings = await controller.getProfileCardSettings();
+	}
+
 }
 customElements.define('d2l-labs-user-profile-card', UserProfileCard);
