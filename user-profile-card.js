@@ -277,7 +277,9 @@ class UserProfileCard extends LocalizeUserProfileCard(RtlMixin(LitElement)) {
 			}, 400);
 		}
 	}
-	_onOpenerClick() {
+	_onOpenerClick(e) {
+		//Prevents click from propagating to parent elements and triggering _onOutsideClick
+		e.stopPropagation();
 		//If we're hovering it's already showing, so force-close it.
 		if (this._isHovering) {
 			this.close();
