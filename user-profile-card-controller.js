@@ -29,6 +29,7 @@ export class UserProfileCardController {
 			const orgDefinedIdEntity = enrolledUserEntity.entity.getSubEntityByRel(Rels.orgDefinedId);
 			const pagerEntity = enrolledUserEntity.entity.getSubEntityByRel(Rels.pager);
 			const userProfileEntity = enrolledUserEntity.entity.getSubEntityByRel(Rels.userProfile);
+			const userPronounEntity = enrolledUserEntity.entity.getSubEntityByRel('pronouns-rel-goes-here');
 
 			let displayName = undefined;
 			let emailPath = undefined;
@@ -37,6 +38,7 @@ export class UserProfileCardController {
 			let pagerPath = undefined;
 			let userProfileImage = undefined;
 			let userProfilePath = undefined;
+			let pronouns = undefined;
 
 			if (displayNameEntity) {
 				displayName = displayNameEntity.properties.name;
@@ -56,6 +58,10 @@ export class UserProfileCardController {
 				userProfilePath = userProfileEntity.properties.path;
 				onlineStatus = userProfileEntity.properties.isOnline;
 			}
+			if (userPronounEntity) {
+				pronouns = userProfileEntity.properties.pronouns;
+			}
+
 			return {
 				canonicalUserHref,
 				displayName,
@@ -64,7 +70,8 @@ export class UserProfileCardController {
 				orgDefinedId,
 				pagerPath,
 				userProfileImage,
-				userProfilePath
+				userProfilePath,
+				pronouns
 			};
 		}
 

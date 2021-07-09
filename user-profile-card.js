@@ -81,6 +81,7 @@ class UserProfileCard extends LocalizeUserProfileCard(RtlMixin(LitElement)) {
 		super();
 		this._displayName = '';
 		this._onlineStatus = false;
+		this._pronouns = '';
 		this._showAwards = false;
 		this.tagline = '';
 		this.website = '';
@@ -126,6 +127,9 @@ class UserProfileCard extends LocalizeUserProfileCard(RtlMixin(LitElement)) {
 		const userAttributes = [...this.userAttributes];
 		if (this._userProfileCardSettings && this._userProfileCardSettings.showOrgDefinedId && this._orgDefinedId !== undefined) {
 			userAttributes.push(this._orgDefinedId);
+		}
+		if (this._pronouns !== '' && this._pronouns !== undefined) {
+			userAttributes.push(this._pronouns);
 		}
 		const hidden = !this._isOpen && !this._isHovering;
 		const openAlert = hidden ? this.localize('profileCardClosed') : this.localize('profileCardOpened');
@@ -436,6 +440,7 @@ class UserProfileCard extends LocalizeUserProfileCard(RtlMixin(LitElement)) {
 			this._orgDefinedId = result.orgDefinedId;
 			this._pagerPath = result.pagerPath;
 			this._userProfilePath = result.userProfilePath;
+			this._pronouns = result.pronouns;
 		}
 
 		this._userProfileCardSettings = await controller.getProfileCardSettings();
