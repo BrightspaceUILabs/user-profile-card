@@ -442,7 +442,7 @@ class UserProfileCard extends LocalizeUserProfileCard(RtlMixin(LitElement)) {
 			this._pagerPath = result.pagerPath;
 			this._userProfilePath = result.userProfilePath;
 			this._pronouns = result.pronouns;
-			this._userProfileCardSettings = result.profileCardSettings;
+			this._userProfileCardSettings = result.userProfileSettings;
 		} else {
 			this._userProfileCardSettings = UserProfileCardController.getDefaultProfileCardSettings();
 		}
