@@ -86,7 +86,6 @@ class UserProfileCard extends LocalizeUserProfileCard(RtlMixin(LitElement)) {
 		this.tagline = '';
 		this.website = '';
 		this.userAttributes = [];
-		this._userProfileCardSettings = UserProfileCardController.getDefaultProfileCardSettings();
 
 		this._dismissTimerId = getUniqueId();
 		this._isOpen = false;
@@ -444,6 +443,8 @@ class UserProfileCard extends LocalizeUserProfileCard(RtlMixin(LitElement)) {
 			this._userProfilePath = result.userProfilePath;
 			this._pronouns = result.pronouns;
 			this._userProfileCardSettings = result.profileCardSettings;
+		} else {
+			this._userProfileCardSettings = UserProfileCardController.getDefaultProfileCardSettings();
 		}
 	}
 
