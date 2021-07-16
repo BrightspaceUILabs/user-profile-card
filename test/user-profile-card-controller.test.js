@@ -34,6 +34,7 @@ describe('user-profile-card-controller', () => {
 		it('gets correct enrolled user info', async() => {
 			const canonicalUserHref = 'canonicalUserHref';
 			const enrolledUserHref = 'enrolledUserHref';
+			const userProfileCardSettingsHref = 'userProfileCardSettingsHref';
 			const emailPath = 'emailPath';
 			const isOnline = 'isOnline';
 			const pagerPath = 'pagerPath';
@@ -41,63 +42,6 @@ describe('user-profile-card-controller', () => {
 			const userProfileImage = 'userProfileImage';
 			const userProfilePath = 'userProfilePath';
 			const displayName = 'displayName';
-
-			const controller = new UserProfileCardController(enrolledUserHref, 'token');
-
-			stub(controller, '_getEntityFromHref').returns({
-				entity: {
-					getSubEntityByRel: (r) => {
-						if (r === Rels.pager) {
-							return { properties: { path: pagerPath } };
-						} else if (r === Rels.email) {
-							return { properties: { path: emailPath } };
-						} else if (r === Rels.displayName) {
-							return { properties: { name: displayName } };
-						} else if (r === Rels.orgDefinedId) {
-							return { properties: { orgDefinedId: orgDefinedId } };
-						} else if (r === Rels.userProfile) {
-							return {
-								properties:
-									{
-										path: userProfilePath,
-										isOnline: isOnline
-									},
-								getSubEntityByRel: (r) => {
-									if (r === Rels.profileImage) {
-										return {
-											getLinkByRel: (r) => {
-												if (r === 'alternate') {
-													return { href: userProfileImage };
-												}
-											}
-										};
-									}
-								}
-							};
-						}
-					},
-					getLinkByRel: (r) => {
-						if (r === Rels.Users.canonicalUser) {
-							return { href: canonicalUserHref };
-						}
-					}
-				}
-			});
-
-			const enrolledUser = await controller.getEnrolledUser();
-			assert.equal(enrolledUser.canonicalUserHref, canonicalUserHref);
-			assert.equal(enrolledUser.displayName, displayName);
-			assert.equal(enrolledUser.emailPath, emailPath);
-			assert.equal(enrolledUser.onlineStatus, isOnline);
-			assert.equal(enrolledUser.orgDefinedId, orgDefinedId);
-			assert.equal(enrolledUser.pagerPath, pagerPath);
-			assert.equal(enrolledUser.userProfilePath, userProfilePath);
-			assert.equal(enrolledUser.userProfileImage, userProfileImage);
-		});
-	});
-
-	describe('getProfileCardSettings', () => {
-		it('gets the profile card settings', async() => {
 			const testCardSettings = {
 				showPicture: true,
 				showTagline: false,
@@ -108,30 +52,93 @@ describe('user-profile-card-controller', () => {
 				showBadgeTrophy: false,
 				showOrgDefinedId: true
 			};
-			const controller = new UserProfileCardController('href', 'token');
-			stub(controller, '_getEntityFromHref').returns({ entity:{ properties: testCardSettings } });
 
-			const profileCardSettings = await controller.getProfileCardSettings();
-			assert.deepEqual(profileCardSettings, testCardSettings);
+			const controller = new UserProfileCardController(enrolledUserHref, 'token');
+
+			stub(controller, '_getEntityFromHref')
+				.withArgs(enrolledUserHref, false)
+				.returns({
+					entity: {
+						getSubEntityByRel: (r) => {
+							if (r === Rels.pager) {
+								return { properties: { path: pagerPath } };
+							} else if (r === Rels.email) {
+								return { properties: { path: emailPath } };
+							} else if (r === Rels.displayName) {
+								return { properties: { name: displayName } };
+							} else if (r === Rels.orgDefinedId) {
+								return { properties: { orgDefinedId: orgDefinedId } };
+							} else if (r === Rels.userProfile) {
+								return {
+									properties:
+										{
+											path: userProfilePath,
+											isOnline: isOnline
+										},
+									getSubEntityByRel: (r) => {
+										if (r === Rels.profileImage) {
+											return {
+												getLinkByRel: (r) => {
+													if (r === 'alternate') {
+														return { href: userProfileImage };
+													}
+												}
+											};
+										}
+									}
+								};
+							} else if (r === Rels.userPronouns) {
+								return { properties: { pronouns: 'they/them' } };
+							}
+						},
+						getLinkByRel: (r) => {
+							if (r === Rels.Users.canonicalUser) {
+								return { href: canonicalUserHref };
+							} else if (r === Rels.Users.settingsProfileCard) {
+								return { href: userProfileCardSettingsHref };
+							}
+						}
+					}
+				})
+				.withArgs(userProfileCardSettingsHref, false)
+				.returns({ entity: { properties: testCardSettings } });
+
+			const enrolledUser = await controller.getEnrolledUser();
+			assert.equal(enrolledUser.canonicalUserHref, canonicalUserHref);
+			assert.equal(enrolledUser.displayName, displayName);
+			assert.equal(enrolledUser.emailPath, emailPath);
+			assert.equal(enrolledUser.onlineStatus, isOnline);
+			assert.equal(enrolledUser.orgDefinedId, orgDefinedId);
+			assert.equal(enrolledUser.pagerPath, pagerPath);
+			assert.equal(enrolledUser.userProfilePath, userProfilePath);
+			assert.equal(enrolledUser.userProfileImage, userProfileImage);
+			assert.deepEqual(enrolledUser.userProfileSettings, testCardSettings);
 		});
 
-		it('fails closed when settings are not available', async() => {
-			const closedCardSettings = {
-				showPicture: false,
-				showTagline: false,
-				showHomepageUrl: false,
-				showSocial: false,
-				showOnlineStatus: false,
-				showRole: false,
-				showBadgeTrophy: false,
-				showOrgDefinedId: false
-			};
+		it('profile card settings fail closed when settings are not available', async() => {
+			const canonicalUserHref = 'canonicalUserHref';
+			const enrolledUserHref = 'enrolledUserHref';
+			const userProfileCardSettingsHref = 'userProfileCardSettingsHref';
 
-			const controller = new UserProfileCardController('href', 'token');
-			stub(controller, '_getEntityFromHref').returns(undefined);
+			const controller = new UserProfileCardController(enrolledUserHref, 'token');
 
-			const profileCardSettings = await controller.getProfileCardSettings();
-			assert.deepEqual(profileCardSettings, closedCardSettings);
+			stub(controller, '_getEntityFromHref').returns({
+				entity: {
+					getSubEntityByRel: () => {
+						return undefined;
+					},
+					getLinkByRel: (r) => {
+						if (r === Rels.Users.canonicalUser) {
+							return { href: canonicalUserHref };
+						} else if (r === Rels.Users.settingsProfileCard) {
+							return { href: userProfileCardSettingsHref };
+						}
+					}
+				}
+			});
+
+			const enrolledUser = await controller.getEnrolledUser();
+			assert.deepEqual(enrolledUser.userProfileSettings, UserProfileCardController.getDefaultProfileCardSettings());
 		});
 	});
 });

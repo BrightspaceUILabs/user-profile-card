@@ -141,5 +141,12 @@
       ],
       "href": "./data/user.json"
     }
+    ,
+    {
+      "rel": [
+        "https://users.api.brightspace.com/rels/settings/userProfileCard"
+      ],
+      "href": "./data/settings.json"
+    }
   ]
 }

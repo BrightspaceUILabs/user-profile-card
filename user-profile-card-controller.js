@@ -6,6 +6,20 @@ export const UserProfileCardControllerErrors = {
 	INVALID_TYPE_BASE_HREF: 'D2L-Labs-Profile-Card: Invalid User HREF Type'
 };
 export class UserProfileCardController {
+
+	static getDefaultProfileCardSettings() {
+		return {
+			showPicture: false,
+			showTagline: false,
+			showHomepageUrl: false,
+			showSocial: false,
+			showOnlineStatus: false,
+			showRole: false,
+			showBadgeTrophy: false,
+			showOrgDefinedId: false
+		};
+	}
+
 	constructor(userHref, token) {
 		if (!userHref) {
 			throw new Error(UserProfileCardControllerErrors.MISSING_BASE_HREF);
@@ -29,6 +43,8 @@ export class UserProfileCardController {
 			const orgDefinedIdEntity = enrolledUserEntity.entity.getSubEntityByRel(Rels.orgDefinedId);
 			const pagerEntity = enrolledUserEntity.entity.getSubEntityByRel(Rels.pager);
 			const userProfileEntity = enrolledUserEntity.entity.getSubEntityByRel(Rels.userProfile);
+			const userProfileCardSettingsHref = enrolledUserEntity.entity.getLinkByRel(Rels.Users.settingsProfileCard).href;
+			const userPronounEntity = enrolledUserEntity.entity.getSubEntityByRel(Rels.userPronouns);
 
 			let displayName = undefined;
 			let emailPath = undefined;
@@ -37,6 +53,8 @@ export class UserProfileCardController {
 			let pagerPath = undefined;
 			let userProfileImage = undefined;
 			let userProfilePath = undefined;
+			let userProfileSettings = UserProfileCardController.getDefaultProfileCardSettings();
+			let pronouns = undefined;
 
 			if (displayNameEntity) {
 				displayName = displayNameEntity.properties.name;
@@ -56,6 +74,17 @@ export class UserProfileCardController {
 				userProfilePath = userProfileEntity.properties.path;
 				onlineStatus = userProfileEntity.properties.isOnline;
 			}
+			if (userPronounEntity) {
+				pronouns = userPronounEntity.properties.pronouns;
+			}
+
+			if (userProfileCardSettingsHref) {
+				const profileSettingsEntity = await this._getEntityFromHref(userProfileCardSettingsHref, false);
+				if (profileSettingsEntity && profileSettingsEntity.entity && profileSettingsEntity.entity.properties) {
+					userProfileSettings = profileSettingsEntity.entity.properties;
+				}
+			}
+
 			return {
 				canonicalUserHref,
 				displayName,
@@ -64,29 +93,13 @@ export class UserProfileCardController {
 				orgDefinedId,
 				pagerPath,
 				userProfileImage,
-				userProfilePath
+				userProfilePath,
+				pronouns,
+				userProfileSettings
 			};
 		}
 
 		return undefined;
-	}
-
-	async getProfileCardSettings() {
-		const settingsHref = 'https://users.api.proddev.d2l/settings/userProfileCard';
-		const profileSettingsEntity = await this._getEntityFromHref(settingsHref, false);
-		if (profileSettingsEntity && profileSettingsEntity.entity && profileSettingsEntity.entity.properties) {
-			return profileSettingsEntity.entity.properties;
-		}
-		return {
-			showPicture: false,
-			showTagline: false,
-			showHomepageUrl: false,
-			showSocial: false,
-			showOnlineStatus: false,
-			showRole: false,
-			showBadgeTrophy: false,
-			showOrgDefinedId: false
-		};
 	}
 
 	async _getEntityFromHref(targetHref, bypassCache) {

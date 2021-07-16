@@ -56,7 +56,7 @@ module.exports = config => {
 			singleRun: true,
 			client: {
 				mocha: {
-					timeout : 5000 // default 2000
+					timeout : 6000 // default 2000
 				}
 			}
 		}),
