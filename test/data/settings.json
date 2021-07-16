@@ -1,0 +1,12 @@
+{
+  "properties": {
+    "showPicture": true,
+    "showTagline": true,
+    "showHomepageUrl": true,
+    "showSocial": true,
+    "showOnlineStatus": true,
+    "showRole": true,
+    "showBadgeTrophy": true,
+    "showOrgDefinedId": true
+  }
+}
