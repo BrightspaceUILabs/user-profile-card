@@ -1,12 +1,12 @@
 {
   "properties": {
-    "showPicture": true,
-    "showTagline": true,
-    "showHomepageUrl": true,
-    "showSocial": true,
-    "showOnlineStatus": true,
-    "showRole": true,
-    "showBadgeTrophy": true,
-    "showOrgDefinedId": true
+    "showPicture": false,
+    "showTagline": false,
+    "showHomepageUrl": false,
+    "showSocial": false,
+    "showOnlineStatus": false,
+    "showRole": false,
+    "showBadgeTrophy": false,
+    "showOrgDefinedId": false
   }
 }
